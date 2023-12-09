@@ -2,6 +2,17 @@
 
 Quezzy App Project
 
+# Bloc
+
+The project uses Cubits to isolate the functionality from the UI implementation. Cubit represents a simplified version of well-known Bloc. The following folders are used to store logical units:
+
+- `repositories/`
+- `cubits/`
+- `screens/`
+
+[Read more about Bloc and Cubit](https://bloclibrary.dev/#/gettingstarted)
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
