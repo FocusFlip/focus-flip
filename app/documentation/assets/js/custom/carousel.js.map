@@ -1,0 +1,1 @@
+{"version":3,"file":"assets/js/custom/carousel.js","mappings":";;;;;AAAA;AACA;AACA,CAAC,C","sources":["webpack://Queezy/./src/assets/js/custom/carousel.js"],"sourcesContent":["$(document).ready(function () {\n  console.log('Add script for custom carousel here')\n})"],"names":[],"sourceRoot":""}
