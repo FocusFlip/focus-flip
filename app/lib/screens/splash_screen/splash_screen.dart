@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quezzy/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:quezzy/screens/main_screen/main_screen.dart';
 import 'package:quezzy/utils/constant.dart';
 import 'package:quezzy/utils/images.dart';
 
@@ -24,7 +24,9 @@ class SplashScreenState extends State<SplashScreen> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const OnboardingScreen();
+            //return const OnboardingScreen();
+            //return LiveQuizScreen();
+            return MainScreen();
           },
         ),
         (route) => false,
