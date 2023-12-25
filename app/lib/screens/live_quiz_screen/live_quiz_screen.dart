@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
-#import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
+//import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 
 import 'package:flutter/material.dart';
 
@@ -1094,7 +1094,7 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
                                                                           BorderRadius.circular(
                                                                               50),
                                                                       color: const Color
-                                                                              .fromRGBO(
+                                                                          .fromRGBO(
                                                                           255,
                                                                           255,
                                                                           255,
@@ -1649,7 +1649,7 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
                                                               ),
                                                             ),
                                                           ),
-                                                          SizedBox(
+                                                          /*SizedBox(
                                                               height: 200,
                                                               child: ChipsChoice<
                                                                   String>.multiple(
@@ -1676,8 +1676,9 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
                                                                             v),
                                                                 choiceStyle: C2ChoiceStyle(
                                                                     labelStyle: const TextStyle(
-                                                                        fontWeight: FontWeight
-                                                                            .w400),
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w400),
                                                                     showCheckmark:
                                                                         false,
                                                                     backgroundColor:
@@ -1688,10 +1689,10 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
                                                                     borderColor:
                                                                         ColorsHelpers
                                                                             .grey5,
-                                                                    borderRadius: const BorderRadius
+                                                                    borderRadius:
+                                                                        const BorderRadius
                                                                             .all(
-                                                                        Radius.circular(
-                                                                            16))),
+                                                                            Radius.circular(16))),
                                                                 wrapped: true,
                                                                 choiceActiveStyle: C2ChoiceStyle(
                                                                     labelStyle: const TextStyle(
@@ -1708,14 +1709,15 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
                                                                             0.2),
                                                                     color: Colors
                                                                         .black,
-                                                                    borderRadius: const BorderRadius
+                                                                    borderRadius:
+                                                                        const BorderRadius
                                                                             .all(
-                                                                        Radius.circular(
-                                                                            16))),
+                                                                            Radius.circular(16))),
                                                                 textDirection:
                                                                     TextDirection
                                                                         .ltr,
                                                               )),
+                                                          */
                                                         ],
                                                       )
                                                     : Container()
