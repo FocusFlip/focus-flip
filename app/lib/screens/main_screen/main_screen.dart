@@ -2,14 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quezzy/cubits/main_screen/main_screen_cubit.dart';
+import 'package:quezzy/repositories/main_repository.dart';
 import 'package:quezzy/utils/widget_assets.dart';
 import '../../utils/constant.dart';
+import 'components/add_trigger_app_dialog.dart';
 import 'components/inline_label_list.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
+  final MainScreenCubit _cubit = MainScreenCubit(MainRepository.instance);
 
-  final MainScreenCubit _cubit = MainScreenCubit();
+  void _addTriggerApp(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AddTriggerAppDialog(
+          onSubmit: _cubit.addTriggerApp,
+          cubit: _cubit,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +83,16 @@ class MainScreen extends StatelessWidget {
                         margin:
                             EdgeInsets.only(top: ScreenUtil().setHeight(16)),
                         child: InlineLabelList(
-                          labels: [
-                            Label(text: "Instagram", isActive: true),
-                            Label(text: "+ Add", onTap: _cubit.addTriggerApp)
-                          ],
+                          labels: state.triggerApps
+                              .map((app) =>
+                                  Label(text: app.name, isActive: true))
+                              .toList()
+                            ..add(Label(
+                                text: "+ Add",
+                                onTap: () {
+                                  // _cubit.addTriggerApp
+                                  _addTriggerApp(context);
+                                })),
                         ),
                       ),
                       Container(
