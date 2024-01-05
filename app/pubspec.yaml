@@ -65,6 +65,7 @@ dependencies:
   chips_choice: ^3.0.1
   flutter_siri_suggestions: ^2.1.0
   uuid_type: ^2.0.0
+  url_launcher: ^6.2.2
 
 dev_dependencies:
   change_app_package_name: ^1.1.0

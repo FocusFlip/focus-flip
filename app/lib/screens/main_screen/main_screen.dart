@@ -5,6 +5,7 @@ import 'package:quezzy/cubits/main_screen/main_screen_cubit.dart';
 import 'package:quezzy/repositories/main_repository.dart';
 import 'package:quezzy/utils/toasts.dart';
 import 'package:quezzy/utils/widget_assets.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../utils/constant.dart';
 import 'components/add_trigger_app_dialog.dart';
 import 'components/inline_label_list.dart';
@@ -146,10 +147,16 @@ class MainScreen extends StatelessWidget {
                               EdgeInsets.only(top: ScreenUtil().setHeight(16)),
                           child: InlineLabelList(
                             labels: [
+                              // TODO: replace the example below
                               Label(
-                                text: "Anki",
-                                isActive: true,
-                              ),
+                                  text: "Anki",
+                                  isActive: true,
+                                  onTap: () async {
+                                    final Uri url = Uri.parse('anki://');
+                                    if (!await launchUrl(url)) {
+                                      throw Exception('Could not launch $url');
+                                    }
+                                  }),
                               Label(text: "+ Add", onTap: _cubit.addHealthyApp)
                             ],
                           )),
