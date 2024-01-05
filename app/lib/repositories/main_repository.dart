@@ -1,3 +1,4 @@
+import 'package:quezzy/models/trigger_app.dart';
 import 'package:quezzy/repositories/hive_box_repository.dart';
 
 /**
@@ -10,4 +11,29 @@ class MainRepository extends HiveBoxRepository {
   static final MainRepository instance = MainRepository("main");
 
   MainRepository(hiveBoxName) : super(hiveBoxName);
+
+  // TODO: store in HiveDB
+  final List<TriggerApp> _triggerApps = [];
+
+  List<TriggerApp> get triggerApps {
+    return _triggerApps.toList();
+  }
+
+  void addTriggerApp(TriggerApp app) {
+    if (_triggerApps.any((element) => element.name == app.name)) {
+      throw DuplicateException(duplicateField: "name");
+    }
+
+    _triggerApps.add(app);
+  }
+
+  void clearTriggerApps() {
+    _triggerApps.clear();
+  }
+}
+
+class DuplicateException implements Exception {
+  final String duplicateField;
+
+  DuplicateException({required this.duplicateField});
 }
