@@ -10,8 +10,12 @@ import '../../utils/constant.dart';
 import 'components/add_trigger_app_dialog.dart';
 import 'components/inline_label_list.dart';
 
-class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final MainScreenCubit _cubit = MainScreenCubit(MainRepository.instance);
 
   void _addTriggerApp(BuildContext context) async {
