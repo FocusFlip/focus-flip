@@ -51,7 +51,16 @@ class MainScreenCubit extends Cubit<MainScreenState> {
   }
 
   void clearTriggerApps() {
-    throw UnimplementedError();
+    FlutterSiriSuggestions.instance
+        .deleteAllSavedUserActivities()
+        .then((value) {
+      print("Siri Shortcuts have been removed");
+    }).onError((error, stackTrace) {
+      print("Error has occured when trying to remove all the Siri Shortcuts");
+    });
+
+    mainRepository.clearTriggerApps();
+    emit(TriggerAppsCleared(triggerApps: []));
   }
 
   void addHealthyApp() {

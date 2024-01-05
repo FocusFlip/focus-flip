@@ -15,6 +15,10 @@ final class TriggerAppAdded extends MainScreenState {
   TriggerAppAdded({required super.triggerApps});
 }
 
+final class TriggerAppsCleared extends MainScreenState {
+  TriggerAppsCleared({required super.triggerApps});
+}
+
 final class EmptyNameError extends MainScreenState {
   EmptyNameError({required super.triggerApps});
 }

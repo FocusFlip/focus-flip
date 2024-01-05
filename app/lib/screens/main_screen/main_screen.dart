@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quezzy/cubits/main_screen/main_screen_cubit.dart';
 import 'package:quezzy/repositories/main_repository.dart';
+import 'package:quezzy/utils/toasts.dart';
 import 'package:quezzy/utils/widget_assets.dart';
 import '../../utils/constant.dart';
 import 'components/add_trigger_app_dialog.dart';
@@ -25,10 +26,17 @@ class MainScreen extends StatelessWidget {
     );
   }
 
+  void _cubitListener(BuildContext context, MainScreenState state) {
+    if (state is TriggerAppsCleared) {
+      showToast("All trigger apps have been removed");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainScreenCubit, MainScreenState>(
+    return BlocConsumer<MainScreenCubit, MainScreenState>(
         bloc: _cubit,
+        listener: _cubitListener,
         builder: (context, state) => GestureDetector(
             onTap: () {
               FocusScope.of(context).requestFocus(FocusNode());
