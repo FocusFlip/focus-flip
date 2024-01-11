@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:quezzy/cubits/shortcuts/shortcuts_cubit.dart';
 import 'package:quezzy/repositories/main_repository.dart';
 
 import 'screens/splash_screen/splash_screen.dart';
@@ -17,6 +20,10 @@ Future<void> main() async {
 
   await Hive.initFlutter();
   MainRepository.instance.openBox();
+
+  if (Platform.isIOS) {
+    ShortcutsCubit.instance.init();
+  }
 
   runApp(const MyApp());
 }
