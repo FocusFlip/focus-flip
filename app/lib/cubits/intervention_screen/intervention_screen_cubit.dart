@@ -14,12 +14,19 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       emit(PushInterventionScreen());
     } else {
       print("[InterventionScreenCubit] InterventionScreen is already open");
+
+  void closeScreen() {
+    print("[InterventionScreenCubit] Closing InterventionScreen");
+    if (state is InterventionScreenOpened) {
+      print("[InterventionScreenCubit] Popping InterventionScreen");
+      emit(PopInterventionScreen());
     }
   }
 
   void markAsOpened() {
     print("[InterventionScreenCubit] InterventionScreen has been opened");
-    emit(InterventionScreenOpened());
+    emit(InterventionScreenOpened(
+        timestamp: DateTime.now().millisecondsSinceEpoch));
   }
 
   void markAsClosed() {

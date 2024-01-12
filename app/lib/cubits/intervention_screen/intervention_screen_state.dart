@@ -5,6 +5,13 @@ sealed class InterventionScreenState {}
 
 final class PushInterventionScreen extends InterventionScreenState {}
 
+final class PopInterventionScreen extends InterventionScreenState {}
+
 final class IntenventionScreenClosed extends InterventionScreenState {}
 
-final class InterventionScreenOpened extends InterventionScreenState {}
+final class InterventionScreenOpened extends InterventionScreenState {
+  /// Milliseconds since epoch
+  final int timestamp;
+
+  InterventionScreenOpened({required this.timestamp});
+}

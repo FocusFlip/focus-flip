@@ -11,11 +11,21 @@ class InterventionScreen extends StatefulWidget {
 class _InterventionScreenState extends State<InterventionScreen> {
   InterventionScreenCubit _cubit = InterventionScreenCubit.instance;
 
+  void _cubitListener(InterventionScreenState state) {
+    if (state is PopInterventionScreen) {
+      if (mounted) {
+        print("[InterventionScreen] Popping InterventionScreen");
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
     _cubit.markAsOpened();
+    _cubit.stream.listen(_cubitListener);
   }
 
   @override

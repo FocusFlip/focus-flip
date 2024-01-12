@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
 import 'package:quezzy/cubits/shortcuts/shortcuts_cubit.dart';
 import 'package:quezzy/repositories/main_repository.dart';
 
@@ -35,7 +36,39 @@ class MyApp extends StatefulWidget {
   MyAppState createState() => MyAppState();
 }
 
-class MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState appLifecycleState) {
+    if (appLifecycleState == AppLifecycleState.resumed) {
+      print("[MyApp] The app is resumed");
+
+      InterventionScreenState state = InterventionScreenCubit.instance.state;
+
+      if (state is InterventionScreenOpened) {
+        int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+        int tolerableTimeFrom = currentTimestamp - 1000; // last second
+
+        if (state.timestamp < tolerableTimeFrom) {
+          print("[MyApp] The intervention screen can be closed because"
+              " the app has been opened not from a shortcut, but from the"
+              " app icon");
+
+          InterventionScreenCubit.instance.closeScreen();
+        }
+      }
+
+      // TODO: write test if this method is called after method call handler
+      /// in shortcuts_cubit.dart. Manual test in debug mode shows it on IOS,
+      /// but it's not reliable.
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
