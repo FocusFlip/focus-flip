@@ -7,13 +7,17 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
   static final InterventionScreenCubit instance = InterventionScreenCubit();
   InterventionScreenCubit() : super(IntenventionScreenClosed());
 
-  void open() {
+  void openScreen() {
     print("[InterventionScreenCubit] Opening InterventionScreen");
     if (state is IntenventionScreenClosed) {
       print("[InterventionScreenCubit] Pushing InterventionScreen");
       emit(PushInterventionScreen());
-    } else {
-      print("[InterventionScreenCubit] InterventionScreen is already open");
+    } else if (state is InterventionScreenOpened) {
+      print("[InterventionScreenCubit] Refreshing InterventionScreen");
+      emit(InterventionScreenOpened(
+          timestamp: DateTime.now().millisecondsSinceEpoch));
+    }
+  }
 
   void closeScreen() {
     print("[InterventionScreenCubit] Closing InterventionScreen");

@@ -48,11 +48,11 @@ class _MainScreenState extends State<MainScreen> {
     ShortcutsCubit.instance.stream.listen((state) {
       print("[MainScreen] ShortuctsCubit state updated: $state");
       if (state is TriggerAppOpenedShortcut) {
-        InterventionScreenCubit.instance.open();
+        InterventionScreenCubit.instance.openScreen();
       }
     });
     if (ShortcutsCubit.instance.state is TriggerAppOpenedShortcut) {
-      InterventionScreenCubit.instance.open();
+      InterventionScreenCubit.instance.openScreen();
     }
 
     InterventionScreenCubit.instance.stream.listen((state) {
