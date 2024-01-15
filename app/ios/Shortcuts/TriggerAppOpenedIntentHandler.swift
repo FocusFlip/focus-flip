@@ -10,12 +10,27 @@ import Foundation
 
 class TriggerAppOpenedIntentHandler: NSObject, TriggerAppOpenedIntentHandling {
   func handle(intent: TriggerAppOpenedIntent, completion: @escaping (TriggerAppOpenedIntentResponse) -> Void) {
-    /*let firstNumber = intent.firstNumber!
-    let secondNumber = intent.secondNumber!
-    let result = NSNumber(value: firstNumber.intValue + secondNumber.intValue)*/
+    
+    // TODO: add all necessary trigger apps
+    let triggerApp = intent.triggerApp
+      let appName : String?
+      switch(triggerApp){
+      case .instagram:
+          appName = "Instagram"
+          break
+      case .facebook:
+          appName = "Facebook"
+          break
+      default:
+          fatalError("[TriggerAppOpenedIntentHandler] The chosen trigger app is not supported")
+      }
+    
     
     let userActivity = NSUserActivity(activityType: "TriggerAppOpened")
     userActivity.title = "Trigger App Opened"
+    userActivity.userInfo = [
+        "appName": appName!
+    ]
       
     let response = TriggerAppOpenedIntentResponse(code: .continueInApp, userActivity: userActivity)
     completion(response)

@@ -19,9 +19,7 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     }
 
     TriggerApp app = TriggerApp(
-        name: name,
-        triggerShortcutPersistentIdentifier:
-            TimeUuidGenerator().generate().toString());
+        name: name, url: "instagram://"); // TODO: change url to a valid one
     try {
       mainRepository.addTriggerApp(app);
     } on DuplicateException {
@@ -35,12 +33,15 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     String activityTitle = "Trigger App Opened: " + app.name;
     String activityKey = app.name.replaceAll(" ", "") + "Triggered";
     FlutterSiriSuggestions.instance
-        .registerActivity(FlutterSiriActivity(activityTitle, activityKey,
-            isEligibleForSearch: false,
-            isEligibleForPrediction: true,
-            contentDescription: "Opens FocusFlip",
-            suggestedInvocationPhrase: "Trigger app has been opened",
-            persistentIdentifier: app.triggerShortcutPersistentIdentifier))
+        .registerActivity(FlutterSiriActivity(
+      activityTitle,
+      activityKey,
+      isEligibleForSearch: false,
+      isEligibleForPrediction: true,
+      contentDescription: "Opens FocusFlip",
+      suggestedInvocationPhrase:
+          "Trigger app has been opened", /*persistentIdentifier: app.triggerShortcutPersistentIdentifier*/
+    ))
         .then((value) {
       print("Siri activity has been created successfully");
     }).onError((error, stackTrace) {

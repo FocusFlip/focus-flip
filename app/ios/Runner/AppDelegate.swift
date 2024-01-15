@@ -22,7 +22,7 @@ import Flutter
                 print("Donate Interaction with error: \(error.localizedDescription)")
             } else {
                 if userActivity.activityType == "TriggerAppOpened" {
-                    self.triggerAppOpened(appName: "My App Name")
+                    self.triggerAppOpened(appName: userActivity.userInfo!["appName"] as! String)
                 }
                 else {
                     // TODO: check, if no other activity types are required by any of plugins/system

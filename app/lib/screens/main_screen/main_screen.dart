@@ -4,10 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quezzy/cubits/main_screen/main_screen_cubit.dart';
 import 'package:quezzy/cubits/shortcuts/shortcuts_cubit.dart';
 import 'package:quezzy/repositories/main_repository.dart';
+import 'package:quezzy/utils/apps_utils.dart';
 import 'package:quezzy/utils/toasts.dart';
 import 'package:quezzy/utils/widget_assets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../cubits/intervention_screen/intervention_screen_cubit.dart';
+import '../../models/trigger_app.dart';
 import '../../utils/constant.dart';
 import '../intervention_screen/intervention_screen.dart';
 import 'components/add_trigger_app_dialog.dart';
@@ -48,23 +50,36 @@ class _MainScreenState extends State<MainScreen> {
     ShortcutsCubit.instance.stream.listen((state) {
       print("[MainScreen] ShortuctsCubit state updated: $state");
       if (state is TriggerAppOpenedShortcut) {
-        InterventionScreenCubit.instance.openScreen();
+        TriggerApp triggerApp = getTriggerAppByName(state.appName);
+        InterventionScreenCubit.instance.openScreen(triggerApp);
       }
     });
     if (ShortcutsCubit.instance.state is TriggerAppOpenedShortcut) {
-      InterventionScreenCubit.instance.openScreen();
+      TriggerAppOpenedShortcut state =
+          ShortcutsCubit.instance.state as TriggerAppOpenedShortcut;
+      TriggerApp triggerApp = getTriggerAppByName(state.appName);
+      InterventionScreenCubit.instance.openScreen(triggerApp);
     }
 
     InterventionScreenCubit.instance.stream.listen((state) {
       print("[MainScreen] InterventionScreenCubit state updated: $state");
       if (state is PushInterventionScreen) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => InterventionScreen()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => InterventionScreen(
+                      initialTriggerApp: state.triggerApp,
+                    )));
       }
     });
-    if (InterventionScreenCubit.instance.state is PushInterventionScreen) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => InterventionScreen()));
+    InterventionScreenState interventionScreenState =
+        InterventionScreenCubit.instance.state;
+    if (interventionScreenState is PushInterventionScreen) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => InterventionScreen(
+                  initialTriggerApp: interventionScreenState.triggerApp)));
     }
   }
 

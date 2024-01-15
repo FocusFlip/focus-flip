@@ -1,15 +1,8 @@
 class TriggerApp {
-  /// Name is final to avoid updates. Otherwise, a recreation of the
-  /// corresponding Siri Shortcut on iOS is required which will require multiple
-  /// additional user actions
   final String name;
 
-  // iOS properties
+  /// URL to open
+  final String url;
 
-  /// UUID is used as triggerShortcutPersistendIdentifier
-  String? triggerShortcutPersistentIdentifier;
-
-  String? launchingSiriShortcut;
-
-  TriggerApp({required this.name, this.triggerShortcutPersistentIdentifier});
+  TriggerApp({required this.name, required this.url});
 }
