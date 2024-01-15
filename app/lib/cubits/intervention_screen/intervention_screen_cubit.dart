@@ -1,13 +1,20 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/trigger_app.dart';
+import '../shortcuts/shortcuts_cubit.dart';
 
 part 'intervention_screen_state.dart';
 
 class InterventionScreenCubit extends Cubit<InterventionScreenState> {
-  static final InterventionScreenCubit instance = InterventionScreenCubit();
-  InterventionScreenCubit() : super(IntenventionScreenClosed());
+  static final InterventionScreenCubit instance =
+      InterventionScreenCubit(shortcutsCubit: ShortcutsCubit.instance);
+  InterventionScreenCubit({required this.shortcutsCubit})
+      : super(IntenventionScreenClosed());
+
+  final ShortcutsCubit shortcutsCubit;
 
   void openScreen(TriggerApp triggerApp) {
     print("[InterventionScreenCubit] Opening InterventionScreen");
@@ -40,5 +47,19 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
   void markAsClosed() {
     print("[InterventionScreenCubit] InterventionScreen has been closed");
     emit(IntenventionScreenClosed());
+  }
+
+  Future<void> launchTriggerApp(TriggerApp triggerApp) async {
+    print("[InterventionScreenCubit] Launching trigger app");
+
+    bool interventionDisabled =
+        await shortcutsCubit.disableIntervention(triggerApp);
+    print(
+        "[InterventionScreenCubit] Intervention disabled: $interventionDisabled");
+
+    Uri uri = Uri.parse(triggerApp.url);
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $uri');
+    }
   }
 }

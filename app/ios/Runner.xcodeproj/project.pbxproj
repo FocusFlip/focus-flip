@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		35A428252B55829500F30D32 /* InterventionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A428242B55829500F30D32 /* InterventionController.swift */; };
+		35A428262B55829500F30D32 /* InterventionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A428242B55829500F30D32 /* InterventionController.swift */; };
 		35FE33812B4EC153007B84DC /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35FE33802B4EC153007B84DC /* Intents.framework */; };
 		35FE33842B4EC153007B84DC /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FE33832B4EC153007B84DC /* IntentHandler.swift */; };
 		35FE33882B4EC153007B84DC /* Shortcuts.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 35FE337F2B4EC153007B84DC /* Shortcuts.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -61,6 +63,8 @@
 		095460AEE02A18A8A73A935D /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		35A428202B556B6600F30D32 /* Shortcuts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shortcuts.entitlements; sourceTree = "<group>"; };
+		35A428242B55829500F30D32 /* InterventionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterventionController.swift; sourceTree = "<group>"; };
 		35FE337A2B4EC12B007B84DC /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		35FE337F2B4EC153007B84DC /* Shortcuts.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Shortcuts.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		35FE33802B4EC153007B84DC /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
@@ -107,6 +111,7 @@
 		35FE33822B4EC153007B84DC /* Shortcuts */ = {
 			isa = PBXGroup;
 			children = (
+				35A428202B556B6600F30D32 /* Shortcuts.entitlements */,
 				35FE33832B4EC153007B84DC /* IntentHandler.swift */,
 				35FE33852B4EC153007B84DC /* Info.plist */,
 				35FE338E2B4EC17C007B84DC /* Intents.intentdefinition */,
@@ -162,6 +167,7 @@
 			children = (
 				35FE337A2B4EC12B007B84DC /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
+				35A428242B55829500F30D32 /* InterventionController.swift */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
 				97C147021CF9000F007C117D /* Info.plist */,
@@ -363,6 +369,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35A428262B55829500F30D32 /* InterventionController.swift in Sources */,
 				35FE33902B4EC17C007B84DC /* Intents.intentdefinition in Sources */,
 				35FE33842B4EC153007B84DC /* IntentHandler.swift in Sources */,
 				35FE33932B4ED577007B84DC /* TriggerAppOpenedIntentHandler.swift in Sources */,
@@ -376,6 +383,7 @@
 				35FE338F2B4EC17C007B84DC /* Intents.intentdefinition in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				35FE33922B4ED577007B84DC /* TriggerAppOpenedIntentHandler.swift in Sources */,
+				35A428252B55829500F30D32 /* InterventionController.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,6 +512,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Shortcuts/Shortcuts.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -544,6 +553,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Shortcuts/Shortcuts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QL32TQBL82;
@@ -580,6 +590,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Shortcuts/Shortcuts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QL32TQBL82;

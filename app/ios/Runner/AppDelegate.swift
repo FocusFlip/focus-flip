@@ -52,7 +52,26 @@ import Flutter
         AppDelegate.shortcutChannel = FlutterMethodChannel(name: "com.example.quezzy/shortcuts",
                                                   binaryMessenger: controller.binaryMessenger)
         
+        AppDelegate.shortcutChannel!.setMethodCallHandler(shortcutChanelMethodCallHandler)
+        
         print("[AppDelegate] shortcutChannel has been initialized")
     }
+    
+    func shortcutChanelMethodCallHandler(call: FlutterMethodCall, result: @escaping FlutterResult) -> Void {
+        print("[AppDelegate] Swift method invoked: " + call.method)
+        
+        if (call.method == "disableIntervention") {
+            let arguments = call.arguments as! NSDictionary
+            let appName = arguments["appName"] as! String;
+            
+            InterventionController().disableIntervention(appName: appName)
+            result(true);
+        }
+        else {
+            result(FlutterMethodNotImplemented)
+            return
+        }
+    }
+    
     
 }

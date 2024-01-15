@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 
+import '../../models/trigger_app.dart';
+
 part 'shortcuts_state.dart';
 
 class ShortcutsCubit extends Cubit<ShortcutsState> {
@@ -37,5 +39,18 @@ class ShortcutsCubit extends Cubit<ShortcutsState> {
   void _triggerAppOpened(String appName) {
     print("""[ShortcutsCubit] App "$appName" has been opened.""");
     emit(TriggerAppOpenedShortcut(appName));
+  }
+
+  /// Disables the intervention for the given [triggerApp]. This method is
+  /// called when the intervention has been finished and prevents the trigger app
+  /// from being interrupted again.
+  Future<bool> disableIntervention(TriggerApp triggerApp) async {
+    assert(!(state is ShortcutsNotInitialized));
+
+    print("[ShortcutsCubit] Disabling intervention for ${triggerApp.name}");
+    bool? result = await _methodChannel.invokeMethod<bool>(
+        "disableIntervention", {"appName": triggerApp.name});
+
+    return result ?? false;
   }
 }
