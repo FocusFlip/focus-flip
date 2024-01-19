@@ -1,4 +1,4 @@
-import '../models/trigger_app.dart';
+import '../models/app.dart';
 
 TriggerApp getTriggerAppByName(String name) {
   List<TriggerApp> availableApps = [

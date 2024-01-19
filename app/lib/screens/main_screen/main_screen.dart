@@ -9,7 +9,7 @@ import 'package:quezzy/utils/toasts.dart';
 import 'package:quezzy/utils/widget_assets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../cubits/intervention_screen/intervention_screen_cubit.dart';
-import '../../models/trigger_app.dart';
+import '../../models/app.dart';
 import '../../utils/constant.dart';
 import '../intervention_screen/intervention_screen.dart';
 import 'components/add_trigger_app_dialog.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../models/trigger_app.dart';
+import '../../models/app.dart';
 import '../shortcuts/shortcuts_cubit.dart';
 
 part 'intervention_screen_state.dart';

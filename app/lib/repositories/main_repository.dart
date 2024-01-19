@@ -1,4 +1,4 @@
-import 'package:quezzy/models/trigger_app.dart';
+import 'package:quezzy/models/app.dart';
 import 'package:quezzy/repositories/hive_box_repository.dart';
 
 /**

@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 
-import '../../models/trigger_app.dart';
+import '../../models/app.dart';
 
 part 'shortcuts_state.dart';
 

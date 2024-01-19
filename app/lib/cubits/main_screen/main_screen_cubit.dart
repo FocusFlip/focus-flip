@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_siri_suggestions/flutter_siri_suggestions.dart';
 import 'package:meta/meta.dart';
-import 'package:quezzy/models/trigger_app.dart';
+import 'package:quezzy/models/app.dart';
 import 'package:quezzy/repositories/main_repository.dart';
-import 'package:uuid_type/uuid_type.dart';
 
 part 'main_screen_state.dart';
 
