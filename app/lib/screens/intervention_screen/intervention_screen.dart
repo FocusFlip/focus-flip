@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
 import 'package:quezzy/models/app.dart';
+import 'package:quezzy/repositories/main_repository.dart';
 
 class InterventionScreen extends StatefulWidget {
   const InterventionScreen({super.key, required this.initialTriggerApp});
@@ -15,6 +16,7 @@ class InterventionScreen extends StatefulWidget {
 class _InterventionScreenState extends State<InterventionScreen> {
   InterventionScreenCubit _cubit = InterventionScreenCubit.instance;
   late TriggerApp _triggerApp;
+  late HealthyApp _healthyApp;
 
   void _cubitListener(InterventionScreenState state) {
     if (state is PopInterventionScreen) {
@@ -25,6 +27,7 @@ class _InterventionScreenState extends State<InterventionScreen> {
     }
     if (state is InterventionScreenOpened) {
       _triggerApp = state.triggerApp;
+      _healthyApp = state.healthyApp;
     }
   }
 
@@ -33,6 +36,7 @@ class _InterventionScreenState extends State<InterventionScreen> {
     super.initState();
 
     _triggerApp = widget.initialTriggerApp;
+    _healthyApp = MainRepository.instance.healthyApp;
     _cubit.markAsOpened(widget.initialTriggerApp);
     _cubit.stream.listen(_cubitListener);
   }
@@ -64,16 +68,9 @@ class _InterventionScreenState extends State<InterventionScreen> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    _cubit.launchTriggerApp(_triggerApp);
+                    _cubit.launchHealthyApp(_healthyApp, _triggerApp);
                   },
-                  child: const Text("Open the app"),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // TODO: implement
-                  },
-                  child: const Text("Schedule opening the app"),
+                  child: Text("Open " + _healthyApp.name),
                 ),
               ],
             ));

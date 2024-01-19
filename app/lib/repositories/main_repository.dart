@@ -30,6 +30,14 @@ class MainRepository extends HiveBoxRepository {
   void clearTriggerApps() {
     _triggerApps.clear();
   }
+
+  // TODO: store in HiveDB
+  HealthyApp get healthyApp {
+    return HealthyApp(
+        name: "Anki",
+        url: "anki://",
+        requiredUsageDuration: Duration(seconds: 5));
+  }
 }
 
 class DuplicateException implements Exception {

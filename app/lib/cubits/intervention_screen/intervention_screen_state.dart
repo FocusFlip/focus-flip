@@ -17,6 +17,10 @@ final class InterventionScreenOpened extends InterventionScreenState {
   /// Milliseconds since epoch
   final int timestamp;
   final TriggerApp triggerApp;
+  final HealthyApp healthyApp;
 
-  InterventionScreenOpened({required this.timestamp, required this.triggerApp});
+  InterventionScreenOpened(
+      {required this.timestamp,
+      required this.triggerApp,
+      required this.healthyApp});
 }
