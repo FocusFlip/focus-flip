@@ -7,6 +7,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
 import 'package:quezzy/cubits/shortcuts/shortcuts_cubit.dart';
 import 'package:quezzy/repositories/main_repository.dart';
+import 'package:quezzy/utils/local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import 'screens/splash_screen/splash_screen.dart';
 
@@ -25,6 +27,10 @@ Future<void> main() async {
   if (Platform.isIOS) {
     ShortcutsCubit.instance.init();
   }
+
+  // Initialize local scheduled notifications
+  tz.initializeTimeZones();
+  initFlutterLocalNotificationsPlugin();
 
   runApp(const MyApp());
 }
