@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -50,6 +51,22 @@ class ShortcutsCubit extends Cubit<ShortcutsState> {
     print("[ShortcutsCubit] Disabling intervention for ${triggerApp.name}");
     bool? result = await _methodChannel.invokeMethod<bool>(
         "disableIntervention", {"appName": triggerApp.name});
+
+    return result ?? false;
+  }
+
+  /// Marks the healthy app as launched. The iOS platform remembers the starting
+  /// time of the healthy app and uses it to calculate the time the user has
+  /// spent in the healthy app.
+  Future<bool> markHealthyAppInterventionAsStarted(
+      double requiredInterventionTimeInSeconds) async {
+    assert(!(state is ShortcutsNotInitialized));
+
+    print("[ShortcutsCubit] Marking healthy app as launched");
+    bool? result = await _methodChannel.invokeMethod<bool>(
+        "markHealthyAppInterventionAsStarted", {
+      "requiredInterventionTimeInSeconds": requiredInterventionTimeInSeconds
+    });
 
     return result ?? false;
   }

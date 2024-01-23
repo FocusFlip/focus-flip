@@ -72,6 +72,13 @@ import Flutter
             InterventionController().disableIntervention(appName: appName)
             result(true);
         }
+        else if (call.method == "markHealthyAppInterventionAsStarted"){
+            let arguments = call.arguments as! NSDictionary
+            let requiredInterventionTimeInSeconds = arguments["requiredInterventionTimeInSeconds"] as! Double;
+            
+            InterventionController().updateHealthyAppInterventionState(stateType: .started, requiredInterventionTimeInSeconds: requiredInterventionTimeInSeconds)
+            result(true)
+        }
         else {
             result(FlutterMethodNotImplemented)
             return
