@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
+import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
 
 import '../../models/app.dart';
 
@@ -72,5 +73,25 @@ class ShortcutsCubit extends Cubit<ShortcutsState> {
     });
 
     return result ?? false;
+  }
+
+  Future<HealthyAppInterventionState> getHealthyAppInterventionState() async {
+    assert(!(state is ShortcutsNotInitialized));
+
+    print("[ShortcutsCubit] Getting healthy app intervention state");
+    String? result = await _methodChannel
+        .invokeMethod<String>("getHealthyAppInterventionState");
+
+    if (result == "started") {
+      return HealthyAppInterventionState.started;
+    } else if (result == "interrupted") {
+      return HealthyAppInterventionState.interrupted;
+    } else if (result == "reward") {
+      return HealthyAppInterventionState.reward;
+    } else if (result == "inactive") {
+      return HealthyAppInterventionState.inactive;
+    } else {
+      throw Exception("Unknown healthy app intervention state: $result");
+    }
   }
 }

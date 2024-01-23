@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
+import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
 import 'package:quezzy/cubits/shortcuts/shortcuts_cubit.dart';
 import 'package:quezzy/repositories/main_repository.dart';
 import 'package:quezzy/utils/local_notifications.dart';
@@ -51,6 +52,9 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState appLifecycleState) {
+    // TODO: refactor this method. Probably, it should be moved to a separate
+    //  class and separated into several methods.
+
     if (appLifecycleState == AppLifecycleState.resumed) {
       print("[MyApp] The app is resumed");
 
@@ -72,7 +76,16 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       // TODO: write test if this method is called after method call handler
       /// in shortcuts_cubit.dart. Manual test in debug mode shows it on IOS,
       /// but it's not reliable.
+
+      _logHealthyAppInterventionState();
     }
+  }
+
+  Future<void> _logHealthyAppInterventionState() async {
+    HealthyAppInterventionState healthyAppInterventionState =
+        await ShortcutsCubit.instance.getHealthyAppInterventionState();
+    print("[MyApp] Healthy app intervention state (on iOS): "
+        "$healthyAppInterventionState");
   }
 
   @override

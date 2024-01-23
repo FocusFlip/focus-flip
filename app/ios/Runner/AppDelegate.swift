@@ -79,6 +79,11 @@ import Flutter
             InterventionController().updateHealthyAppInterventionState(stateType: .started, requiredInterventionTimeInSeconds: requiredInterventionTimeInSeconds)
             result(true)
         }
+        else if (call.method == "getHealthyAppInterventionState"){
+            let state : HealthyAppInterventionState = InterventionController().getHealthyAppInterventionState()
+            let stateName : String = state.type.rawValue
+            result(stateName)
+        }
         else {
             result(FlutterMethodNotImplemented)
             return
