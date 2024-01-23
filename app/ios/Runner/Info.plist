@@ -30,8 +30,9 @@
 	<string>microphone</string>
 	<key>NSUserActivityTypes</key>
 	<array>
-		<string>TriggerAppOpenedIntent</string>
+		<string>HealthyAppClosedIntent</string>
 		<string>TriggerAppOpened</string>
+		<string>TriggerAppOpenedIntent</string>
 	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>

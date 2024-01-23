@@ -12,6 +12,7 @@
 			<array/>
 			<key>IntentsSupported</key>
 			<array>
+				<string>HealthyAppClosedIntent</string>
 				<string>TriggerAppOpenedIntent</string>
 			</array>
 		</dict>

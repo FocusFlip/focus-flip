@@ -117,6 +117,16 @@ class InterventionController {
         }
     }
     
+    func isRequiredTimeSatisfied(state: HealthyAppInterventionStarted) -> Bool {
+        let currentTimestamp : Double = Date().timeIntervalSinceReferenceDate
+        if(currentTimestamp > state.timestamp + state.requiredTimeInSeconds){
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    
     
 }
 
