@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
 
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -28,6 +29,10 @@ Future<dynamic> onDidReceiveLocalNotification(
 @pragma('vm:entry-point')
 Future<dynamic> onSelectNotification(String? payload) {
   print("[main] onSelectNotification: $payload");
+
+  if (payload == "healtyAppTimerFinished") {
+    InterventionScreenCubit.instance.waitForInterventionResult();
+  }
 
   return Future.value();
 }

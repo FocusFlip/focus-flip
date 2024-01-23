@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
+import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
 import 'package:quezzy/repositories/main_repository.dart';
 import 'package:timezone/timezone.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,6 +24,9 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
   final ShortcutsCubit shortcutsCubit;
   final MainRepository mainRepository;
 
+  /// In milliseconds
+  static const double _waitingInterventionResponseTimeout = 10000;
+
   void openScreen(TriggerApp triggerApp) {
     print("[InterventionScreenCubit] Opening InterventionScreen");
     if (state is IntenventionScreenClosed) {
@@ -30,7 +34,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       emit(PushInterventionScreen(triggerApp: triggerApp));
     } else if (state is InterventionScreenOpened) {
       print("[InterventionScreenCubit] Refreshing InterventionScreen");
-      emit(InterventionScreenOpened(
+      emit(BeginIntervention(
           triggerApp: triggerApp,
           healthyApp: mainRepository.healthyApp,
           timestamp: DateTime.now().millisecondsSinceEpoch));
@@ -47,7 +51,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
 
   void markAsOpened(TriggerApp triggerApp) {
     print("[InterventionScreenCubit] InterventionScreen has been opened");
-    emit(InterventionScreenOpened(
+    emit(BeginIntervention(
         triggerApp: triggerApp,
         healthyApp: mainRepository.healthyApp,
         timestamp: DateTime.now().millisecondsSinceEpoch));
@@ -72,8 +76,14 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     }
   }
 
-  Future<void> launchHealthyApp(
+  Future<void> launchHealthyAppAsIntervention(
       HealthyApp healthyApp, TriggerApp rewardingTriggerApp) async {
+    if (!(state is BeginIntervention) && !(state is InterventionInterrupted)) {
+      throw Exception(
+          "InterventionScreenCubit.launchHealthyApp() can be called only when"
+          " the intervention screen has been opened");
+    }
+
     print("[InterventionScreenCubit] Launching healthy app");
 
     bool healthyAppMarkedAsLaunched = await shortcutsCubit
@@ -84,6 +94,15 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     _scheduleRewardNotification(
         rewardingTriggerApp, healthyApp.requiredUsageDuration);
 
+    emit(InterventionInProgress(
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        triggerApp: rewardingTriggerApp,
+        healthyApp: healthyApp));
+
+    await launchHealthyApp(healthyApp);
+  }
+
+  Future<void> launchHealthyApp(HealthyApp healthyApp) async {
     Uri uri = Uri.parse(healthyApp.url);
     if (!await launchUrl(uri)) {
       throw Exception('Could not launch $uri');
@@ -109,5 +128,75 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
             UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         payload: LocalNotificationPayloads.healtyAppTimerFinished);
+  }
+
+  Future<void> waitForInterventionResult() async {
+    if (!(state is InterventionInProgress)) {
+      throw Exception(
+          "InterventionScreenCubit.waitForReward() can be called only when"
+          " the intervention has been started or when already waiting for"
+          " the intervention result");
+    }
+
+    WaitingForInterventionResult newState = WaitingForInterventionResult(
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        triggerApp: (state as InterventionInProgress).triggerApp,
+        healthyApp: (state as InterventionInProgress).healthyApp);
+    emit(newState);
+
+    await Future.doWhile(_checkIntervantionResult);
+  }
+
+  Future<bool> _checkIntervantionResult() async {
+    if (!(state is WaitingForInterventionResult)) {
+      return false;
+    }
+
+    // Check for timeout
+    bool timeoutExceeded = DateTime.now().millisecondsSinceEpoch -
+            (state as WaitingForInterventionResult).timestamp >
+        _waitingInterventionResponseTimeout;
+
+    if (timeoutExceeded) {
+      emit(InterventionResultTimeout(
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        triggerApp: (state as WaitingForInterventionResult).triggerApp,
+        healthyApp: (state as WaitingForInterventionResult).healthyApp,
+      ));
+    }
+
+    // Check HealthyAppInterventionState
+    HealthyAppInterventionState healthyAppInterventionState =
+        await shortcutsCubit.getHealthyAppInterventionState();
+    print("[InterventionScreenCubit] Healthy app intervention state: "
+        "$healthyAppInterventionState");
+
+    if (healthyAppInterventionState == HealthyAppInterventionState.reward) {
+      emit(InterventionSuccessful(
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        triggerApp: (state as WaitingForInterventionResult).triggerApp,
+        healthyApp: (state as WaitingForInterventionResult).healthyApp,
+      ));
+    } else if (healthyAppInterventionState ==
+        HealthyAppInterventionState.interrupted) {
+      emit(InterventionInterrupted(
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        triggerApp: (state as WaitingForInterventionResult).triggerApp,
+        healthyApp: (state as WaitingForInterventionResult).healthyApp,
+      ));
+    } else if (healthyAppInterventionState ==
+        HealthyAppInterventionState.inactive) {
+      emit(InterventionResultTimeout(
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        triggerApp: (state as WaitingForInterventionResult).triggerApp,
+        healthyApp: (state as WaitingForInterventionResult).healthyApp,
+      ));
+    } else if (healthyAppInterventionState ==
+        HealthyAppInterventionState.started) {
+      await Future.delayed(const Duration(milliseconds: 250));
+      return true;
+    }
+
+    return false;
   }
 }

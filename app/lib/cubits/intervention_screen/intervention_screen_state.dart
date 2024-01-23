@@ -13,7 +13,7 @@ final class PopInterventionScreen extends InterventionScreenState {}
 
 final class IntenventionScreenClosed extends InterventionScreenState {}
 
-final class InterventionScreenOpened extends InterventionScreenState {
+abstract class InterventionScreenOpened extends InterventionScreenState {
   /// Milliseconds since epoch
   final int timestamp;
   final TriggerApp triggerApp;
@@ -23,4 +23,81 @@ final class InterventionScreenOpened extends InterventionScreenState {
       {required this.timestamp,
       required this.triggerApp,
       required this.healthyApp});
+}
+
+final class BeginIntervention extends InterventionScreenOpened {
+  BeginIntervention(
+      {required int timestamp,
+      required TriggerApp triggerApp,
+      required HealthyApp healthyApp})
+      : super(
+            timestamp: timestamp,
+            triggerApp: triggerApp,
+            healthyApp: healthyApp);
+}
+
+final class InterventionInProgress extends InterventionScreenOpened {
+  InterventionInProgress(
+      {required int timestamp,
+      required TriggerApp triggerApp,
+      required HealthyApp healthyApp})
+      : super(
+            timestamp: timestamp,
+            triggerApp: triggerApp,
+            healthyApp: healthyApp);
+}
+
+final class WaitingForInterventionResult extends InterventionScreenOpened {
+  WaitingForInterventionResult(
+      {required int timestamp,
+      required TriggerApp triggerApp,
+      required HealthyApp healthyApp})
+      : super(
+            timestamp: timestamp,
+            triggerApp: triggerApp,
+            healthyApp: healthyApp);
+}
+
+abstract final class EndIntervention extends InterventionScreenOpened {
+  EndIntervention({
+    required int timestamp,
+    required TriggerApp triggerApp,
+    required HealthyApp healthyApp,
+  }) : super(
+            timestamp: timestamp,
+            triggerApp: triggerApp,
+            healthyApp: healthyApp);
+}
+
+final class InterventionSuccessful extends EndIntervention {
+  InterventionSuccessful(
+      {required int timestamp,
+      required TriggerApp triggerApp,
+      required HealthyApp healthyApp})
+      : super(
+            timestamp: timestamp,
+            triggerApp: triggerApp,
+            healthyApp: healthyApp);
+}
+
+final class InterventionInterrupted extends EndIntervention {
+  InterventionInterrupted(
+      {required int timestamp,
+      required TriggerApp triggerApp,
+      required HealthyApp healthyApp})
+      : super(
+            timestamp: timestamp,
+            triggerApp: triggerApp,
+            healthyApp: healthyApp);
+}
+
+final class InterventionResultTimeout extends EndIntervention {
+  InterventionResultTimeout(
+      {required int timestamp,
+      required TriggerApp triggerApp,
+      required HealthyApp healthyApp})
+      : super(
+            timestamp: timestamp,
+            triggerApp: triggerApp,
+            healthyApp: healthyApp);
 }

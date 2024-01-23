@@ -60,7 +60,8 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
       InterventionScreenState state = InterventionScreenCubit.instance.state;
 
-      if (state is InterventionScreenOpened) {
+      if (state is InterventionScreenOpened &&
+          !(state is WaitingForInterventionResult)) {
         int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
         int tolerableTimeFrom = currentTimestamp - 1000; // last second
 
