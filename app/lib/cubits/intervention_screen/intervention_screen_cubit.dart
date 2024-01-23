@@ -76,8 +76,8 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       HealthyApp healthyApp, TriggerApp rewardingTriggerApp) async {
     print("[InterventionScreenCubit] Launching healthy app");
 
-    bool healthyAppMarkedAsLaunched =
-        await shortcutsCubit.markHealthyAppInterventionAsStarted(10);
+    bool healthyAppMarkedAsLaunched = await shortcutsCubit
+        .markHealthyAppInterventionAsStarted(healthyApp.requiredUsageDuration);
     print(
         "[InterventionScreenCubit] Healthy app marked as launched: $healthyAppMarkedAsLaunched");
 

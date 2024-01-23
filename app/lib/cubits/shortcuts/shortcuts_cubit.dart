@@ -59,8 +59,11 @@ class ShortcutsCubit extends Cubit<ShortcutsState> {
   /// time of the healthy app and uses it to calculate the time the user has
   /// spent in the healthy app.
   Future<bool> markHealthyAppInterventionAsStarted(
-      double requiredInterventionTimeInSeconds) async {
+      Duration requiredInterventionTime) async {
     assert(!(state is ShortcutsNotInitialized));
+
+    double requiredInterventionTimeInSeconds =
+        requiredInterventionTime.inSeconds.toDouble();
 
     print("[ShortcutsCubit] Marking healthy app as launched");
     bool? result = await _methodChannel.invokeMethod<bool>(

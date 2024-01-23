@@ -36,7 +36,7 @@ class MainRepository extends HiveBoxRepository {
     return HealthyApp(
         name: "Anki",
         url: "anki://",
-        requiredUsageDuration: Duration(seconds: 5));
+        requiredUsageDuration: Duration(seconds: 20));
   }
 }
 
