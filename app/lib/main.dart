@@ -83,10 +83,16 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> _logHealthyAppInterventionState() async {
-    HealthyAppInterventionState healthyAppInterventionState =
-        await ShortcutsCubit.instance.getHealthyAppInterventionState();
-    print("[MyApp] Healthy app intervention state (on iOS): "
-        "$healthyAppInterventionState");
+    if (Platform.isIOS) {
+      HealthyAppInterventionState healthyAppInterventionState =
+          await ShortcutsCubit.instance.getHealthyAppInterventionState();
+      print("[MyApp] Healthy app intervention state (on iOS): "
+          "$healthyAppInterventionState");
+    }
+    if (Platform.isAndroid) {
+      print("[MyApp] Healthy app intervention state (on Android): "
+          "not implemented yet");
+    }
   }
 
   @override

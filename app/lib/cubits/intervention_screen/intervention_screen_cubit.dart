@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -65,10 +67,12 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
   Future<void> launchTriggerApp(TriggerApp triggerApp) async {
     print("[InterventionScreenCubit] Launching trigger app");
 
-    bool interventionDisabled =
-        await shortcutsCubit.disableIntervention(triggerApp);
-    print(
-        "[InterventionScreenCubit] Intervention disabled: $interventionDisabled");
+    if (Platform.isIOS) {
+      bool interventionDisabled =
+          await shortcutsCubit.disableIntervention(triggerApp);
+      print(
+          "[InterventionScreenCubit] Intervention disabled: $interventionDisabled");
+    }
 
     Uri uri = Uri.parse(triggerApp.url);
     if (!await launchUrl(uri)) {
@@ -86,10 +90,14 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
 
     print("[InterventionScreenCubit] Launching healthy app");
 
-    bool healthyAppMarkedAsLaunched = await shortcutsCubit
-        .markHealthyAppInterventionAsStarted(healthyApp.requiredUsageDuration);
-    print(
-        "[InterventionScreenCubit] Healthy app marked as launched: $healthyAppMarkedAsLaunched");
+    if (Platform.isIOS) {
+      // TODO: can probably be refactored after the android implementation
+      bool healthyAppMarkedAsLaunched =
+          await shortcutsCubit.markHealthyAppInterventionAsStarted(
+              healthyApp.requiredUsageDuration);
+      print(
+          "[InterventionScreenCubit] Healthy app marked as launched: $healthyAppMarkedAsLaunched");
+    }
 
     _scheduleRewardNotification(
         rewardingTriggerApp, healthyApp.requiredUsageDuration);
@@ -166,8 +174,15 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     }
 
     // Check HealthyAppInterventionState
-    HealthyAppInterventionState healthyAppInterventionState =
-        await shortcutsCubit.getHealthyAppInterventionState();
+    late HealthyAppInterventionState healthyAppInterventionState;
+    if (Platform.isIOS) {
+      healthyAppInterventionState =
+          await shortcutsCubit.getHealthyAppInterventionState();
+    } else if (Platform.isAndroid) {
+      throw Exception("Not implemented yet");
+    } else {
+      throw Exception("Unknown platform");
+    }
     print("[InterventionScreenCubit] Healthy app intervention state: "
         "$healthyAppInterventionState");
 
