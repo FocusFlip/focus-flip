@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_siri_suggestions/flutter_siri_suggestions.dart';
 import 'package:meta/meta.dart';
 import 'package:quezzy/models/app.dart';
 import 'package:quezzy/repositories/main_repository.dart';
@@ -29,36 +28,10 @@ class MainScreenCubit extends Cubit<MainScreenState> {
       return;
     }
 
-    String activityTitle = "Trigger App Opened: " + app.name;
-    String activityKey = app.name.replaceAll(" ", "") + "Triggered";
-    FlutterSiriSuggestions.instance
-        .registerActivity(FlutterSiriActivity(
-      activityTitle,
-      activityKey,
-      isEligibleForSearch: false,
-      isEligibleForPrediction: true,
-      contentDescription: "Opens FocusFlip",
-      suggestedInvocationPhrase:
-          "Trigger app has been opened", /*persistentIdentifier: app.triggerShortcutPersistentIdentifier*/
-    ))
-        .then((value) {
-      print("Siri activity has been created successfully");
-    }).onError((error, stackTrace) {
-      print("Error has occured when a Siri suggestion was been creating");
-    });
-
     emit(TriggerAppAdded(triggerApps: state.triggerApps.toList()..add(app)));
   }
 
   void clearTriggerApps() {
-    FlutterSiriSuggestions.instance
-        .deleteAllSavedUserActivities()
-        .then((value) {
-      print("Siri Shortcuts have been removed");
-    }).onError((error, stackTrace) {
-      print("Error has occured when trying to remove all the Siri Shortcuts");
-    });
-
     mainRepository.clearTriggerApps();
     emit(TriggerAppsCleared(triggerApps: []));
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
+//import 'package:audioplayers/audioplayers.dart';
 //import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 
 import 'package:flutter/material.dart';
@@ -57,7 +57,7 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
   Duration position = Duration.zero;
 
   final recorder = FlutterSoundRecorder();
-  final audioPlayer = AudioPlayer();
+  //final audioPlayer = AudioPlayer();
   File fileAudio = File('');
 
   late Timer _timer;
@@ -218,7 +218,7 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
     // if (result != null) {
     //   final file = File(result.files.single.path!);
     // }
-    await audioPlayer.play(file);
+    //await audioPlayer.play(file);
   }
 
   Future initRecorder() async {
@@ -1062,7 +1062,7 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
                                                                 GestureDetector(
                                                                   onTap:
                                                                       () async {
-                                                                    if (isPlaying) {
+                                                                    /*if (isPlaying) {
                                                                       await audioPlayer
                                                                           .pause();
                                                                     } else {
@@ -1075,7 +1075,7 @@ class _LiveQuizScreenState extends State<LiveQuizScreen> {
                                                                               file);
                                                                       // await audioPlayer
                                                                       //     .resume();
-                                                                    }
+                                                                    }*/
                                                                   },
                                                                   child:
                                                                       const Icon(
