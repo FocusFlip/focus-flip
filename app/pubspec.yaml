@@ -53,6 +53,7 @@ dependencies:
   #audioplayers: ^0.20.1
   fl_chart: ^0.35.0
   line_chart: ^1.1.11
+  flutter_background_service: ^5.0.5
   
   #chips_choice_null_safety: ^2.0.6
   flutter_keyboard_visibility: 5.0.2

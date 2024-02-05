@@ -1,11 +1,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.queezy">
 
+    <!-- BEGIN: flutter_background_service -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- END: flutter_backgrond_service-->
+
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
    <application
         android:label="quezzy"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+        <service android:name="appsTracking" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="The app tracks the usage of the other apps to trigger an intervention specified by the user"/>
+        </service>
+
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>
