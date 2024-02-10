@@ -13,7 +13,12 @@ class MainRepository extends HiveBoxRepository {
   MainRepository(hiveBoxName) : super(hiveBoxName);
 
   // TODO: store in HiveDB
-  final List<TriggerApp> _triggerApps = [];
+  final List<TriggerApp> _triggerApps = [
+    TriggerApp(
+        name: "YouTube",
+        url: "youtube://",
+        packageName: "com.google.android.youtube"),
+  ];
 
   List<TriggerApp> get triggerApps {
     return _triggerApps.toList();

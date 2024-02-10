@@ -7,7 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 late final FlutterBackgroundService backgroundTrackingService;
 
-Future<void> initBackgroundAppTracking(
+Future<void> initBackgroundAppTrackingService(
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
   assert(Platform.isAndroid);
 

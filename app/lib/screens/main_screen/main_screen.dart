@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quezzy/cubits/main_screen/main_screen_cubit.dart';
@@ -282,7 +285,65 @@ class _MainScreenState extends State<MainScreen> {
                                 color: ColorsHelpers.grey2),
                           ),
                         ),
-                      )
+                      ),
+                      if (Platform.isAndroid) ...[
+                        // BACKGROUND APP USAGE TRACKING
+                        Container(
+                          alignment: Alignment.topLeft,
+                          margin:
+                              EdgeInsets.only(top: ScreenUtil().setHeight(24)),
+                          child: widgetText(
+                            'BACKGROUND APP USAGE TRACKING',
+                            color: ColorsHelpers.neutralOpacity0_5,
+                            fontSize: ScreenUtil().setSp(14),
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: ScreenUtil().setSp(1.2),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          margin:
+                              EdgeInsets.only(top: ScreenUtil().setHeight(10)),
+                          child: widgetText(
+                              'Only Android requires this setting. It allows FocusFlip to track your app usage in the background and to intervene when you open a trigger app.',
+                              fontSize: ScreenUtil().setSp(16),
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: ScreenUtil().setHeight(16),
+                              bottom: ScreenUtil().setHeight(56)),
+                          child: GestureDetector(
+                            onTap: () {
+                              _interventionScreenCubit
+                                  .startBackgroundAppUsageTracking();
+                            },
+                            child: widgetText(
+                              'Enable background app usage tracking',
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w500,
+                              fontSize: ScreenUtil().setSp(16),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(
+                              bottom: ScreenUtil().setHeight(56)),
+                          child: GestureDetector(
+                            onTap: () async {
+                              await FlutterBackground
+                                  .disableBackgroundExecution();
+                              print("Background execution disabled");
+                            },
+                            child: widgetText(
+                              'Disable background app usage tracking',
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w500,
+                              fontSize: ScreenUtil().setSp(16),
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),

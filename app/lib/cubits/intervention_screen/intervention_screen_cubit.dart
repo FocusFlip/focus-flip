@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
 import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
+import 'package:quezzy/models/event_type.dart';
+import 'package:quezzy/models/usage_event.dart';
+import 'package:quezzy/repositories/app_usage_repository.dart';
 import 'package:quezzy/repositories/main_repository.dart';
 import 'package:timezone/timezone.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/app.dart';
+import '../../utils/background_app_usage_tracking.dart';
 import '../../utils/local_notifications.dart';
 import '../shortcuts/shortcuts_cubit.dart';
 
@@ -18,16 +22,55 @@ part 'intervention_screen_state.dart';
 class InterventionScreenCubit extends Cubit<InterventionScreenState> {
   static final InterventionScreenCubit instance = InterventionScreenCubit(
       shortcutsCubit: ShortcutsCubit.instance,
-      mainRepository: MainRepository.instance);
+      mainRepository: MainRepository.instance,
+      appUsageRepository: AppUsageRepository.instance);
   InterventionScreenCubit(
-      {required this.shortcutsCubit, required this.mainRepository})
+      {required this.shortcutsCubit,
+      required this.mainRepository,
+      required this.appUsageRepository})
       : super(IntenventionScreenClosed());
 
   final ShortcutsCubit shortcutsCubit;
   final MainRepository mainRepository;
+  final AppUsageRepository appUsageRepository;
 
   /// In milliseconds
   static const double _waitingInterventionResponseTimeout = 10000;
+
+  Future<void> startBackgroundAppUsageTracking() async {
+    assert(Platform.isAndroid);
+
+    AppUsageRepository appUsageRepository = AppUsageRepository.instance;
+    if (!await appUsageRepository.checkUsageStatsPermission()) {
+      print("Permission for usage stats not granted");
+      appUsageRepository.requestUsageStatsPermission();
+      return;
+    }
+
+    var backgroundAppTracking = BackgroundAppUsageTracking(appUsageRepository);
+    await backgroundAppTracking.init();
+
+    backgroundAppTracking.usageEvents.listen(_appUsageEventListener);
+  }
+
+  void _appUsageEventListener(UsageEvent event) {
+    if (mainRepository.healthyApp.packageName == event.packageName) {
+      print(
+          "[MainScreenCubit] Detected usage event for healthy app: ${mainRepository.healthyApp.name}");
+      // TODO: handle healthy app usage event
+    } else {
+      var triggerAppCandidates = mainRepository.triggerApps
+          .where((element) => element.packageName == event.packageName);
+      TriggerApp? triggerApp = triggerAppCandidates.firstOrNull;
+
+      if (triggerApp != null && event.eventType == EventType.ACTIVITY_RESUMED) {
+        print(
+            "[MainScreenCubit] Detected usage event for trigger app: ${triggerApp.name}");
+        openScreen(triggerApp);
+        // TODO: bring the intervention screen to the front
+      }
+    }
+  }
 
   void openScreen(TriggerApp triggerApp) {
     print("[InterventionScreenCubit] Opening InterventionScreen");

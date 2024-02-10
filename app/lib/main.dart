@@ -35,7 +35,7 @@ Future<void> main() async {
   initFlutterLocalNotificationsPlugin();
 
   if (Platform.isAndroid) {
-    initBackgroundAppTracking(flutterLocalNotificationsPlugin);
+    //initBackgroundAppTrackingService(flutterLocalNotificationsPlugin);
   }
 
   runApp(const MyApp());
