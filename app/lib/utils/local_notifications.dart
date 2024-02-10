@@ -11,10 +11,15 @@ void initFlutterLocalNotificationsPlugin() {
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   InitializationSettings initializationSettings = InitializationSettings(
     iOS: IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification),
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    ),
+    android: AndroidInitializationSettings('mipmap/ic_launcher'),
   );
-  flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: onSelectNotification);
+  flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onSelectNotification: onSelectNotification,
+  );
+
   // TODO: test scenario when the notification permission is not granted
 }
 
