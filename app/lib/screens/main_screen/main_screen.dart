@@ -22,6 +22,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final MainScreenCubit _cubit = MainScreenCubit(MainRepository.instance);
+  final InterventionScreenCubit _interventionScreenCubit =
+      InterventionScreenCubit.instance;
 
   void _addTriggerApp(BuildContext context) async {
     return showDialog<void>(
@@ -51,17 +53,17 @@ class _MainScreenState extends State<MainScreen> {
       print("[MainScreen] ShortuctsCubit state updated: $state");
       if (state is TriggerAppOpenedShortcut) {
         TriggerApp triggerApp = getTriggerAppByName(state.appName);
-        InterventionScreenCubit.instance.openScreen(triggerApp);
+        _interventionScreenCubit.openScreen(triggerApp);
       }
     });
     if (ShortcutsCubit.instance.state is TriggerAppOpenedShortcut) {
       TriggerAppOpenedShortcut state =
           ShortcutsCubit.instance.state as TriggerAppOpenedShortcut;
       TriggerApp triggerApp = getTriggerAppByName(state.appName);
-      InterventionScreenCubit.instance.openScreen(triggerApp);
+      _interventionScreenCubit.openScreen(triggerApp);
     }
 
-    InterventionScreenCubit.instance.stream.listen((state) {
+    _interventionScreenCubit.stream.listen((state) {
       print("[MainScreen] InterventionScreenCubit state updated: $state");
       if (state is PushInterventionScreen) {
         Navigator.push(
@@ -73,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
       }
     });
     InterventionScreenState interventionScreenState =
-        InterventionScreenCubit.instance.state;
+        _interventionScreenCubit.state;
     if (interventionScreenState is PushInterventionScreen) {
       Navigator.push(
           context,
