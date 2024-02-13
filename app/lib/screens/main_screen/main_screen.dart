@@ -52,39 +52,42 @@ class _MainScreenState extends State<MainScreen> {
     // TODO: implement initState
     super.initState();
 
-    ShortcutsCubit.instance.stream.listen((state) {
-      print("[MainScreen] ShortuctsCubit state updated: $state");
-      if (state is TriggerAppOpenedShortcut) {
+    if (Platform.isIOS) {
+      ShortcutsCubit.instance.stream.listen((state) {
+        print("[MainScreen] ShortuctsCubit state updated: $state");
+        if (state is TriggerAppOpenedShortcut) {
+          TriggerApp triggerApp = getTriggerAppByName(state.appName);
+          _interventionScreenCubit.openScreen(triggerApp);
+        }
+      });
+      if (ShortcutsCubit.instance.state is TriggerAppOpenedShortcut) {
+        TriggerAppOpenedShortcut state =
+            ShortcutsCubit.instance.state as TriggerAppOpenedShortcut;
         TriggerApp triggerApp = getTriggerAppByName(state.appName);
         _interventionScreenCubit.openScreen(triggerApp);
       }
-    });
-    if (ShortcutsCubit.instance.state is TriggerAppOpenedShortcut) {
-      TriggerAppOpenedShortcut state =
-          ShortcutsCubit.instance.state as TriggerAppOpenedShortcut;
-      TriggerApp triggerApp = getTriggerAppByName(state.appName);
-      _interventionScreenCubit.openScreen(triggerApp);
-    }
 
-    _interventionScreenCubit.stream.listen((state) {
-      print("[MainScreen] InterventionScreenCubit state updated: $state");
-      if (state is PushInterventionScreen) {
+      _interventionScreenCubit.stream.listen((state) {
+        print("[MainScreen] InterventionScreenCubit state updated: $state");
+
+        if (state is PushInterventionScreen) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => InterventionScreen(
+                        initialTriggerApp: state.triggerApp,
+                      )));
+        }
+      });
+      InterventionScreenState interventionScreenState =
+          _interventionScreenCubit.state;
+      if (interventionScreenState is PushInterventionScreen) {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => InterventionScreen(
-                      initialTriggerApp: state.triggerApp,
-                    )));
+                    initialTriggerApp: interventionScreenState.triggerApp)));
       }
-    });
-    InterventionScreenState interventionScreenState =
-        _interventionScreenCubit.state;
-    if (interventionScreenState is PushInterventionScreen) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => InterventionScreen(
-                  initialTriggerApp: interventionScreenState.triggerApp)));
     }
   }
 
