@@ -59,18 +59,26 @@ class _InterventionScreenState extends State<InterventionScreen> {
           builder: (context, state) {
             if (state is BeginIntervention) {
               return BeginInterventionScreen(
-                  triggerApp: _triggerApp,
-                  healthyApp: _healthyApp,
-                  cubit: _cubit);
+                triggerApp: _triggerApp,
+                healthyApp: _healthyApp,
+                startHealthyAppIntervention: () => _cubit
+                    .launchHealthyAppAsIntervention(_healthyApp, _triggerApp),
+              );
             } else if (state is InterventionInProgress) {
               return InterventionInProgressScreen(healthyApp: _healthyApp);
             } else if (state is WaitingForInterventionResult) {
               return WaitingForInterventionResultScreen();
             } else if (state is InterventionSuccessful) {
               return InterventionSuccessfulScreen(
-                  triggerApp: _triggerApp,
-                  healthyApp: _healthyApp,
-                  cubit: _cubit);
+                triggerApp: _triggerApp,
+                healthyApp: _healthyApp,
+                ignoreRewardAndLaunchHealthyApp: () {
+                  _cubit.launchApp(_healthyApp);
+                },
+                launchTriggerApp: () {
+                  _cubit.launchTriggerApp(_triggerApp);
+                },
+              );
             } else if (state is InterventionInterrupted) {
               return InterventionInterruptedScreen(
                   triggerApp: _triggerApp,
@@ -90,13 +98,13 @@ class _InterventionScreenState extends State<InterventionScreen> {
 class BeginInterventionScreen extends StatelessWidget {
   final TriggerApp triggerApp;
   final HealthyApp healthyApp;
-  final InterventionScreenCubit cubit;
+  final void Function() startHealthyAppIntervention;
 
   const BeginInterventionScreen(
       {super.key,
       required this.triggerApp,
       required this.healthyApp,
-      required this.cubit});
+      required this.startHealthyAppIntervention});
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +118,7 @@ class BeginInterventionScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () {
-            cubit.launchHealthyAppAsIntervention(healthyApp, triggerApp);
-          },
+          onPressed: startHealthyAppIntervention,
           child: Text("Open " + healthyApp.name),
         ),
       ],
@@ -159,13 +165,16 @@ class WaitingForInterventionResultScreen extends StatelessWidget {
 class InterventionSuccessfulScreen extends StatelessWidget {
   final TriggerApp triggerApp;
   final HealthyApp healthyApp;
-  final InterventionScreenCubit cubit;
+  final void Function() ignoreRewardAndLaunchHealthyApp;
+  final void Function() launchTriggerApp; // Reward
 
-  const InterventionSuccessfulScreen(
-      {super.key,
-      required this.triggerApp,
-      required this.healthyApp,
-      required this.cubit});
+  const InterventionSuccessfulScreen({
+    super.key,
+    required this.triggerApp,
+    required this.healthyApp,
+    required this.ignoreRewardAndLaunchHealthyApp,
+    required this.launchTriggerApp,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -180,16 +189,12 @@ class InterventionSuccessfulScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () {
-            cubit.launchHealthyApp(healthyApp);
-          },
+          onPressed: ignoreRewardAndLaunchHealthyApp,
           child: Text("Continue with " + healthyApp.name),
         ),
         const SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () {
-            cubit.launchTriggerApp(triggerApp);
-          },
+          onPressed: launchTriggerApp,
           child: Text("Open " + triggerApp.name),
         ),
       ],

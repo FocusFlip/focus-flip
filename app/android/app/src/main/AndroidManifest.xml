@@ -12,6 +12,12 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- END: flutter_background-->
 
+    <!-- BEGIN: overlay_pop_up-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!--uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /-->
+    <!-- END: overlay_pop_up-->
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -19,10 +25,13 @@
         android:label="quezzy"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
-        <service android:name="appsTracking" android:foregroundServiceType="specialUse">
+        <service
+           android:name="com.requiemz.overlay_pop_up.OverlayService"
+           android:exported="false"
+           android:foregroundServiceType="specialUse">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="The app tracks the usage of the other apps to trigger an intervention specified by the user"/>
-        </service>
+           </service>
 
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">

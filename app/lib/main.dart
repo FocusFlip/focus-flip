@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:overlay_pop_up/overlay_communicator.dart';
 import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
 import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
 import 'package:quezzy/cubits/shortcuts/shortcuts_cubit.dart';
 import 'package:quezzy/repositories/main_repository.dart';
+import 'package:quezzy/screens/intervention_screen/intervention_overlay_window.dart';
 import 'package:quezzy/utils/local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -36,6 +38,7 @@ Future<void> main() async {
 
   if (Platform.isAndroid) {
     //initBackgroundAppTrackingService(flutterLocalNotificationsPlugin);
+    OverlayCommunicator.init(OverlayCommunicatorType.app);
   }
 
   runApp(const MyApp());
@@ -126,4 +129,12 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       },
     );
   }
+}
+
+@pragma("vm:entry-point")
+void overlayPopUp() {
+  WidgetsFlutterBinding.ensureInitialized();
+  OverlayCommunicator.init(OverlayCommunicatorType.overlay);
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false, home: InterventionOverlayWindow()));
 }

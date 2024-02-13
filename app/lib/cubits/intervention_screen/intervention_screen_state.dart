@@ -13,6 +13,13 @@ final class PopInterventionScreen extends InterventionScreenState {}
 
 final class IntenventionScreenClosed extends InterventionScreenState {}
 
+final class TriggerAppOpenedAsReward extends IntenventionScreenClosed {
+  final TriggerApp triggerApp;
+  final DateTime dateTime;
+
+  TriggerAppOpenedAsReward({required this.triggerApp, required this.dateTime});
+}
+
 abstract class InterventionScreenOpened extends InterventionScreenState {
   /// Milliseconds since epoch
   final int timestamp;

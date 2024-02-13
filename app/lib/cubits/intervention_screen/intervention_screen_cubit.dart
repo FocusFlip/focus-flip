@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
+import 'package:overlay_pop_up/overlay_communicator.dart';
+import 'package:overlay_pop_up/overlay_pop_up.dart';
 import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
 import 'package:quezzy/models/event_type.dart';
 import 'package:quezzy/models/usage_event.dart';
@@ -13,6 +16,7 @@ import 'package:timezone/timezone.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/app.dart';
+import '../../screens/intervention_screen/intervention_overlay_window.dart';
 import '../../utils/background_app_usage_tracking.dart';
 import '../../utils/local_notifications.dart';
 import '../shortcuts/shortcuts_cubit.dart';
@@ -28,7 +32,40 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       {required this.shortcutsCubit,
       required this.mainRepository,
       required this.appUsageRepository})
-      : super(IntenventionScreenClosed());
+      : super(IntenventionScreenClosed()) {
+    if (Platform.isAndroid) {
+      OverlayCommunicator.instance.onMessage?.listen((event) async {
+        InterventionScreenState state = this.state;
+        print("[InterventionScreenCubit] Received event from overlay: $event");
+        if (event == InterventionOverlayWindow.REQUEST_INTERVENTION_DATA) {
+          _provideInterventionData();
+        } else if (event ==
+            InterventionOverlayWindow.LAUNCH_HEALTHY_APP_INTERVENTION) {
+          if (state is BeginIntervention) {
+            await launchHealthyAppAsIntervention(
+                state.healthyApp, state.triggerApp);
+            await OverlayPopUp.closeOverlay();
+          }
+        } else if (event ==
+            InterventionOverlayWindow.IGNORE_REWARD_AND_LAUNCH_HEALTHY_APP) {
+          if (state is InterventionSuccessful) {
+            await launchApp(state.healthyApp);
+            markAsClosed();
+            await OverlayPopUp.closeOverlay();
+          }
+        } else if (event == InterventionOverlayWindow.LAUNCH_TRIGGER_APP) {
+          if (state is InterventionSuccessful) {
+            await launchTriggerApp(state.triggerApp);
+            // Do not call `markAsClosed()`, because the intervention screen is
+            // marked as closed in `launchTriggerApp()`.
+            await OverlayPopUp.closeOverlay();
+          }
+        } else {
+          throw Exception("Unknown event from overlay: $event");
+        }
+      });
+    }
+  }
 
   final ShortcutsCubit shortcutsCubit;
   final MainRepository mainRepository;
@@ -39,6 +76,13 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
 
   Future<void> startBackgroundAppUsageTracking() async {
     assert(Platform.isAndroid);
+
+    bool enabled = await OverlayPopUp.checkPermission();
+    if (!enabled) {
+      print("Permission for overlay pop-up not granted");
+      await OverlayPopUp.requestPermission();
+      return;
+    }
 
     AppUsageRepository appUsageRepository = AppUsageRepository.instance;
     if (!await appUsageRepository.checkUsageStatsPermission()) {
@@ -53,11 +97,20 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     backgroundAppTracking.usageEvents.listen(_appUsageEventListener);
   }
 
-  void _appUsageEventListener(UsageEvent event) {
+  Future<void> _appUsageEventListener(UsageEvent event) async {
     if (mainRepository.healthyApp.packageName == event.packageName) {
       print(
           "[MainScreenCubit] Detected usage event for healthy app: ${mainRepository.healthyApp.name}");
-      // TODO: handle healthy app usage event
+      InterventionScreenState state = this.state;
+      if (state is InterventionInProgress &&
+          (event.eventType == EventType.ACTIVITY_PAUSED ||
+              event.eventType == EventType.ACTIVITY_STOPPED)) {
+        emit(InterventionInterrupted(
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          triggerApp: state.triggerApp,
+          healthyApp: state.healthyApp,
+        ));
+      }
     } else {
       var triggerAppCandidates = mainRepository.triggerApps
           .where((element) => element.packageName == event.packageName);
@@ -66,10 +119,84 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       if (triggerApp != null && event.eventType == EventType.ACTIVITY_RESUMED) {
         print(
             "[MainScreenCubit] Detected usage event for trigger app: ${triggerApp.name}");
-        openScreen(triggerApp);
-        // TODO: bring the intervention screen to the front
+
+        bool interventionEnabled = true;
+
+        InterventionScreenState state = this.state;
+        if (state is TriggerAppOpenedAsReward) {
+          if (state.triggerApp.packageName == triggerApp.packageName &&
+              state.dateTime
+                  .isAfter(DateTime.now().subtract(Duration(seconds: 10)))) {
+            print(
+                "[MainScreenCubit] Trigger app opened as reward: ${triggerApp.name}");
+            interventionEnabled = false;
+          }
+        }
+
+        if (interventionEnabled) {
+          openScreen(triggerApp);
+          await OverlayPopUp.showOverlay();
+
+          assert(this.state is PushInterventionScreen ||
+              this.state is BeginIntervention);
+
+          // TODO: do not rely on the delay, as it can vary on different devices.
+          /// Implement callback from the overlay window to the cubit.
+          Future.delayed(const Duration(milliseconds: 1000), () async {
+            _sendBeginInterventionState(this.state);
+          });
+        }
       }
     }
+  }
+
+  void _provideInterventionData() {
+    InterventionScreenState state = this.state;
+    if (state is BeginIntervention) {
+      print("[InterventionScreenCubit] PushInterventionScreen: Providing"
+          " intervention data");
+
+      _sendBeginInterventionState(state);
+    } else if (state is InterventionSuccessful) {
+      print("[InterventionScreenCubit] InterventionSuccessful: Providing"
+          " intervention data");
+
+      _sendInterventionSuccessfulState(state);
+      return;
+    } else {
+      print("[InterventionScreenCubit] Intervention data not available because"
+          " the intervention screen is not opened (state: $state)");
+    }
+  }
+
+  void _sendBeginInterventionState(InterventionScreenState state) {
+    assert(state is BeginIntervention || state is PushInterventionScreen);
+
+    if (state is PushInterventionScreen) {
+      markAsOpened(state.triggerApp);
+    }
+
+    assert(this.state is BeginIntervention);
+
+    TriggerApp triggerApp = (this.state as BeginIntervention).triggerApp;
+    HealthyApp healthyApp = (this.state as BeginIntervention).healthyApp;
+    Map<String, dynamic> data = {
+      "state": InterventionOverlayWindow.BEGIN_INTERVENTION_STATE,
+      "triggerApp": triggerApp.toJson(),
+      "healthyApp": healthyApp.toJson(),
+    };
+    OverlayCommunicator.instance.send(data);
+  }
+
+  void _sendInterventionSuccessfulState(InterventionSuccessful state) {
+    TriggerApp triggerApp = state.triggerApp;
+    HealthyApp healthyApp = state.healthyApp;
+    Map<String, dynamic> data = {
+      "state": InterventionOverlayWindow.INTERVENTION_SUCCESSFUL_STATE,
+      "triggerApp": triggerApp.toJson(),
+      "healthyApp": healthyApp.toJson(),
+    };
+    OverlayCommunicator.instance.send(data);
   }
 
   void openScreen(TriggerApp triggerApp) {
@@ -96,10 +223,12 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
 
   void markAsOpened(TriggerApp triggerApp) {
     print("[InterventionScreenCubit] InterventionScreen has been opened");
-    emit(BeginIntervention(
-        triggerApp: triggerApp,
-        healthyApp: mainRepository.healthyApp,
-        timestamp: DateTime.now().millisecondsSinceEpoch));
+    if (!(state is InterventionScreenOpened)) {
+      emit(BeginIntervention(
+          triggerApp: triggerApp,
+          healthyApp: mainRepository.healthyApp,
+          timestamp: DateTime.now().millisecondsSinceEpoch));
+    }
   }
 
   void markAsClosed() {
@@ -109,6 +238,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
 
   Future<void> launchTriggerApp(TriggerApp triggerApp) async {
     print("[InterventionScreenCubit] Launching trigger app");
+    assert(state is InterventionSuccessful);
 
     if (Platform.isIOS) {
       bool interventionDisabled =
@@ -116,11 +246,12 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       print(
           "[InterventionScreenCubit] Intervention disabled: $interventionDisabled");
     }
-
-    Uri uri = Uri.parse(triggerApp.url);
-    if (!await launchUrl(uri)) {
-      throw Exception('Could not launch $uri');
+    if (Platform.isAndroid) {
+      emit(TriggerAppOpenedAsReward(
+          triggerApp: triggerApp, dateTime: DateTime.now()));
     }
+
+    await launchApp(triggerApp);
   }
 
   Future<void> launchHealthyAppAsIntervention(
@@ -142,21 +273,39 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
           "[InterventionScreenCubit] Healthy app marked as launched: $healthyAppMarkedAsLaunched");
     }
 
-    _scheduleRewardNotification(
-        rewardingTriggerApp, healthyApp.requiredUsageDuration);
+    if (Platform.isIOS) {
+      // TODO: fix notification on android
+      //
+      // Unfortunatelly, the scheduling of the notifications is not working
+      // on Android yet. Therefore, the notification about the reward (permission
+      // to use the trigger app) will be temporarily shown as full-screen overlay.
+      _scheduleRewardNotification(
+          rewardingTriggerApp, healthyApp.requiredUsageDuration);
+    } else if (Platform.isAndroid) {
+      // Schedule opening the trigger app
+      Future.delayed(
+          healthyApp.requiredUsageDuration, _checkInterventionResultAndroid);
+    }
 
     emit(InterventionInProgress(
         timestamp: DateTime.now().millisecondsSinceEpoch,
         triggerApp: rewardingTriggerApp,
         healthyApp: healthyApp));
 
-    await launchHealthyApp(healthyApp);
+    await launchApp(healthyApp);
   }
 
-  Future<void> launchHealthyApp(HealthyApp healthyApp) async {
-    Uri uri = Uri.parse(healthyApp.url);
-    if (!await launchUrl(uri)) {
-      throw Exception('Could not launch $uri');
+  Future<void> launchApp(App app) async {
+    if (Platform.isAndroid) {
+      await LaunchApp.openApp(
+          androidPackageName: app.packageName!, iosUrlScheme: app.url);
+    } else if (Platform.isIOS) {
+      Uri uri = Uri.parse(app.url);
+      if (!await launchUrl(uri)) {
+        throw Exception('Could not launch $uri');
+      }
+    } else {
+      throw Exception("Unknown platform");
     }
   }
 
@@ -195,10 +344,37 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         healthyApp: (state as InterventionInProgress).healthyApp);
     emit(newState);
 
-    await Future.doWhile(_checkIntervantionResult);
+    await Future.doWhile(_checkIntervantionResultIOS);
   }
 
-  Future<bool> _checkIntervantionResult() async {
+  Future<void> _checkInterventionResultAndroid() async {
+    InterventionScreenState state = this.state;
+    if (!(state is InterventionInProgress)) {
+      // TODO: this should be handled in a better way. This method checks the
+      /// conditions only once after the delay, but if the user closes and opens
+      /// a trigger app twice, the user gets access to it earlier because the timer
+      /// for the first opening is not stopped.
+      print("[InterventionScreenCubit] Intervention interrupted");
+      return;
+    }
+    InterventionSuccessful newState = InterventionSuccessful(
+      timestamp: DateTime.now().millisecondsSinceEpoch,
+      triggerApp: state.triggerApp,
+      healthyApp: state.healthyApp,
+    );
+    emit(newState);
+    await OverlayPopUp.showOverlay();
+
+    // In case, the Flutter engine is already running and preserves the last
+    // state of the app
+    // TODO: do not rely on the delay, as it can vary on different devices.
+    /// Implement callback from the overlay window to the cubit.
+    Future.delayed(const Duration(milliseconds: 1000), () async {
+      _sendInterventionSuccessfulState(newState);
+    });
+  }
+
+  Future<bool> _checkIntervantionResultIOS() async {
     if (!(state is WaitingForInterventionResult)) {
       return false;
     }
