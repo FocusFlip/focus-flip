@@ -46,7 +46,8 @@ widgetButton(Text title, Function() onPressed,
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
           backgroundColor: color ?? ColorsHelpers.primaryColor,
-          minimumSize: Size(width, height),
+          minimumSize:
+              width == null || height == null ? null : Size(width, height),
           padding: paddingBtn,
           alignment: align,
           elevation: 0,

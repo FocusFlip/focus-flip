@@ -1,11 +1,47 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.queezy">
 
+    <!-- BEGIN: flutter_background_service -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!-- END: flutter_backgrond_service-->
+
+    <!-- BEGIN: flutter_background-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--uses-permission android:name="android.permission.FOREGROUND_SERVICE"/-->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- END: flutter_background-->
+
+    <!-- BEGIN: overlay_pop_up-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!--uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /-->
+    <!-- END: overlay_pop_up-->
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
    <application
         android:label="quezzy"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+        <service
+           android:name="com.requiemz.overlay_pop_up.OverlayService"
+           android:exported="false"
+           android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="The app tracks the usage of the other apps to trigger an intervention specified by the user"/>
+           </service>
+
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".MainActivity"
             android:exported="true"
