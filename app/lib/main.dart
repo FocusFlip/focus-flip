@@ -14,7 +14,6 @@ import 'package:quezzy/utils/local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'screens/splash_screen/splash_screen.dart';
-import 'utils/background_tracking_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
