@@ -1,11 +1,11 @@
-package com.queezy
+package com.FocusFlip
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel.Result
-import com.queezy.AppUsageApi
+import com.FocusFlip.AppUsageApi
 import android.app.usage.UsageStatsManager
 
 

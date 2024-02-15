@@ -1,4 +1,4 @@
-package com.queezy
+package com.FocusFlip
 
 import android.app.usage.UsageStatsManager
 import android.content.Intent
