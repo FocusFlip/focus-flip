@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class ListQuestionNumber extends StatelessWidget {
   final Function(int) changeCurrentQuestion;

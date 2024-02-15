@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:quezzy/utils/constant.dart';
+import 'package:focus_flip/utils/constant.dart';
 
 widgetText(String title,
     {Color? color,

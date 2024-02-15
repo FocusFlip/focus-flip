@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:quezzy/cubits/main_screen/main_screen_cubit.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 import '../../../utils/toasts.dart';
 

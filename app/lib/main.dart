@@ -5,12 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:overlay_pop_up/overlay_communicator.dart';
-import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
-import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
-import 'package:quezzy/cubits/shortcuts/shortcuts_cubit.dart';
-import 'package:quezzy/repositories/main_repository.dart';
-import 'package:quezzy/screens/intervention_screen/intervention_overlay_window.dart';
-import 'package:quezzy/utils/local_notifications.dart';
+import 'package:focus_flip/cubits/intervention_screen/intervention_screen_cubit.dart';
+import 'package:focus_flip/cubits/shortcuts/heathy_app_intervention_state.dart';
+import 'package:focus_flip/cubits/shortcuts/shortcuts_cubit.dart';
+import 'package:focus_flip/repositories/main_repository.dart';
+import 'package:focus_flip/screens/intervention_screen/intervention_overlay_window.dart';
+import 'package:focus_flip/utils/local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'screens/splash_screen/splash_screen.dart';

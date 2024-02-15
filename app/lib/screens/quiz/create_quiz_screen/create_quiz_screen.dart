@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:quezzy/screens/quiz/quiz_choose_category_screen/quiz_choose_category_screen.dart';
-import 'package:quezzy/screens/quiz/quiz_multiple_choice_screen/quiz_multiple_choice_screen.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/images.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/quiz/quiz_choose_category_screen/quiz_choose_category_screen.dart';
+import 'package:focus_flip/screens/quiz/quiz_multiple_choice_screen/quiz_multiple_choice_screen.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class CreateQuizScreen extends StatefulWidget {
   const CreateQuizScreen({Key? key}) : super(key: key);

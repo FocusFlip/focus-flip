@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:quezzy/models/usage_event.dart';
-import 'package:quezzy/models/usage_stats.dart';
+import 'package:focus_flip/models/usage_event.dart';
+import 'package:focus_flip/models/usage_stats.dart';
 
 class AppUsageRepository {
   AppUsageRepository._();

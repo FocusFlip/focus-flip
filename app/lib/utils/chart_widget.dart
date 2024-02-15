@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:quezzy/utils/chart_series.dart';
+import 'package:focus_flip/utils/chart_series.dart';
 
 class DeveloperChart extends StatelessWidget {
   final List<ChartSeries> data;

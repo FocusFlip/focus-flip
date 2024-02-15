@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:quezzy/screens/bottom_nav_bar.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/bottom_nav_bar.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class SignUpWithEmailScreen extends StatefulWidget {
   const SignUpWithEmailScreen({Key? key}) : super(key: key);

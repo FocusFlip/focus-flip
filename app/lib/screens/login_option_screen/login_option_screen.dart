@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:quezzy/screens/login_screen/login_screen.dart';
-import 'package:quezzy/screens/sign_up_screen/sign_up_screen.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/images.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/login_screen/login_screen.dart';
+import 'package:focus_flip/screens/sign_up_screen/sign_up_screen.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class LoginOptionScreen extends StatefulWidget {
   const LoginOptionScreen({Key? key}) : super(key: key);

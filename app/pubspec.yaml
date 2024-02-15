@@ -1,5 +1,5 @@
-name: quezzy
-description: Quezzy App Project
+name: focus_flip
+description: FocusFlip finds the time to focus on studying by preventing usage of distracting apps.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

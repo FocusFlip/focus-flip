@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:quezzy/screens/discover_screen/discover_screen.dart';
-import 'package:quezzy/screens/home_screen/home_screeen.dart';
-import 'package:quezzy/screens/leaderboard/leaderboard_screen.dart';
+import 'package:focus_flip/screens/discover_screen/discover_screen.dart';
+import 'package:focus_flip/screens/home_screen/home_screeen.dart';
+import 'package:focus_flip/screens/leaderboard/leaderboard_screen.dart';
 
-import 'package:quezzy/screens/profile_screen/profile_screen.dart';
-import 'package:quezzy/screens/quiz/create_quiz_screen/create_quiz_screen.dart';
+import 'package:focus_flip/screens/profile_screen/profile_screen.dart';
+import 'package:focus_flip/screens/quiz/create_quiz_screen/create_quiz_screen.dart';
 
-import 'package:quezzy/utils/constant.dart';
+import 'package:focus_flip/utils/constant.dart';
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key});

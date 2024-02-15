@@ -2,9 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:quezzy/screens/live_quiz_screen/review_quiz_screen.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/live_quiz_screen/review_quiz_screen.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 import '../../models/utils_model.dart';
 import '../../utils/images.dart';

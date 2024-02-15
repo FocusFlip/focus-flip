@@ -13,11 +13,11 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:quezzy/models/utils_model.dart';
-import 'package:quezzy/screens/live_quiz_screen/quiz_complete_screen.dart';
-import 'package:quezzy/utils/music_visualizer_main.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/models/utils_model.dart';
+import 'package:focus_flip/screens/live_quiz_screen/quiz_complete_screen.dart';
+import 'package:focus_flip/utils/music_visualizer_main.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 import '../../utils/images.dart';
 

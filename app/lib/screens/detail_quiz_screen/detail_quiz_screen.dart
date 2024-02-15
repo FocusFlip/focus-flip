@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 //import 'package:quezzy/screens/live_quiz_screen/live_quiz_screen.dart.txt';
-import 'package:quezzy/screens/live_quiz_screen/quiz_complete_screen.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/images.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/live_quiz_screen/quiz_complete_screen.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class DetailQuizScreen extends StatelessWidget {
   const DetailQuizScreen({Key? key}) : super(key: key);

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
-import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
+import 'package:focus_flip/cubits/shortcuts/heathy_app_intervention_state.dart';
 
 import '../../models/app.dart';
 
