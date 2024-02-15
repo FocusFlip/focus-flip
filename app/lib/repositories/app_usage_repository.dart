@@ -8,8 +8,7 @@ class AppUsageRepository {
   AppUsageRepository._();
   static final AppUsageRepository instance = AppUsageRepository._();
 
-  MethodChannel _methodChannel =
-      const MethodChannel("com.example.quezzy/app_usage");
+  MethodChannel _methodChannel = const MethodChannel("com.FocusFlip/app_usage");
 
   Future<void> init() async {
     _methodChannel.setMethodCallHandler(_methodCallHandler);

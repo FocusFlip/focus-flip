@@ -14,8 +14,7 @@ class ShortcutsCubit extends Cubit<ShortcutsState> {
   static final ShortcutsCubit instance = ShortcutsCubit._();
   ShortcutsCubit._() : super(ShortcutsNotInitialized());
 
-  MethodChannel _methodChannel =
-      const MethodChannel("com.example.quezzy/shortcuts");
+  MethodChannel _methodChannel = const MethodChannel("com.FocusFlip/shortcuts");
 
   void init() {
     assert(state is ShortcutsNotInitialized);

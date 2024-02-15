@@ -11,7 +11,7 @@ import android.app.usage.UsageStatsManager
 
 class MainActivity: FlutterActivity() {
     // Method channel
-    private val CHANNEL = "com.example.quezzy/app_usage"
+    private val CHANNEL = "com.FocusFlip/app_usage"
     private val appUsageApi = AppUsageApi(this)
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
