@@ -116,7 +116,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Quezzy',
+          title: 'FocusFlip',
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
               systemOverlayStyle: SystemUiOverlayStyle.dark,
