@@ -1,17 +1,17 @@
-package com.queezy
+package com.FocusFlip
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel.Result
-import com.queezy.AppUsageApi
+import com.FocusFlip.AppUsageApi
 import android.app.usage.UsageStatsManager
 
 
 class MainActivity: FlutterActivity() {
     // Method channel
-    private val CHANNEL = "com.example.quezzy/app_usage"
+    private val CHANNEL = "com.FocusFlip/app_usage"
     private val appUsageApi = AppUsageApi(this)
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {

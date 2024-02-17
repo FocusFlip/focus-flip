@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:quezzy/screens/quiz/quiz_review_screen/quiz_review_screen.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/quiz/quiz_review_screen/quiz_review_screen.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class ToReviewButton extends StatelessWidget {
   const ToReviewButton({super.key});

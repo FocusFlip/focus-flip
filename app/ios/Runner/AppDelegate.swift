@@ -54,7 +54,7 @@ import Flutter
     
     func initShortcutsChannel(){
         let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
-        AppDelegate.shortcutChannel = FlutterMethodChannel(name: "com.example.quezzy/shortcuts",
+        AppDelegate.shortcutChannel = FlutterMethodChannel(name: "com.FocusFlip/shortcuts",
                                                   binaryMessenger: controller.binaryMessenger)
         
         AppDelegate.shortcutChannel!.setMethodCallHandler(shortcutChanelMethodCallHandler)

@@ -1,6 +1,4 @@
-# quezzy
-
-Quezzy App Project
+# FocusFlip
 
 # Bloc
 

@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:quezzy/screens/quiz/components/add_cover_image.dart';
-import 'package:quezzy/screens/quiz/components/list_question_number.dart';
-import 'package:quezzy/screens/quiz/components/quiz_options.dart';
-import 'package:quezzy/screens/quiz/components/to_review_button.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/images.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/quiz/components/add_cover_image.dart';
+import 'package:focus_flip/screens/quiz/components/list_question_number.dart';
+import 'package:focus_flip/screens/quiz/components/quiz_options.dart';
+import 'package:focus_flip/screens/quiz/components/to_review_button.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class QuizCheckboxScreen extends StatefulWidget {
   const QuizCheckboxScreen({Key? key}) : super(key: key);

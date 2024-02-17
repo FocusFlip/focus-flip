@@ -7,11 +7,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
 import 'package:overlay_pop_up/overlay_communicator.dart';
 import 'package:overlay_pop_up/overlay_pop_up.dart';
-import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
-import 'package:quezzy/models/event_type.dart';
-import 'package:quezzy/models/usage_event.dart';
-import 'package:quezzy/repositories/app_usage_repository.dart';
-import 'package:quezzy/repositories/main_repository.dart';
+import 'package:focus_flip/cubits/shortcuts/heathy_app_intervention_state.dart';
+import 'package:focus_flip/models/event_type.dart';
+import 'package:focus_flip/models/usage_event.dart';
+import 'package:focus_flip/repositories/app_usage_repository.dart';
+import 'package:focus_flip/repositories/main_repository.dart';
 import 'package:timezone/timezone.dart';
 import 'package:url_launcher/url_launcher.dart';
 

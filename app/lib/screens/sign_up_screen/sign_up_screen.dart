@@ -2,10 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:quezzy/screens/login_screen/login_screen.dart';
-import 'package:quezzy/screens/sign_up_with_email_screen/sign_up_with_email_screen.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/login_screen/login_screen.dart';
+import 'package:focus_flip/screens/sign_up_with_email_screen/sign_up_with_email_screen.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 import '../../utils/images.dart';
 

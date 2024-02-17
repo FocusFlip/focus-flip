@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
-import 'package:quezzy/models/app.dart';
-import 'package:quezzy/repositories/main_repository.dart';
+import 'package:focus_flip/cubits/intervention_screen/intervention_screen_cubit.dart';
+import 'package:focus_flip/models/app.dart';
+import 'package:focus_flip/repositories/main_repository.dart';
 
 class InterventionScreen extends StatefulWidget {
   const InterventionScreen({super.key, required this.initialTriggerApp});

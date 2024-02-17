@@ -23,7 +23,7 @@ class InterventionController {
     /// The duration of the time window when an intervention is disabled
     let _disabledInterventionDuration = 7.0
     
-    init(groupName: String = "group.QL32TQBL82.com.example.quezzy") {
+    init(groupName: String = "group.QL32TQBL82.com.FocusFlip") {
         print("[InterventionController] Initialization started")
         
         self.groupName = groupName

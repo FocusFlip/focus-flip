@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:quezzy/cubits/intervention_screen/intervention_screen_cubit.dart';
+import 'package:focus_flip/cubits/intervention_screen/intervention_screen_cubit.dart';
 
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 

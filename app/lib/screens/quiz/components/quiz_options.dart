@@ -2,16 +2,16 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:quezzy/screens/quiz/quiz_checkbox_screen/quiz_checkbox_screen.dart';
-import 'package:quezzy/screens/quiz/quiz_multiple_choice_screen/quiz_multiple_choice_screen.dart';
-import 'package:quezzy/screens/quiz/quiz_poll_screen/quiz_poll_screen.dart';
-import 'package:quezzy/screens/quiz/quiz_puzzle_screen/quiz_puzzle_screen.dart';
-import 'package:quezzy/screens/quiz/quiz_true_or_false_screen/quiz_true_or_false_screen.dart';
-import 'package:quezzy/screens/quiz/quiz_type_answer_screen/quiz_type_answer_screen.dart';
-import 'package:quezzy/screens/quiz/quiz_voice_note_screen/quiz_voice_note_screen.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/images.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/quiz/quiz_checkbox_screen/quiz_checkbox_screen.dart';
+import 'package:focus_flip/screens/quiz/quiz_multiple_choice_screen/quiz_multiple_choice_screen.dart';
+import 'package:focus_flip/screens/quiz/quiz_poll_screen/quiz_poll_screen.dart';
+import 'package:focus_flip/screens/quiz/quiz_puzzle_screen/quiz_puzzle_screen.dart';
+import 'package:focus_flip/screens/quiz/quiz_true_or_false_screen/quiz_true_or_false_screen.dart';
+import 'package:focus_flip/screens/quiz/quiz_type_answer_screen/quiz_type_answer_screen.dart';
+import 'package:focus_flip/screens/quiz/quiz_voice_note_screen/quiz_voice_note_screen.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class QuizOptions extends StatelessWidget {
   final Function(String) changeSelectedTime;

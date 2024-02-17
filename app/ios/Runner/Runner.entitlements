@@ -6,7 +6,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.$(TeamIdentifierPrefix)com.example.quezzy</string>
+		<string>group.$(TeamIdentifierPrefix)com.FocusFlip</string>
 	</array>
 </dict>
 </plist>

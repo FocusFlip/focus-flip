@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
-import 'package:quezzy/cubits/shortcuts/heathy_app_intervention_state.dart';
+import 'package:focus_flip/cubits/shortcuts/heathy_app_intervention_state.dart';
 
 import '../../models/app.dart';
 
@@ -14,8 +14,7 @@ class ShortcutsCubit extends Cubit<ShortcutsState> {
   static final ShortcutsCubit instance = ShortcutsCubit._();
   ShortcutsCubit._() : super(ShortcutsNotInitialized());
 
-  MethodChannel _methodChannel =
-      const MethodChannel("com.example.quezzy/shortcuts");
+  MethodChannel _methodChannel = const MethodChannel("com.FocusFlip/shortcuts");
 
   void init() {
     assert(state is ShortcutsNotInitialized);

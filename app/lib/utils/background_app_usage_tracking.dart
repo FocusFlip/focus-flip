@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_background/flutter_background.dart';
-import 'package:quezzy/models/event_type.dart';
-import 'package:quezzy/repositories/app_usage_repository.dart';
+import 'package:focus_flip/models/event_type.dart';
+import 'package:focus_flip/repositories/app_usage_repository.dart';
 
 import '../models/usage_event.dart';
 

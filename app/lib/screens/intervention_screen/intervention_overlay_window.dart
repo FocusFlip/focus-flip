@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_pop_up/overlay_communicator.dart';
-import 'package:quezzy/models/app.dart';
-import 'package:quezzy/screens/intervention_screen/intervention_screen.dart';
+import 'package:focus_flip/models/app.dart';
+import 'package:focus_flip/screens/intervention_screen/intervention_screen.dart';
 
 class InterventionOverlayWindow extends StatefulWidget {
   const InterventionOverlayWindow({super.key});

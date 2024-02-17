@@ -2,11 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:quezzy/screens/login_option_screen/login_option_screen.dart';
-import 'package:quezzy/screens/sign_up_screen/sign_up_screen.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/images.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/login_option_screen/login_option_screen.dart';
+import 'package:focus_flip/screens/sign_up_screen/sign_up_screen.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);

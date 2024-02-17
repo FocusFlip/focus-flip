@@ -4,12 +4,12 @@ import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:quezzy/screens/setting_screen/setting_screen.dart';
-import 'package:quezzy/utils/chart_series.dart';
-import 'package:quezzy/utils/chart_widget.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/images.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/screens/setting_screen/setting_screen.dart';
+import 'package:focus_flip/utils/chart_series.dart';
+import 'package:focus_flip/utils/chart_widget.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 import '../discover_screen/discover_screen.dart';
@@ -651,11 +651,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                                   FontWeight
                                                                       .w500,
                                                               color: const Color
-                                                                      .fromRGBO(
-                                                                  24,
-                                                                  18,
-                                                                  84,
-                                                                  0.3)),
+                                                                  .fromRGBO(24,
+                                                                  18, 84, 0.3)),
                                                         ),
                                                         TextSpan(
                                                             text: 'quiz played',
@@ -670,7 +667,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                                     FontWeight
                                                                         .w500,
                                                                 color: const Color
-                                                                        .fromRGBO(
+                                                                    .fromRGBO(
                                                                     24,
                                                                     18,
                                                                     84,
@@ -781,8 +778,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                       decoration: BoxDecoration(
                                                           borderRadius:
                                                               const BorderRadius
-                                                                      .all(
-                                                                  Radius
+                                                                  .all(Radius
                                                                       .circular(
                                                                           20)),
                                                           color: ColorsHelpers

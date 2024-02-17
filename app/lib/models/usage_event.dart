@@ -1,4 +1,4 @@
-import 'package:quezzy/models/event_type.dart';
+import 'package:focus_flip/models/event_type.dart';
 
 class UsageEvent {
   final int appStandbyBucket;

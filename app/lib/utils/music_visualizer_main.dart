@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quezzy/utils/constant.dart';
+import 'package:focus_flip/utils/constant.dart';
 
 void main() => runApp(const MyApp());
 

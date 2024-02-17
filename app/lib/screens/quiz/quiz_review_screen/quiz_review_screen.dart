@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:quezzy/utils/constant.dart';
-import 'package:quezzy/utils/images.dart';
-import 'package:quezzy/utils/widget_assets.dart';
+import 'package:focus_flip/utils/constant.dart';
+import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/widget_assets.dart';
 
 class QuizReviewScreen extends StatefulWidget {
   const QuizReviewScreen({Key? key}) : super(key: key);

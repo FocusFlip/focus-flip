@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:quezzy/models/app.dart';
-import 'package:quezzy/repositories/main_repository.dart';
+import 'package:focus_flip/models/app.dart';
+import 'package:focus_flip/repositories/main_repository.dart';
 
 part 'main_screen_state.dart';
 

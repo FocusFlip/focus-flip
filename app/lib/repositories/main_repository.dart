@@ -1,5 +1,5 @@
-import 'package:quezzy/models/app.dart';
-import 'package:quezzy/repositories/hive_box_repository.dart';
+import 'package:focus_flip/models/app.dart';
+import 'package:focus_flip/repositories/hive_box_repository.dart';
 
 /**
  * This class is used as key-value storage for the values that are used throughout the app.
