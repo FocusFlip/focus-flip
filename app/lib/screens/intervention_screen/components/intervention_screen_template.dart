@@ -58,7 +58,7 @@ class InterventionScreenTemplate extends StatelessWidget {
                     alignment: Alignment.center,
                     constraints: BoxConstraints(
                         minHeight: MediaQuery.of(context).size.height -
-                            MediaQuery.of(context).viewPadding.vertical),
+                            2 * MediaQuery.of(context).viewPadding.vertical),
                     child: Column(
                       children: [
                         illustartion,
