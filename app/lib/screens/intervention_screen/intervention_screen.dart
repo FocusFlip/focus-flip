@@ -84,7 +84,11 @@ class _InterventionScreenState extends State<InterventionScreen> {
           );
         } else if (state is InterventionInterrupted) {
           return InterventionInterruptedScreen(
-              triggerApp: _triggerApp, healthyApp: _healthyApp, cubit: _cubit);
+            triggerApp: _triggerApp,
+            healthyApp: _healthyApp,
+            restartHealthyAppIntervention: () =>
+                _cubit.launchHealthyAppAsIntervention(_healthyApp, _triggerApp),
+          );
         } else if (state is InterventionResultTimeout) {
           return InterventionTimeoutScreen();
         } else {

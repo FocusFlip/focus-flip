@@ -1,42 +1,131 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
-import '../../../cubits/intervention_screen/intervention_screen_cubit.dart';
 import '../../../models/app.dart';
+import '../../../utils/images.dart';
+import '../../../utils/widget_assets.dart';
+import '../components/intervention_screen_template.dart';
 
 class InterventionInterruptedScreen extends StatelessWidget {
   final TriggerApp triggerApp;
   final HealthyApp healthyApp;
-  final InterventionScreenCubit cubit;
+  final void Function() restartHealthyAppIntervention;
 
   const InterventionInterruptedScreen(
       {super.key,
       required this.triggerApp,
       required this.healthyApp,
-      required this.cubit});
+      required this.restartHealthyAppIntervention});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Intervention"),
+    return InterventionScreenTemplate(
+        /*illustartion: ClipRect(
+            child: SizedBox(
+                height: 300,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Positioned(
+                        top: ScreenUtil().setWidth(-90),
+                        left: ScreenUtil().setWidth(-100),
+                        right: ScreenUtil().setWidth(-20),
+                        child: SvgPicture.asset(
+                          Images.illustrationTwo,
+                          fit: BoxFit.fitWidth,
+                        ))
+                  ],
+                ))),*/
+        illustartion: SvgPicture.asset(
+          Images.illustrationOne,
+          fit: BoxFit.fitWidth,
         ),
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        titleText: "Access denied",
+        subtitleText: "Flip your Focus",
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "You have used ${healthyApp.name} not long enough to be productive,"
-              "so you can not use ${triggerApp.name} yet.",
-              style: Theme.of(context).textTheme.headline6,
+            SizedBox(height: ScreenUtil().setHeight(16)),
+            widgetRichText(
+              context,
+              TextSpan(
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(16),
+                  fontWeight: FontWeight.w400,
+                ),
+                children: [
+                  TextSpan(
+                    text: "You closed ",
+                  ),
+                  TextSpan(
+                    text: healthyApp.name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: " before spending ",
+                  ),
+                  TextSpan(
+                    text: healthyApp.requiredUsageDuration.inSeconds.toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: ' seconds in the app, that is why you cannot open ',
+                  ),
+                  TextSpan(
+                    text: triggerApp.name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: ". Spend the required time in ",
+                  ),
+                  TextSpan(
+                    text: healthyApp.name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: " to gain access."),
+                ],
+              ),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                cubit.launchHealthyAppAsIntervention(healthyApp, triggerApp);
-              },
-              child: Text("Open " + healthyApp.name),
-            ),
+            Container(
+              margin: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  /*Expanded(
+                    child: widgetButton(
+                        widgetText(triggerApp.name,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.w500,
+                            fontSize: ScreenUtil().setSp(16),
+                            color: ColorsHelpers.primaryColor),
+                        launchTriggerApp,
+                        height: 56.0,
+                        width: 142.0,
+                        radius: 20.0,
+                        colorBorder: ColorsHelpers.secondLavender,
+                        color: Colors.white,
+                        widthBorder: 1.0),
+                  ),
+                  SizedBox(width: ScreenUtil().setWidth(16)),*/
+                  Expanded(
+                    child: widgetButton(
+                      widgetText("Open " + healthyApp.name,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w500,
+                          fontSize: ScreenUtil().setSp(16),
+                          color: Colors.white),
+                      restartHealthyAppIntervention,
+                      height: 56.0,
+                      width: 200.0,
+                      radius: 20.0,
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
-        )));
+        ));
   }
 }
