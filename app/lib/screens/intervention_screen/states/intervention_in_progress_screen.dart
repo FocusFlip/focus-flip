@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../models/app.dart';
+import '../components/intervention_screen_template.dart';
 
 class InterventionInProgressScreen extends StatelessWidget {
   final HealthyApp healthyApp;
@@ -8,19 +10,14 @@ class InterventionInProgressScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Intervention"),
-        ),
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Opening ${healthyApp.name}...",
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ],
-        )));
+    return InterventionScreenTemplate(
+        illustartion: SizedBox.shrink(),
+        titleText: "Opening " + healthyApp.name + "...",
+        subtitleText: "Flip your Focus",
+        body: Container(
+          alignment: Alignment.center,
+          height: ScreenUtil().setHeight(100),
+          child: CircularProgressIndicator(),
+        ));
   }
 }
