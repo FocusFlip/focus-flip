@@ -46,7 +46,8 @@ class MainRepository extends HiveBoxRepository {
             Duration(seconds: instance.readRequiredHealthyTime()));
   }
 
-  void updateRequiredHealthyTime(int value) {
+  void updateRequiredHealthyTimeInRepo(int value) {
+    print("[MainRepository] updateRequiredHealthyTimeInMain");
     instance.updateRequiredHealthyTime(value);
   }
 }
