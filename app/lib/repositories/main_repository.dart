@@ -42,7 +42,12 @@ class MainRepository extends HiveBoxRepository {
         name: "Anki",
         url: "anki://",
         packageName: "com.ichi2.anki",
-        requiredUsageDuration: Duration(seconds: 20));
+        requiredUsageDuration:
+            Duration(seconds: instance.readRequiredHealthyTime()));
+  }
+
+  void updateRequiredHealthyTime(int value) {
+    instance.updateRequiredHealthyTime(value);
   }
 }
 

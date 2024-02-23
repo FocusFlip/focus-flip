@@ -16,8 +16,11 @@ class MainScreenCubit extends Cubit<MainScreenState> {
       return;
     }
 
+    // TODO : Retrieve the package name and/or url from API
     TriggerApp app = TriggerApp(
-        name: name, url: "instagram://"); // TODO: change url to a valid one
+        name: name,
+        url: name.toLowerCase() + "://",
+        packageName: "com." + name.toLowerCase() + ".android");
     try {
       mainRepository.addTriggerApp(app);
     } on DuplicateException {
@@ -44,7 +47,10 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     throw UnimplementedError();
   }
 
-  void updateRequiredHealthyTime(double value) {
-    throw UnimplementedError();
+//TODO - Add error checking for the updateRequiredHealthyTime method
+  void updateRequiredHealthyTime(int value) {
+    mainRepository.updateRequiredHealthyTime(value);
+    emit(UpdatedRequiredHealthyTime(state.triggerApps.toList(), value));
+    // throw UnimplementedError();
   }
 }
