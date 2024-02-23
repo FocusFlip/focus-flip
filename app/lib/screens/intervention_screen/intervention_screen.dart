@@ -90,7 +90,13 @@ class _InterventionScreenState extends State<InterventionScreen> {
                 _cubit.launchHealthyAppAsIntervention(_healthyApp, _triggerApp),
           );
         } else if (state is InterventionResultTimeout) {
-          return InterventionTimeoutScreen();
+          return InterventionTimeoutScreen(
+            healthyApp: _healthyApp,
+            openHealthyAppShortcutsInstructions: () {
+              // TODO: implement
+              throw Exception("Not implemented");
+            },
+          );
         } else {
           _cubit.closeScreen();
           return const SizedBox();
