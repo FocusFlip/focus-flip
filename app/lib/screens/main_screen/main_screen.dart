@@ -265,6 +265,7 @@ class _MainScreenState extends State<MainScreen> {
                                 MediaQuery.of(context).viewPadding.bottom),
                         alignment: Alignment.center,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(

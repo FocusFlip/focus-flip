@@ -46,7 +46,11 @@ class MainRepository extends HiveBoxRepository {
             Duration(seconds: instance.readRequiredHealthyTime()));
   }
 
+//TODO - Fix Error Handling
   void updateRequiredHealthyTimeInRepo(int value) {
+    if (value <= 5 || value == null) {
+      throw Exception("Value must be greater than 15");
+    }
     print("[MainRepository] updateRequiredHealthyTimeInMain");
     instance.updateRequiredHealthyTime(value);
   }

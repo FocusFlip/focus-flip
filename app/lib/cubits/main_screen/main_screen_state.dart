@@ -36,3 +36,9 @@ final class UpdatedRequiredHealthyTime extends MainScreenState {
       : super.withRequiredHealthyTime(
             triggerApps: triggerApps, requiredHealthyTime: requiredHealthyTime);
 }
+
+final class RequiredHealthyTimeError extends MainScreenState {
+  RequiredHealthyTimeError(triggerApps, requiredHealthyTime)
+      : super.withRequiredHealthyTime(
+            triggerApps: triggerApps, requiredHealthyTime: requiredHealthyTime);
+}
