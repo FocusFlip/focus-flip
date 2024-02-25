@@ -46,18 +46,30 @@ class MainRepository extends HiveBoxRepository {
             Duration(seconds: instance.readRequiredHealthyTime()));
   }
 
-//TODO - Fix Error Handling
-  void updateRequiredHealthyTimeInRepo(int value) {
-    if (value <= 5 || value == null) {
-      throw Exception("Value must be greater than 15");
+//TODO - Fix Error Handling and displaying the message in higher level
+  void updateRequiredHealthyTime(int value) {
+    if (value <= 5) {
+      throw WrongValueException(message: "Value must be greater than 15");
     }
     print("[MainRepository] updateRequiredHealthyTimeInMain");
-    instance.updateRequiredHealthyTime(value);
+    instance.box.put("requiredHealthyTime", value);
+    print("[MainRepository] Writing RequiredHealthyTime in the box");
+    readRequiredHealthyTime();
   }
+
+  int readRequiredHealthyTime() {
+    print("[MainRepository] Reading RequiredHealthyTime in the box");
+    print(instance.box.get("requiredHealthyTime"));
+    return instance.box.get("requiredHealthyTime");
+  }
+}
+
+class WrongValueException implements Exception {
+  final String message;
+  WrongValueException({required this.message});
 }
 
 class DuplicateException implements Exception {
   final String duplicateField;
-
   DuplicateException({required this.duplicateField});
 }

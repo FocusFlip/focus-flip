@@ -49,7 +49,7 @@ class MainScreenCubit extends Cubit<MainScreenState> {
 
   void updateRequiredHealthyTime(int value) {
     try {
-      mainRepository.updateRequiredHealthyTimeInRepo(value);
+      mainRepository.updateRequiredHealthyTime(value);
     } catch (e) {
       emit(RequiredHealthyTimeError(
           state.triggerApps.toList(), Duration(seconds: value)));

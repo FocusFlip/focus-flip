@@ -18,18 +18,4 @@ abstract class HiveBoxRepository {
   Future<void> close() {
     return Hive.close();
   }
-
-
-  void updateRequiredHealthyTime(int _requiredHealthyTime) {
-    print("[HiveBox] Writing RequiredHealthyTime in the box");
-    print(box.put(0, _requiredHealthyTime));
-    print("[HiveBox] Reading RequiredHealthyTime in the box");
-    print(box.get(0));
-  }
-
-  int readRequiredHealthyTime() {
-    print("[HiveBox] Reading RequiredHealthyTime in the box");
-    print(box.get(0));
-    return box.get(0);
-  }
 }
