@@ -7,11 +7,13 @@ class Label {
   final String text;
   final void Function()? onTap;
   final bool isActive;
+  final Widget? trailing;
 
   Label({
     required this.text,
     this.onTap,
     this.isActive = false,
+    this.trailing,
   });
 }
 
@@ -51,10 +53,21 @@ class InlineLabelList extends StatelessWidget {
                             ),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Text(
-                      label.text,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400, color: Colors.black),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        Text(
+                          label.text,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, color: Colors.black),
+                        ),
+                        label.trailing != null
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                    left: ScreenUtil().setWidth(8)),
+                                child: label.trailing)
+                            : SizedBox.shrink()
+                      ],
                     ),
                   )),
             ),

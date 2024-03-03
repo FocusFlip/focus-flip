@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:focus_flip/screens/main_screen/components/inline_label_list.dart';
+import 'package:focus_flip/screens/trigger_app_screen/components/youtube_video_placeholder.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/images.dart';
 import 'package:focus_flip/utils/widget_assets.dart';
@@ -38,14 +40,17 @@ class TriggerAppScreen extends StatelessWidget {
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
-            height: MediaQuery.of(context).size.height,
+            constraints:
+                BoxConstraints(minHeight: MediaQuery.of(context).size.height),
             alignment: Alignment.topLeft,
             margin: EdgeInsets.only(top: ScreenUtil().setHeight(104)),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(ScreenUtil().setSp(20)),
                 color: Colors.white),
-            padding:
-                EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(16)),
+            padding: EdgeInsets.only(
+                left: ScreenUtil().setWidth(16),
+                right: ScreenUtil().setWidth(16),
+                bottom: ScreenUtil().setWidth(32)),
             child: Column(
               children: [
                 Container(
@@ -82,10 +87,35 @@ class TriggerAppScreen extends StatelessWidget {
                   margin: EdgeInsets.only(top: ScreenUtil().setHeight(16)),
                   alignment: Alignment.topLeft,
                   child: widgetText(
-                    'Queezy apps offer gamified quizzes with many different topics to test out your knowledge.',
+                    'Trigger app is an addictive app that you would like to avoid. Usually, social media belong to this category.',
                     color: ColorsHelpers.grey1,
                     fontSize: ScreenUtil().setSp(16),
                     fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(16)),
+                  child: InlineLabelList(
+                    labels: [
+                      Label(
+                          text: "Instagram",
+                          isActive: true,
+                          trailing: GestureDetector(
+                            onTap: () {
+                              // _cubit.clearTriggerApps();
+                              print("print");
+                            },
+                            child: Icon(Icons.close,
+                                color: ColorsHelpers.primaryColor,
+                                size: ScreenUtil().setSp(16)),
+                          )),
+                    ]..add(Label(
+                        text: "+ Add",
+                        onTap: () {
+                          // _cubit.addTriggerApp
+                          //_addTriggerApp(context);
+                        })),
                   ),
                 ),
                 Container(
@@ -99,72 +129,30 @@ class TriggerAppScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(16)),
                   alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
                   child: widgetText(
-                    'With Queezy you can also take part in challenges with friends or against others.',
-                    color: ColorsHelpers.grey1,
-                    fontSize: ScreenUtil().setSp(16),
-                    fontWeight: FontWeight.w400,
+                    '2.1 Open the Shortcuts app',
+                    color: Colors.black,
+                    fontSize: ScreenUtil().setSp(17),
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
+                // TODO: add screenshot
+                YoutubeVideoPlaceholder(),
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: ScreenUtil()
-                      .setHeight(MediaQuery.of(context).size.width / 2 - 35),
-                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-                  decoration: BoxDecoration(
-                    image: const DecorationImage(
-                      image: AssetImage(Images.background1),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(ScreenUtil().setSp(16)),
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
+                  child: widgetText(
+                    '2.2 Open the section "Automations"',
+                    color: Colors.black,
+                    fontSize: ScreenUtil().setSp(17),
+                    fontWeight: FontWeight.w500,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        child: SvgPicture.asset(Images.playButton),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: ScreenUtil().setWidth(16),
-                          bottom: ScreenUtil().setHeight(16),
-                          top: ScreenUtil().setHeight(36),
-                        ),
-                        padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(ScreenUtil().setSp(20)),
-                            color: const Color.fromRGBO(242, 247, 253, 0.7)),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            widgetText(
-                              'Watch on',
-                              color: Colors.black,
-                              fontSize: ScreenUtil().setSp(12),
-                              fontWeight: FontWeight.w400,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setWidth(4)),
-                              child: SvgPicture.asset(Images.youtube),
-                            ),
-                            widgetText(
-                              'YouTube',
-                              color: Colors.black,
-                              fontSize: ScreenUtil().setSp(10),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                ),
+                // TODO: add screenshot
+                YoutubeVideoPlaceholder(),
+                // TODO: continue
               ],
             ),
           ),
