@@ -288,7 +288,7 @@ class _MainScreenState extends State<MainScreen> {
                                 color: ColorsHelpers.grey2),
                           ),
                           onChanged: (value) {
-                            _cubit.updateRequiredHealthyTime(int.parse(value));
+                            _cubit.updateRequiredHealthyTime(value);
                           },
                         ),
                       ),

@@ -47,15 +47,23 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     throw UnimplementedError();
   }
 
-  void updateRequiredHealthyTime(int value) {
+  void updateRequiredHealthyTime(String value) {
+    int? time = int.tryParse(value);
+
+    //TODO - Display error message to user when wrong value is given
+    if (time == null || time < 15) {
+      emit(RequiredHealthyTimeError(
+          state.triggerApps.toList(), Duration(seconds: 0)));
+      return;
+    }
     try {
-      mainRepository.updateRequiredHealthyTime(value);
+      mainRepository.updateRequiredHealthyTime(time);
     } catch (e) {
       emit(RequiredHealthyTimeError(
-          state.triggerApps.toList(), Duration(seconds: value)));
+          state.triggerApps.toList(), Duration(seconds: time)));
       return;
     }
     emit(UpdatedRequiredHealthyTime(
-        state.triggerApps.toList(), Duration(seconds: value)));
+        state.triggerApps.toList(), Duration(seconds: time)));
   }
 }
