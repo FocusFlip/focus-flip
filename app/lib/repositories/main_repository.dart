@@ -32,8 +32,11 @@ class MainRepository extends HiveBoxRepository {
     _triggerApps.add(app);
   }
 
-  void clearTriggerApps() {
-    _triggerApps.clear();
+  void removeTriggerApp(TriggerApp app) {
+    print(
+        "[MainRepository] Removing trigger app. (Attention: this method is not implemented yet)");
+
+    _triggerApps.remove(app);
   }
 
   // TODO: store in HiveDB

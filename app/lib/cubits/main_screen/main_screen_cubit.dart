@@ -25,9 +25,10 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     emit(TriggerAppAdded(triggerApps: state.triggerApps.toList()..add(app)));
   }
 
-  void clearTriggerApps() {
-    mainRepository.clearTriggerApps();
-    emit(TriggerAppsCleared(triggerApps: []));
+  void removeTriggerApp(TriggerApp app) {
+    mainRepository.removeTriggerApp(app);
+    emit(TriggerAppRemoved(
+        removedApp: app, triggerApps: state.triggerApps.toList()..remove(app)));
   }
 
   void addHealthyApp() {

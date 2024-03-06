@@ -23,6 +23,12 @@ final class TriggerAppsCleared extends MainScreenState {
   TriggerAppsCleared({required super.triggerApps});
 }
 
+final class TriggerAppRemoved extends MainScreenState {
+  TriggerAppRemoved({required this.removedApp, required super.triggerApps});
+
+  final TriggerApp removedApp;
+}
+
 /// This state is emitted when the user tries to add a trigger app
 /// that has already been added
 final class DuplicateTriggerAppError extends MainScreenState {

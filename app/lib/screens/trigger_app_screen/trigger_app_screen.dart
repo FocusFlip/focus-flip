@@ -6,6 +6,7 @@ import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
 import 'package:focus_flip/models/app.dart';
 import 'package:focus_flip/screens/main_screen/components/choose_app_dialog.dart';
 import 'package:focus_flip/screens/main_screen/components/inline_label_list.dart';
+import 'package:focus_flip/screens/trigger_app_screen/components/confirmation_dialog.dart';
 import 'package:focus_flip/screens/trigger_app_screen/components/youtube_video_placeholder.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/images.dart';
@@ -25,6 +26,15 @@ class TriggerAppScreen extends StatelessWidget {
     }
     mainScreenCubit.addTriggerApp(app);
     Navigator.pop(context);
+  }
+
+  void _requestRemoveTriggerApp(BuildContext context, TriggerApp app) {
+    showConfirmationDialog(
+        context: context,
+        title: "Disable FocusFlip for ${app.name}",
+        content: "Are you sure you want to disable FocusFlip for ${app.name}?",
+        onConfirm: () => mainScreenCubit.removeTriggerApp(app),
+        onCancel: () {});
   }
 
   void _openTriggerAppSelection(BuildContext context) async {
@@ -50,9 +60,7 @@ class TriggerAppScreen extends StatelessWidget {
           text: triggerApp.name,
           isActive: true,
           trailing: GestureDetector(
-            onTap: () {
-              print("print");
-            },
+            onTap: () => _requestRemoveTriggerApp(context, triggerApp),
             child: Icon(Icons.close,
                 color: ColorsHelpers.primaryColor,
                 size: ScreenUtil().setSp(16)),
