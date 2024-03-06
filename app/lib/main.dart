@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:focus_flip/models/app.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:overlay_pop_up/overlay_communicator.dart';
 import 'package:focus_flip/cubits/intervention_screen/intervention_screen_cubit.dart';
@@ -25,6 +26,9 @@ Future<void> main() async {
   ));
 
   await Hive.initFlutter();
+  Hive.registerAdapter(AppAdapter());
+  Hive.registerAdapter(TriggerAppAdapter());
+  Hive.registerAdapter(HealthyAppAdapter());
   MainRepository.instance.openBox();
 
   if (Platform.isIOS) {

@@ -12,7 +12,7 @@ class MainRepository extends HiveBoxRepository {
 
   MainRepository(hiveBoxName) : super(hiveBoxName);
 
-  // TODO: store in HiveDB
+  // TODO: Remove when you use the API to define url and package name
   final List<TriggerApp> _triggerApps = [
     TriggerApp(
         name: "YouTube",
@@ -21,15 +21,33 @@ class MainRepository extends HiveBoxRepository {
   ];
 
   List<TriggerApp> get triggerApps {
-    return _triggerApps.toList();
+    try {
+      print("[MainRepository] Reading TriggerApps from the box");
+      print(instance.readTriggerApps());
+      return instance.readTriggerApps();
+    } catch (e) {
+      print(e);
+    }
+    return [];
+  }
+
+  void addHealthyAppInRepo() {
+    print("[MainRepository] writeHealthyAppInMain");
+    instance.addHealthyApp(healthyApp);
+  }
+
+  void addTriggerAppInRepo() {
+    print("[MainRepository] writeTriggerAppInMain");
+
+    instance.addTriggerApps(triggerApps);
   }
 
   void addTriggerApp(TriggerApp app) {
     if (_triggerApps.any((element) => element.name == app.name)) {
       throw DuplicateException(duplicateField: "name");
     }
-
     _triggerApps.add(app);
+    instance.addTriggerApps(_triggerApps);
   }
 
   void clearTriggerApps() {
@@ -58,9 +76,45 @@ class MainRepository extends HiveBoxRepository {
   }
 
   int readRequiredHealthyTime() {
-    print("[MainRepository] Reading RequiredHealthyTime in the box");
-    print(instance.box.get("requiredHealthyTime"));
-    return instance.box.get("requiredHealthyTime");
+    try {
+      print("[MainRepository] Reading RequiredHealthyTime in the box");
+      print(instance.box.get("requiredHealthyTime"));
+      return instance.box.get("requiredHealthyTime");
+    } catch (e) {
+      print(e);
+    }
+    //default time set to 20 seconds
+    return 20;
+  }
+
+  //TODO - Add the model for hive to recognize the object
+  void addTriggerApps(List<TriggerApp> _triggerApps) {
+    print("[Hiverepository] Writing triggerApps to the box");
+    box.put('triggerApps', _triggerApps);
+    readTriggerApps();
+  }
+
+  List<TriggerApp> readTriggerApps() {
+    print("[Hiverepository] Reading triggerApps from the box");
+    box.get('triggerApps').cast<TriggerApp>().forEach((element) {
+      print(element.name);
+    });
+    return box.get('triggerApps').cast<TriggerApp>();
+  }
+
+  //TODO - Add the model for hive to recognize the object
+  void addHealthyApps(List<HealthyApp> _healthyApps) {
+    print("[Hiverepository] Writing healthyApps to the box");
+    box.put('healthyApps', _healthyApps);
+
+    print("[Hiverepository] Reading healthyApps from the box");
+    box.get('healthyApps');
+  }
+
+  //TODO - Add the model for hive to recognize the object
+  void addHealthyApp(HealthyApp _healthyApp) {
+    print("[HiveBox] Writing healthyApp to the box");
+    box.put('healthyApp', _healthyApp);
   }
 }
 

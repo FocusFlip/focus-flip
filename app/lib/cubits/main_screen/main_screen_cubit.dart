@@ -7,7 +7,8 @@ part 'main_screen_state.dart';
 
 class MainScreenCubit extends Cubit<MainScreenState> {
   MainScreenCubit(this.mainRepository)
-      : super(MainScreenInitial(triggerApps: []));
+      : super(MainScreenInitial(mainRepository.triggerApps,
+            Duration(seconds: mainRepository.readRequiredHealthyTime())));
   final MainRepository mainRepository;
 
   Future<void> addTriggerApp(String name) async {
@@ -21,6 +22,7 @@ class MainScreenCubit extends Cubit<MainScreenState> {
         name: name,
         url: name.toLowerCase() + "://",
         packageName: "com." + name.toLowerCase() + ".android");
+
     try {
       mainRepository.addTriggerApp(app);
     } on DuplicateException {
@@ -39,8 +41,17 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     emit(TriggerAppsCleared(triggerApps: []));
   }
 
+//TODO - Fix this method when the HealthyApp is selected from the list
   void addHealthyApp() {
-    throw UnimplementedError();
+    try {
+      mainRepository.addHealthyApp(mainRepository.healthyApp);
+    } on DuplicateException {
+      emit(DuplicateNameError(triggerApps: state.triggerApps.toList()));
+      return;
+    } catch (e) {
+      return;
+    }
+    // emit(HealthyAppAdded(mainRepository.healthyApp));
   }
 
   void clearHealthyApps() {
