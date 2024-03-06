@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
 import 'package:focus_flip/screens/trigger_app_screen/trigger_app_screen.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/widget_assets.dart';
 
 class MainScreenLayout extends StatelessWidget {
+  final MainScreenCubit mainScreenCubit;
+
+  const MainScreenLayout({super.key, required this.mainScreenCubit});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,62 +87,82 @@ class MainScreenLayout extends StatelessWidget {
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(32),
                               topLeft: Radius.circular(32))),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            widgetText('Set up your intervention',
-                                fontWeight: FontWeight.w500,
-                                fontSize: ScreenUtil().setSp(20),
-                                color: Colors.black,
-                                overflow: TextOverflow.ellipsis,
-                                align: TextAlign.left),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  bottom: ScreenUtil().setHeight(16)),
-                              child: listItem(
-                                  Icon(
-                                    Icons.app_blocking,
-                                    size: ScreenUtil().setHeight(30),
-                                    color: ColorsHelpers.orange,
-                                  ),
-                                  'Trigger App',
-                                  'Instagram', () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            TriggerAppScreen()));
-                              }, Colors.white, Colors.black,
-                                  ColorsHelpers.grey2),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  bottom: ScreenUtil().setHeight(16)),
-                              child: listItem(
-                                  Icon(
-                                    Icons.school,
-                                    size: ScreenUtil().setHeight(30),
-                                    color: ColorsHelpers.green,
-                                  ),
-                                  'Healthy App',
-                                  'Not chosen yet', () {
-                                throw UnimplementedError();
-                              }, Colors.white, Colors.black, ColorsHelpers.red),
-                            ),
-                            listItem(
-                                Icon(
-                                  Icons.timer,
-                                  size: ScreenUtil().setHeight(30),
-                                  color: ColorsHelpers.dullLavender,
+                      child: BlocBuilder<MainScreenCubit, MainScreenState>(
+                        bloc: mainScreenCubit,
+                        builder: (BuildContext context, MainScreenState state) {
+                          String triggerAppSubtitle = state.triggerApps.isEmpty
+                              ? 'Not chosen yet'
+                              : state.triggerApps.length == 1
+                                  ? state.triggerApps[0].name
+                                  : '${state.triggerApps[0].name} and ${state.triggerApps.length - 1} more';
+                          Color triggerAppSubtitleColor =
+                              state.triggerApps.isEmpty
+                                  ? ColorsHelpers.red
+                                  : ColorsHelpers.grey2;
+
+                          return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                widgetText('Set up your intervention',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: ScreenUtil().setSp(20),
+                                    color: Colors.black,
+                                    overflow: TextOverflow.ellipsis,
+                                    align: TextAlign.left),
+                                const SizedBox(
+                                  height: 16,
                                 ),
-                                'Intervention time',
-                                '5 seconds', () {
-                              throw UnimplementedError();
-                            }, Colors.white, Colors.black, ColorsHelpers.grey2),
-                          ]),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      bottom: ScreenUtil().setHeight(16)),
+                                  child: listItem(
+                                      Icon(
+                                        Icons.app_blocking,
+                                        size: ScreenUtil().setHeight(30),
+                                        color: ColorsHelpers.orange,
+                                      ),
+                                      'Trigger app',
+                                      triggerAppSubtitle, () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                TriggerAppScreen(
+                                                  mainScreenCubit:
+                                                      mainScreenCubit,
+                                                )));
+                                  }, Colors.white, Colors.black,
+                                      triggerAppSubtitleColor),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      bottom: ScreenUtil().setHeight(16)),
+                                  child: listItem(
+                                      Icon(
+                                        Icons.school,
+                                        size: ScreenUtil().setHeight(30),
+                                        color: ColorsHelpers.green,
+                                      ),
+                                      'Healthy app',
+                                      'Not chosen yet', () {
+                                    throw UnimplementedError();
+                                  }, Colors.white, Colors.black,
+                                      ColorsHelpers.red),
+                                ),
+                                listItem(
+                                    Icon(
+                                      Icons.timer,
+                                      size: ScreenUtil().setHeight(30),
+                                      color: ColorsHelpers.dullLavender,
+                                    ),
+                                    'Intervention time',
+                                    '5 seconds', () {
+                                  throw UnimplementedError();
+                                }, Colors.white, Colors.black,
+                                    ColorsHelpers.grey2),
+                              ]);
+                        },
+                      ),
                     ),
                   ],
                 ),

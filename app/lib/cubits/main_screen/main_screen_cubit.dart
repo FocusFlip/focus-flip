@@ -10,21 +10,12 @@ class MainScreenCubit extends Cubit<MainScreenState> {
       : super(MainScreenInitial(triggerApps: []));
   final MainRepository mainRepository;
 
-  Future<void> addTriggerApp(String name) async {
-    if (name.isEmpty) {
-      emit(EmptyNameError(triggerApps: state.triggerApps.toList()));
-      return;
-    }
-
-    // TODO : Retrieve the package name and/or url from API
-    TriggerApp app = TriggerApp(
-        name: name,
-        url: name.toLowerCase() + "://",
-        packageName: "com." + name.toLowerCase() + ".android");
+  Future<void> addTriggerApp(TriggerApp app) async {
     try {
       mainRepository.addTriggerApp(app);
     } on DuplicateException {
-      emit(DuplicateNameError(triggerApps: state.triggerApps.toList()));
+      print("[MainScreenCubit] Duplicate trigger app");
+      emit(DuplicateTriggerAppError(triggerApps: state.triggerApps.toList()));
       return;
     } catch (e) {
       // TODO: error handling

@@ -10,7 +10,6 @@ import 'package:focus_flip/utils/toasts.dart';
 import '../../cubits/intervention_screen/intervention_screen_cubit.dart';
 import '../../models/app.dart';
 import '../intervention_screen/intervention_screen.dart';
-import 'components/add_trigger_app_dialog.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -19,21 +18,9 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final MainScreenCubit _cubit = MainScreenCubit(MainRepository.instance);
+
   final InterventionScreenCubit _interventionScreenCubit =
       InterventionScreenCubit.instance;
-
-  void _addTriggerApp(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AddTriggerAppDialog(
-          onSubmit: _cubit.addTriggerApp,
-          cubit: _cubit,
-        );
-      },
-    );
-  }
 
   void _cubitListener(MainScreenState state) {
     if (state is TriggerAppsCleared) {
@@ -94,6 +81,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MainScreenLayout();
+    return MainScreenLayout(
+      mainScreenCubit: _cubit,
+    );
   }
 }

@@ -23,12 +23,10 @@ final class TriggerAppsCleared extends MainScreenState {
   TriggerAppsCleared({required super.triggerApps});
 }
 
-final class EmptyNameError extends MainScreenState {
-  EmptyNameError({required super.triggerApps});
-}
-
-final class DuplicateNameError extends MainScreenState {
-  DuplicateNameError({required super.triggerApps});
+/// This state is emitted when the user tries to add a trigger app
+/// that has already been added
+final class DuplicateTriggerAppError extends MainScreenState {
+  DuplicateTriggerAppError({required super.triggerApps});
 }
 
 final class UpdatedRequiredHealthyTime extends MainScreenState {

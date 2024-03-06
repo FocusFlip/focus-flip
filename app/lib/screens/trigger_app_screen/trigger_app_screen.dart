@@ -1,16 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
+import 'package:focus_flip/models/app.dart';
+import 'package:focus_flip/screens/main_screen/components/choose_app_dialog.dart';
 import 'package:focus_flip/screens/main_screen/components/inline_label_list.dart';
 import 'package:focus_flip/screens/trigger_app_screen/components/youtube_video_placeholder.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/images.dart';
+import 'package:focus_flip/utils/toasts.dart';
 import 'package:focus_flip/utils/widget_assets.dart';
 
 class TriggerAppScreen extends StatelessWidget {
-  TriggerAppScreen({super.key});
+  TriggerAppScreen({super.key, required this.mainScreenCubit});
 
+  final MainScreenCubit mainScreenCubit;
   final textFieldFocusNode = FocusNode();
+
+  void _onSubmitTriggerApp(BuildContext context, TriggerApp? app) {
+    if (app == null) {
+      showToast("You have not selected any app");
+      return;
+    }
+    mainScreenCubit.addTriggerApp(app);
+    Navigator.pop(context);
+  }
+
+  void _openTriggerAppSelection(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return ChooseAppDialog<TriggerApp>(
+            onSubmit: _onSubmitTriggerApp,
+            title: "Add a trigger app",
+            apps: [
+              // TODO: add apps
+              TriggerApp(name: "TestApp", url: "test.com")
+            ]);
+      },
+    );
+  }
+
+  Widget _triggerAppListBuilder(BuildContext context, MainScreenState state) {
+    List<Label> labels = [];
+    for (TriggerApp triggerApp in state.triggerApps) {
+      labels.add(Label(
+          text: triggerApp.name,
+          isActive: true,
+          trailing: GestureDetector(
+            onTap: () {
+              print("print");
+            },
+            child: Icon(Icons.close,
+                color: ColorsHelpers.primaryColor,
+                size: ScreenUtil().setSp(16)),
+          )));
+    }
+    labels.add(
+        Label(text: "+ Add", onTap: () => _openTriggerAppSelection(context)));
+
+    return InlineLabelList(
+      labels: labels,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,30 +148,12 @@ class TriggerAppScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(16)),
-                  child: InlineLabelList(
-                    labels: [
-                      Label(
-                          text: "Instagram",
-                          isActive: true,
-                          trailing: GestureDetector(
-                            onTap: () {
-                              // _cubit.clearTriggerApps();
-                              print("print");
-                            },
-                            child: Icon(Icons.close,
-                                color: ColorsHelpers.primaryColor,
-                                size: ScreenUtil().setSp(16)),
-                          )),
-                    ]..add(Label(
-                        text: "+ Add",
-                        onTap: () {
-                          // _cubit.addTriggerApp
-                          //_addTriggerApp(context);
-                        })),
-                  ),
-                ),
+                    width: double.infinity,
+                    margin: EdgeInsets.only(top: ScreenUtil().setHeight(16)),
+                    child: BlocBuilder<MainScreenCubit, MainScreenState>(
+                      bloc: mainScreenCubit,
+                      builder: _triggerAppListBuilder,
+                    )),
                 Container(
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
