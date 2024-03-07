@@ -134,6 +134,13 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
 void overlayPopUp() {
   WidgetsFlutterBinding.ensureInitialized();
   OverlayCommunicator.init(OverlayCommunicatorType.overlay);
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false, home: InterventionOverlayWindow()));
+  runApp(ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: InterventionOverlayWindow());
+      }));
 }
