@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
+import 'package:focus_flip/screens/healthy_app_screen/healty_app_screen.dart';
 import 'package:focus_flip/screens/trigger_app_screen/trigger_app_screen.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/widget_assets.dart';
@@ -145,7 +146,14 @@ class MainScreenLayout extends StatelessWidget {
                                       ),
                                       'Healthy app',
                                       'Not chosen yet', () {
-                                    throw UnimplementedError();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HealthyAppScreen(
+                                                  mainScreenCubit:
+                                                      mainScreenCubit,
+                                                )));
                                   }, Colors.white, Colors.black,
                                       ColorsHelpers.red),
                                 ),

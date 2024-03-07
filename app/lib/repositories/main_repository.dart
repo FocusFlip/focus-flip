@@ -47,12 +47,17 @@ class MainRepository extends HiveBoxRepository {
 
   // TODO: store in HiveDB
   HealthyApp get healthyApp {
+    // return box.get('healthyApp');
     return HealthyApp(
         name: "Anki",
         url: "anki://",
         packageName: "com.ichi2.anki",
         requiredUsageDuration:
             Duration(seconds: instance.readRequiredHealthyTime()));
+  }
+
+  set healthyApp(HealthyApp app) {
+    box.put('healthyApp', app);
   }
 
 //TODO - Fix Error Handling and displaying the message in higher level
@@ -80,21 +85,6 @@ class MainRepository extends HiveBoxRepository {
     print("[Hiverepository] Writing triggerApps to the box");
     box.put('triggerApps', _triggerApps);
     triggerApps;
-  }
-
-  //TODO - Add the model for hive to recognize the object
-  void addHealthyApps(List<HealthyApp> _healthyApps) {
-    print("[Hiverepository] Writing healthyApps to the box");
-    box.put('healthyApps', _healthyApps);
-
-    print("[Hiverepository] Reading healthyApps from the box");
-    box.get('healthyApps');
-  }
-
-  //TODO - Add the model for hive to recognize the object
-  void addHealthyApp(HealthyApp _healthyApp) {
-    print("[HiveBox] Writing healthyApp to the box");
-    box.put('healthyApp', _healthyApp);
   }
 }
 
