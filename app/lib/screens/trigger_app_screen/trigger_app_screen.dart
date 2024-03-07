@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
 import 'package:focus_flip/models/app.dart';
+import 'package:focus_flip/repositories/predefined_app_list_repository.dart';
 import 'package:focus_flip/screens/main_screen/components/choose_app_dialog.dart';
 import 'package:focus_flip/screens/main_screen/components/inline_label_list.dart';
 import 'package:focus_flip/screens/trigger_app_screen/components/confirmation_dialog.dart';
@@ -45,10 +46,7 @@ class TriggerAppScreen extends StatelessWidget {
         return ChooseAppDialog<TriggerApp>(
             onSubmit: _onSubmitTriggerApp,
             title: "Add a trigger app",
-            apps: [
-              // TODO: add apps
-              TriggerApp(name: "TestApp", url: "test.com")
-            ]);
+            apps: PredefinedAppListRepository.triggerApps);
       },
     );
   }

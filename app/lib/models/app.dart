@@ -15,11 +15,12 @@ abstract class App {
     };
   }
 
-  App({required this.name, required this.url, this.packageName});
+  const App({required this.name, required this.url, this.packageName});
 }
 
 class TriggerApp extends App {
-  TriggerApp({required String name, required String url, String? packageName})
+  const TriggerApp(
+      {required String name, required String url, String? packageName})
       : super(name: name, url: url, packageName: packageName);
 
   TriggerApp.fromJson(Map<String, dynamic> json)
@@ -39,7 +40,7 @@ class TriggerApp extends App {
 }
 
 class HealthyApp extends App {
-  HealthyApp(
+  const HealthyApp(
       {required String name,
       required String url,
       String? packageName,
