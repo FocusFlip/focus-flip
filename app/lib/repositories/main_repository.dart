@@ -12,14 +12,6 @@ class MainRepository extends HiveBoxRepository {
 
   MainRepository(hiveBoxName) : super(hiveBoxName);
 
-  // TODO: Remove when you use the API to define url and package name
-  final List<TriggerApp> _triggerApps = [
-    TriggerApp(
-        name: "YouTube",
-        url: "youtube://",
-        packageName: "com.google.android.youtube"),
-  ];
-
   List<TriggerApp> get triggerApps {
     try {
       print("[Hiverepository] Reading triggerApps from the box");
@@ -31,17 +23,6 @@ class MainRepository extends HiveBoxRepository {
       print(e);
     }
     return [];
-  }
-
-  void addHealthyAppInRepo() {
-    print("[MainRepository] writeHealthyAppInMain");
-    instance.addHealthyApp(healthyApp);
-  }
-
-  void addTriggerAppInRepo() {
-    print("[MainRepository] writeTriggerAppInMain");
-
-    instance.addTriggerApps(triggerApps);
   }
 
   void addTriggerApp(TriggerApp app) {
