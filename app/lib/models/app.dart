@@ -1,8 +1,18 @@
-abstract class App {
+import 'package:hive/hive.dart';
+
+part 'app.g.dart';
+
+@HiveType(typeId: 0)
+class App {
+  @HiveField(0)
   final String name;
+
+  @HiveField(1)
 
   // TODO: make is non-nullable
   final String? packageName; // For Android
+
+  @HiveField(2)
 
   /// URL to open
   final String url;
@@ -18,6 +28,7 @@ abstract class App {
   const App({required this.name, required this.url, this.packageName});
 }
 
+@HiveType(typeId: 1)
 class TriggerApp extends App {
   const TriggerApp(
       {required String name, required String url, String? packageName})
@@ -39,6 +50,7 @@ class TriggerApp extends App {
   }
 }
 
+@HiveType(typeId: 2)
 class HealthyApp extends App {
   const HealthyApp(
       {required String name,
@@ -47,6 +59,7 @@ class HealthyApp extends App {
       required this.requiredUsageDuration})
       : super(name: name, url: url, packageName: packageName);
 
+  @HiveField(3)
   final Duration requiredUsageDuration;
 
   HealthyApp.fromJson(Map<String, dynamic> json)
@@ -64,7 +77,7 @@ class HealthyApp extends App {
       "name": name,
       "packageName": packageName,
       "url": url,
-      "requiredUsageDuration": requiredUsageDuration.inMilliseconds,
+      "requiredUsageDuration": requiredUsageDuration.inSeconds,
     };
   }
 }

@@ -85,7 +85,7 @@ class _SplashScreenWidget extends StatelessWidget {
                 Center(
                   child: Image.asset(
                     Images.appLogo,
-                    width: 124,
+                    width: 166,
                     height: 166,
                   ),
                 ),

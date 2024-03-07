@@ -5,9 +5,8 @@ import 'package:focus_flip/models/app.dart';
 import 'package:focus_flip/repositories/main_repository.dart';
 
 class InterventionScreen extends StatefulWidget {
-  const InterventionScreen({super.key, required this.initialTriggerApp});
-
   final TriggerApp initialTriggerApp;
+  const InterventionScreen({super.key, required this.initialTriggerApp});
 
   @override
   State<InterventionScreen> createState() => _InterventionScreenState();

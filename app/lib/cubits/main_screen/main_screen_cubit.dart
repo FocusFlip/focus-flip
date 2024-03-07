@@ -7,7 +7,8 @@ part 'main_screen_state.dart';
 
 class MainScreenCubit extends Cubit<MainScreenState> {
   MainScreenCubit(this.mainRepository)
-      : super(MainScreenInitial(triggerApps: []));
+      : super(MainScreenInitial(mainRepository.triggerApps,
+            Duration(seconds: mainRepository.readRequiredHealthyTime())));
   final MainRepository mainRepository;
 
   Future<void> addTriggerApp(TriggerApp app) async {
@@ -31,23 +32,39 @@ class MainScreenCubit extends Cubit<MainScreenState> {
         removedApp: app, triggerApps: state.triggerApps.toList()..remove(app)));
   }
 
+//TODO - Fix this method when the HealthyApp is selected from the list
   void addHealthyApp() {
-    throw UnimplementedError();
+    try {
+      mainRepository.addHealthyApp(mainRepository.healthyApp);
+    } on DuplicateException {
+      return;
+    } catch (e) {
+      return;
+    }
+    // emit(HealthyAppAdded(mainRepository.healthyApp));
   }
 
   void clearHealthyApps() {
     throw UnimplementedError();
   }
 
-  void updateRequiredHealthyTime(int value) {
+  void updateRequiredHealthyTime(String value) {
+    int? time = int.tryParse(value);
+
+    //TODO - Display error message to user when wrong value is given
+    if (time == null || time < 15) {
+      emit(RequiredHealthyTimeError(
+          state.triggerApps.toList(), Duration(seconds: 0)));
+      return;
+    }
     try {
-      mainRepository.updateRequiredHealthyTime(value);
+      mainRepository.updateRequiredHealthyTime(time);
     } catch (e) {
       emit(RequiredHealthyTimeError(
-          state.triggerApps.toList(), Duration(seconds: value)));
+          state.triggerApps.toList(), Duration(seconds: time)));
       return;
     }
     emit(UpdatedRequiredHealthyTime(
-        state.triggerApps.toList(), Duration(seconds: value)));
+        state.triggerApps.toList(), Duration(seconds: time)));
   }
 }
