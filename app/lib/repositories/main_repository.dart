@@ -45,18 +45,23 @@ class MainRepository extends HiveBoxRepository {
   }
 
   void addTriggerApp(TriggerApp app) {
-    if (_triggerApps.any((element) => element.name == app.name)) {
+    // TODO: check if we need verify by url or package name
+    // It is not needed on iOS because a predefined list of apps is used,
+    // but the available apps for android are not known in advance.
+    if (triggerApps.any((element) => element.name == app.name)) {
       throw DuplicateException(duplicateField: "name");
     }
-    _triggerApps.add(app);
-    instance.addTriggerApps(_triggerApps);
+    putTriggerAppList(triggerApps..add(app));
+    print("Add TriggerApp.");
   }
 
   void removeTriggerApp(TriggerApp app) {
+    var triggerAppsNumber = triggerApps.length;
+    putTriggerAppList(
+        triggerApps..removeWhere((element) => element.name == app.name));
+    var newTriggerAppsNumber = triggerApps.length;
     print(
-        "[MainRepository] Removing trigger app. (Attention: this method is not implemented yet)");
-
-    _triggerApps.remove(app);
+        "Remove TriggerApp. Number of TriggerApps before: $triggerAppsNumber, after: $newTriggerAppsNumber");
   }
 
   // TODO: store in HiveDB
@@ -90,7 +95,7 @@ class MainRepository extends HiveBoxRepository {
   }
 
   //TODO - Add the model for hive to recognize the object
-  void addTriggerApps(List<TriggerApp> _triggerApps) {
+  void putTriggerAppList(List<TriggerApp> _triggerApps) {
     print("[Hiverepository] Writing triggerApps to the box");
     box.put('triggerApps', _triggerApps);
     triggerApps;

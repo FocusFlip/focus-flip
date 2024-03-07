@@ -1,5 +1,6 @@
 import 'package:focus_flip/models/app.dart';
 
+/// We assume that the names are unique.
 class PredefinedAppListRepository {
   static const List<TriggerApp> triggerApps = [
     TriggerApp(name: "Instagram", url: "instagram://"),
