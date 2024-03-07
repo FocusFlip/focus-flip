@@ -22,9 +22,11 @@ class MainRepository extends HiveBoxRepository {
 
   List<TriggerApp> get triggerApps {
     try {
-      print("[MainRepository] Reading TriggerApps from the box");
-      print(instance.readTriggerApps());
-      return instance.readTriggerApps();
+      print("[Hiverepository] Reading triggerApps from the box");
+      box.get('triggerApps').cast<TriggerApp>().forEach((element) {
+        print(element.name);
+      });
+      return box.get('triggerApps').cast<TriggerApp>();
     } catch (e) {
       print(e);
     }
@@ -88,15 +90,7 @@ class MainRepository extends HiveBoxRepository {
   void addTriggerApps(List<TriggerApp> _triggerApps) {
     print("[Hiverepository] Writing triggerApps to the box");
     box.put('triggerApps', _triggerApps);
-    readTriggerApps();
-  }
-
-  List<TriggerApp> readTriggerApps() {
-    print("[Hiverepository] Reading triggerApps from the box");
-    box.get('triggerApps').cast<TriggerApp>().forEach((element) {
-      print(element.name);
-    });
-    return box.get('triggerApps').cast<TriggerApp>();
+    triggerApps;
   }
 
   //TODO - Add the model for hive to recognize the object
