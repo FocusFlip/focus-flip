@@ -265,7 +265,7 @@ class _MainScreenState extends State<MainScreen> {
                                 MediaQuery.of(context).viewPadding.bottom),
                         alignment: Alignment.center,
                         child: TextFormField(
-                          onTap: () {},
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -281,12 +281,15 @@ class _MainScreenState extends State<MainScreen> {
                               left: ScreenUtil().setWidth(24),
                               right: ScreenUtil().setWidth(24),
                             ),
-                            hintText: 'Time in minutes',
+                            hintText: 'Time in seconds',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: ScreenUtil().setSp(16),
                                 color: ColorsHelpers.grey2),
                           ),
+                          onChanged: (value) {
+                            _cubit.updateRequiredHealthyTime(value);
+                          },
                         ),
                       ),
                       if (Platform.isAndroid) ...[

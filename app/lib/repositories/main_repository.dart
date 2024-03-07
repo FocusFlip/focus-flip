@@ -42,12 +42,31 @@ class MainRepository extends HiveBoxRepository {
         name: "Anki",
         url: "anki://",
         packageName: "com.ichi2.anki",
-        requiredUsageDuration: Duration(seconds: 20));
+        requiredUsageDuration:
+            Duration(seconds: instance.readRequiredHealthyTime()));
   }
+
+//TODO - Fix Error Handling and displaying the message in higher level
+  void updateRequiredHealthyTime(int value) {
+    print("[MainRepository] updateRequiredHealthyTimeInMain");
+    instance.box.put("requiredHealthyTime", value);
+    print("[MainRepository] Read RequiredHealthyTime in the box");
+    readRequiredHealthyTime();
+  }
+
+  int readRequiredHealthyTime() {
+    print("[MainRepository] Reading RequiredHealthyTime in the box");
+    print(instance.box.get("requiredHealthyTime"));
+    return instance.box.get("requiredHealthyTime");
+  }
+}
+
+class WrongValueException implements Exception {
+  final String message;
+  WrongValueException({required this.message});
 }
 
 class DuplicateException implements Exception {
   final String duplicateField;
-
   DuplicateException({required this.duplicateField});
 }

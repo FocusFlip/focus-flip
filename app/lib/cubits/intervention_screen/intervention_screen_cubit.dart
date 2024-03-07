@@ -354,7 +354,10 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       /// conditions only once after the delay, but if the user closes and opens
       /// a trigger app twice, the user gets access to it earlier because the timer
       /// for the first opening is not stopped.
-      print("[InterventionScreenCubit] Intervention interrupted");
+      ///
+      print(
+        "[InterventionScreenCubit] Intervention interrupted",
+      );
       return;
     }
     InterventionSuccessful newState = InterventionSuccessful(
