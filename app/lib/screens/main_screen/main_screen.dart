@@ -290,7 +290,7 @@ class _MainScreenState extends State<MainScreen> {
                           initialValue:
                               state.requiredHealthyTime?.inSeconds.toString(),
                           onChanged: (value) {
-                            _cubit.updateRequiredHealthyTime(int.parse(value));
+                            _cubit.updateRequiredHealthyTime(value);
                           },
                         ),
                       ),

@@ -66,12 +66,9 @@ class MainRepository extends HiveBoxRepository {
 
 //TODO - Fix Error Handling and displaying the message in higher level
   void updateRequiredHealthyTime(int value) {
-    if (value <= 5) {
-      throw WrongValueException(message: "Value must be greater than 15");
-    }
     print("[MainRepository] updateRequiredHealthyTimeInMain");
     instance.box.put("requiredHealthyTime", value);
-    print("[MainRepository] Writing RequiredHealthyTime in the box");
+    print("[MainRepository] Read RequiredHealthyTime in the box");
     readRequiredHealthyTime();
   }
 
