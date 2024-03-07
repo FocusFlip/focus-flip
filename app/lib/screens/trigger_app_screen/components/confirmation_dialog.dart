@@ -24,7 +24,7 @@ void showConfirmationDialog(
             },
           ),
           TextButton(
-            child: widgetText('Remove'),
+            child: widgetText('Confirm'),
             onPressed: () {
               onConfirm();
               Navigator.of(context).pop();
