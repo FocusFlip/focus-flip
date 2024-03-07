@@ -96,7 +96,6 @@ class _InterventionOverlayWindowState extends State<InterventionOverlayWindow> {
       }
     }
 
-    return Scaffold(
-        appBar: AppBar(title: Text("Intervention")), body: Center(child: body));
+    return Scaffold(body: body);
   }
 }
