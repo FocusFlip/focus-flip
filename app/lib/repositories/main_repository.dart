@@ -26,7 +26,7 @@ class MainRepository extends HiveBoxRepository {
       box.get('triggerApps').cast<TriggerApp>().forEach((element) {
         print(element.name);
       });
-      return box.get('triggerApps').cast<TriggerApp>();
+      return box.get('triggerApps').cast<TriggerApp>().toList();
     } catch (e) {
       print(e);
     }
