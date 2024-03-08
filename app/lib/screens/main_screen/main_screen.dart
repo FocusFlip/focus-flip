@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
 import 'package:focus_flip/cubits/shortcuts/shortcuts_cubit.dart';
 import 'package:focus_flip/repositories/main_repository.dart';
+import 'package:focus_flip/repositories/predefined_app_list_repository.dart';
 import 'package:focus_flip/screens/main_screen/components/main_screen_layout.dart';
-import 'package:focus_flip/utils/apps_utils.dart';
 import 'package:focus_flip/utils/toasts.dart';
 import '../../cubits/intervention_screen/intervention_screen_cubit.dart';
 import '../../models/app.dart';
@@ -28,23 +28,28 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  void _onTriggerAppOpened(TriggerAppOpenedShortcut state) {
+    var triggerApps = PredefinedAppListRepository.triggerApps;
+    if (triggerApps.any((element) => element.name == state.appName)) {
+      TriggerApp triggerApp =
+          triggerApps.firstWhere((element) => element.name == state.appName);
+      HealthyApp? healthyApp = MainRepository.instance.healthyApp;
+      _interventionScreenCubit.openScreen(triggerApp, healthyApp);
+    }
+  }
+
   void _setShortcutsListener() {
     assert(Platform.isIOS);
 
     ShortcutsCubit.instance.stream.listen((state) {
       print("[MainScreen] ShortuctsCubit state updated: $state");
       if (state is TriggerAppOpenedShortcut) {
-        TriggerApp triggerApp = getTriggerAppByName(state.appName);
-        HealthyApp? healthyApp = MainRepository.instance.healthyApp;
-        _interventionScreenCubit.openScreen(triggerApp, healthyApp);
+        _onTriggerAppOpened(state);
       }
     });
-    if (ShortcutsCubit.instance.state is TriggerAppOpenedShortcut) {
-      TriggerAppOpenedShortcut state =
-          ShortcutsCubit.instance.state as TriggerAppOpenedShortcut;
-      TriggerApp triggerApp = getTriggerAppByName(state.appName);
-      HealthyApp? healthyApp = MainRepository.instance.healthyApp;
-      _interventionScreenCubit.openScreen(triggerApp, healthyApp);
+    ShortcutsState state = ShortcutsCubit.instance.state;
+    if (state is TriggerAppOpenedShortcut) {
+      _onTriggerAppOpened(state);
     }
 
     _interventionScreenCubit.stream.listen((state) {
