@@ -50,8 +50,8 @@ class _InterventionScreenState extends State<InterventionScreen> {
                 triggerApp: state.triggerApp,
                 healthyApp: state.healthyApp,
                 startHealthyAppIntervention: () =>
-                    _cubit.launchHealthyAppAsIntervention(
-                        state.healthyApp, state.triggerApp),
+                    _cubit.launchHealthyAppAsIntervention(state.healthyApp,
+                        state.requiredHealthyTime, state.triggerApp),
               );
             } else if (state is InterventionInProgress) {
               return InterventionInProgressScreen(healthyApp: state.healthyApp);
@@ -72,6 +72,7 @@ class _InterventionScreenState extends State<InterventionScreen> {
               return InterventionInterruptedScreen(
                   triggerApp: state.triggerApp,
                   healthyApp: state.healthyApp,
+                  requiredHealthyTime: state.requiredHealthyTime,
                   cubit: _cubit);
             } else if (state is InterventionResultTimeout) {
               return InterventionTimeoutScreen();
@@ -194,12 +195,14 @@ class InterventionSuccessfulScreen extends StatelessWidget {
 class InterventionInterruptedScreen extends StatelessWidget {
   final TriggerApp triggerApp;
   final HealthyApp healthyApp;
+  final Duration requiredHealthyTime;
   final InterventionScreenCubit cubit;
 
   const InterventionInterruptedScreen(
       {super.key,
       required this.triggerApp,
       required this.healthyApp,
+      required this.requiredHealthyTime,
       required this.cubit});
 
   @override
@@ -216,7 +219,8 @@ class InterventionInterruptedScreen extends StatelessWidget {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
-            cubit.launchHealthyAppAsIntervention(healthyApp, triggerApp);
+            cubit.launchHealthyAppAsIntervention(
+                healthyApp, requiredHealthyTime, triggerApp);
           },
           child: Text("Open " + healthyApp.name),
         ),

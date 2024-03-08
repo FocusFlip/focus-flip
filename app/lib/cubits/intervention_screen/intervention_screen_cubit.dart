@@ -43,7 +43,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
             InterventionOverlayWindow.LAUNCH_HEALTHY_APP_INTERVENTION) {
           if (state is BeginIntervention) {
             await launchHealthyAppAsIntervention(
-                state.healthyApp, state.triggerApp);
+                state.healthyApp, state.requiredHealthyTime, state.triggerApp);
             await OverlayPopUp.closeOverlay();
           }
         } else if (event ==
@@ -98,6 +98,8 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
   }
 
   Future<void> _appUsageEventListener(UsageEvent event) async {
+    Duration requiredHealthyTime =
+        Duration(seconds: mainRepository.readRequiredHealthyTime());
     HealthyApp? healthyApp = mainRepository.healthyApp;
     if (healthyApp?.packageName == event.packageName) {
       print(
@@ -110,6 +112,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
           timestamp: DateTime.now().millisecondsSinceEpoch,
           triggerApp: state.triggerApp,
           healthyApp: state.healthyApp,
+          requiredHealthyTime: state.requiredHealthyTime,
         ));
       }
     } else {
@@ -135,7 +138,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         }
 
         if (interventionEnabled) {
-          openScreen(triggerApp, healthyApp);
+          openScreen(triggerApp, healthyApp, requiredHealthyTime);
           await OverlayPopUp.showOverlay();
 
           assert(this.state is PushInterventionScreen ||
@@ -198,22 +201,27 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     OverlayCommunicator.instance.send(data);
   }
 
-  void openScreen(TriggerApp triggerApp, HealthyApp? healthyApp) {
+  void openScreen(TriggerApp triggerApp, HealthyApp? healthyApp,
+      Duration requiredHealthyTime) {
     print("[InterventionScreenCubit] Opening InterventionScreen");
     if (state is IntenventionScreenClosed) {
       print("[InterventionScreenCubit] Pushing InterventionScreen");
       emit(PushInterventionScreen(
-          triggerApp: triggerApp, healthyApp: healthyApp));
+          triggerApp: triggerApp,
+          healthyApp: healthyApp,
+          requiredHealthyTime: requiredHealthyTime));
     } else if (state is InterventionScreenOpened) {
       print("[InterventionScreenCubit] Refreshing InterventionScreen");
       if (healthyApp != null) {
         emit(BeginIntervention(
             triggerApp: triggerApp,
             healthyApp: healthyApp,
+            requiredHealthyTime: requiredHealthyTime,
             timestamp: DateTime.now().millisecondsSinceEpoch));
       } else {
         emit(InterventionHealthyAppMissing(
             timestamp: DateTime.now().millisecondsSinceEpoch,
+            requiredHealthyTime: requiredHealthyTime,
             triggerApp: triggerApp));
       }
     }
@@ -235,11 +243,13 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         emit(BeginIntervention(
             triggerApp: state.triggerApp,
             healthyApp: state.healthyApp!,
-            timestamp: DateTime.now().millisecondsSinceEpoch));
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            requiredHealthyTime: state.requiredHealthyTime));
       } else {
         emit(InterventionHealthyAppMissing(
             timestamp: DateTime.now().millisecondsSinceEpoch,
-            triggerApp: state.triggerApp));
+            triggerApp: state.triggerApp,
+            requiredHealthyTime: state.requiredHealthyTime));
       }
     }
   }
@@ -267,8 +277,8 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     await launchApp(triggerApp);
   }
 
-  Future<void> launchHealthyAppAsIntervention(
-      HealthyApp healthyApp, TriggerApp rewardingTriggerApp) async {
+  Future<void> launchHealthyAppAsIntervention(HealthyApp healthyApp,
+      Duration requiredHealthyTime, TriggerApp rewardingTriggerApp) async {
     if (!(state is BeginIntervention) && !(state is InterventionInterrupted)) {
       throw Exception(
           "InterventionScreenCubit.launchHealthyApp() can be called only when"
@@ -279,9 +289,8 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
 
     if (Platform.isIOS) {
       // TODO: can probably be refactored after the android implementation
-      bool healthyAppMarkedAsLaunched =
-          await shortcutsCubit.markHealthyAppInterventionAsStarted(
-              healthyApp.requiredUsageDuration);
+      bool healthyAppMarkedAsLaunched = await shortcutsCubit
+          .markHealthyAppInterventionAsStarted(requiredHealthyTime);
       print(
           "[InterventionScreenCubit] Healthy app marked as launched: $healthyAppMarkedAsLaunched");
     }
@@ -292,18 +301,17 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       // Unfortunatelly, the scheduling of the notifications is not working
       // on Android yet. Therefore, the notification about the reward (permission
       // to use the trigger app) will be temporarily shown as full-screen overlay.
-      _scheduleRewardNotification(
-          rewardingTriggerApp, healthyApp.requiredUsageDuration);
+      _scheduleRewardNotification(rewardingTriggerApp, requiredHealthyTime);
     } else if (Platform.isAndroid) {
       // Schedule opening the trigger app
-      Future.delayed(
-          healthyApp.requiredUsageDuration, _checkInterventionResultAndroid);
+      Future.delayed(requiredHealthyTime, _checkInterventionResultAndroid);
     }
 
     emit(InterventionInProgress(
         timestamp: DateTime.now().millisecondsSinceEpoch,
         triggerApp: rewardingTriggerApp,
-        healthyApp: healthyApp));
+        healthyApp: healthyApp,
+        requiredHealthyTime: requiredHealthyTime));
 
     await launchApp(healthyApp);
   }
@@ -354,7 +362,9 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     WaitingForInterventionResult newState = WaitingForInterventionResult(
         timestamp: DateTime.now().millisecondsSinceEpoch,
         triggerApp: (state as InterventionInProgress).triggerApp,
-        healthyApp: (state as InterventionInProgress).healthyApp);
+        healthyApp: (state as InterventionInProgress).healthyApp,
+        requiredHealthyTime:
+            (state as InterventionInProgress).requiredHealthyTime);
     emit(newState);
 
     await Future.doWhile(_checkIntervantionResultIOS);
@@ -374,10 +384,10 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       return;
     }
     InterventionSuccessful newState = InterventionSuccessful(
-      timestamp: DateTime.now().millisecondsSinceEpoch,
-      triggerApp: state.triggerApp,
-      healthyApp: state.healthyApp,
-    );
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        triggerApp: state.triggerApp,
+        healthyApp: state.healthyApp,
+        requiredHealthyTime: state.requiredHealthyTime);
     emit(newState);
     await OverlayPopUp.showOverlay();
 
@@ -405,6 +415,8 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         timestamp: DateTime.now().millisecondsSinceEpoch,
         triggerApp: (state as WaitingForInterventionResult).triggerApp,
         healthyApp: (state as WaitingForInterventionResult).healthyApp,
+        requiredHealthyTime:
+            (state as WaitingForInterventionResult).requiredHealthyTime,
       ));
     }
 
@@ -426,6 +438,8 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         timestamp: DateTime.now().millisecondsSinceEpoch,
         triggerApp: (state as WaitingForInterventionResult).triggerApp,
         healthyApp: (state as WaitingForInterventionResult).healthyApp,
+        requiredHealthyTime:
+            (state as WaitingForInterventionResult).requiredHealthyTime,
       ));
     } else if (healthyAppInterventionState ==
         HealthyAppInterventionState.interrupted) {
@@ -433,6 +447,8 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         timestamp: DateTime.now().millisecondsSinceEpoch,
         triggerApp: (state as WaitingForInterventionResult).triggerApp,
         healthyApp: (state as WaitingForInterventionResult).healthyApp,
+        requiredHealthyTime:
+            (state as WaitingForInterventionResult).requiredHealthyTime,
       ));
     } else if (healthyAppInterventionState ==
         HealthyAppInterventionState.inactive) {
@@ -440,6 +456,8 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         timestamp: DateTime.now().millisecondsSinceEpoch,
         triggerApp: (state as WaitingForInterventionResult).triggerApp,
         healthyApp: (state as WaitingForInterventionResult).healthyApp,
+        requiredHealthyTime:
+            (state as WaitingForInterventionResult).requiredHealthyTime,
       ));
     } else if (healthyAppInterventionState ==
         HealthyAppInterventionState.started) {

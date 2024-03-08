@@ -34,7 +34,10 @@ class _MainScreenState extends State<MainScreen> {
       TriggerApp triggerApp =
           triggerApps.firstWhere((element) => element.name == state.appName);
       HealthyApp? healthyApp = MainRepository.instance.healthyApp;
-      _interventionScreenCubit.openScreen(triggerApp, healthyApp);
+      Duration requiredHealthyTime =
+          Duration(seconds: MainRepository.instance.readRequiredHealthyTime());
+      _interventionScreenCubit.openScreen(
+          triggerApp, healthyApp, requiredHealthyTime);
     }
   }
 

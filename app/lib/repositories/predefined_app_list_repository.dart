@@ -16,10 +16,7 @@ class PredefinedAppListRepository {
   ];
 
   static const List<HealthyApp> healthyApps = [
-    HealthyApp(
-        name: "Anki",
-        url: "anki://",
-        requiredUsageDuration: Duration(seconds: 30)),
+    HealthyApp(name: "Anki", url: "anki://"),
     // TODO: extend the list
   ];
 }

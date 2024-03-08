@@ -39,44 +39,21 @@ class TriggerApp extends App {
             name: json["name"],
             url: json["url"],
             packageName: json["packageName"]);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "packageName": packageName,
-      "url": url,
-    };
-  }
 }
 
 @HiveType(typeId: 2)
 class HealthyApp extends App {
-  const HealthyApp(
-      {required String name,
-      required String url,
-      String? packageName,
-      this.requiredUsageDuration = const Duration(seconds: 20)})
-      : super(name: name, url: url, packageName: packageName);
-
-  final Duration requiredUsageDuration;
+  const HealthyApp({
+    required String name,
+    required String url,
+    String? packageName,
+  }) : super(name: name, url: url, packageName: packageName);
 
   // TODO: remove requiredUsageDuration from this class
   HealthyApp.fromJson(Map<String, dynamic> json)
-      : requiredUsageDuration = Duration(seconds: 20),
-        super(
+      : super(
           name: json["name"],
           url: json["url"],
           packageName: json["packageName"],
         );
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "packageName": packageName,
-      "url": url,
-      "requiredUsageDuration": requiredUsageDuration.inSeconds,
-    };
-  }
 }
