@@ -35,36 +35,31 @@ class _MainScreenState extends State<MainScreen> {
       print("[MainScreen] ShortuctsCubit state updated: $state");
       if (state is TriggerAppOpenedShortcut) {
         TriggerApp triggerApp = getTriggerAppByName(state.appName);
-        _interventionScreenCubit.openScreen(triggerApp);
+        HealthyApp? healthyApp = MainRepository.instance.healthyApp;
+        _interventionScreenCubit.openScreen(triggerApp, healthyApp);
       }
     });
     if (ShortcutsCubit.instance.state is TriggerAppOpenedShortcut) {
       TriggerAppOpenedShortcut state =
           ShortcutsCubit.instance.state as TriggerAppOpenedShortcut;
       TriggerApp triggerApp = getTriggerAppByName(state.appName);
-      _interventionScreenCubit.openScreen(triggerApp);
+      HealthyApp? healthyApp = MainRepository.instance.healthyApp;
+      _interventionScreenCubit.openScreen(triggerApp, healthyApp);
     }
 
     _interventionScreenCubit.stream.listen((state) {
       print("[MainScreen] InterventionScreenCubit state updated: $state");
 
       if (state is PushInterventionScreen) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => InterventionScreen(
-                      initialTriggerApp: state.triggerApp,
-                    )));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => InterventionScreen()));
       }
     });
     InterventionScreenState interventionScreenState =
         _interventionScreenCubit.state;
     if (interventionScreenState is PushInterventionScreen) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => InterventionScreen(
-                  initialTriggerApp: interventionScreenState.triggerApp)));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => InterventionScreen()));
     }
   }
 

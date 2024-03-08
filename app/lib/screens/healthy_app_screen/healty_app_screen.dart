@@ -36,7 +36,7 @@ class HealthyAppScreen extends StatelessWidget {
         content:
             "Are you sure you want to disable ${app.name} as a healthy app?",
         onConfirm: () {
-          throw UnimplementedError();
+          mainScreenCubit.setHealthyApp(null);
         },
         onCancel: () {});
   }

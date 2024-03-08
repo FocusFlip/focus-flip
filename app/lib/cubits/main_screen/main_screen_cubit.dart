@@ -45,9 +45,8 @@ class MainScreenCubit extends Cubit<MainScreenState> {
   }
 
   void setHealthyApp(HealthyApp? app) {
-    // mainRepository.healthyApp = app;
-    // emit(HealthyAppAdded(triggerApps: state.triggerApps));
-    throw UnimplementedError();
+    mainRepository.healthyApp = app;
+    emit(HealthyAppAdded(triggerApps: state.triggerApps, healthyApp: app));
   }
 
   void updateRequiredHealthyTime(String value) {

@@ -45,18 +45,11 @@ class MainRepository extends HiveBoxRepository {
         "Remove TriggerApp. Number of TriggerApps before: $triggerAppsNumber, after: $newTriggerAppsNumber");
   }
 
-  // TODO: store in HiveDB
-  HealthyApp get healthyApp {
-    // return box.get('healthyApp');
-    return HealthyApp(
-        name: "Anki",
-        url: "anki://",
-        packageName: "com.ichi2.anki",
-        requiredUsageDuration:
-            Duration(seconds: instance.readRequiredHealthyTime()));
+  HealthyApp? get healthyApp {
+    return box.get('healthyApp');
   }
 
-  set healthyApp(HealthyApp app) {
+  set healthyApp(HealthyApp? app) {
     box.put('healthyApp', app);
   }
 

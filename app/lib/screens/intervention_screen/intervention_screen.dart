@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_flip/cubits/intervention_screen/intervention_screen_cubit.dart';
 import 'package:focus_flip/models/app.dart';
-import 'package:focus_flip/repositories/main_repository.dart';
 
 class InterventionScreen extends StatefulWidget {
-  final TriggerApp initialTriggerApp;
-  const InterventionScreen({super.key, required this.initialTriggerApp});
+  const InterventionScreen({super.key});
 
   @override
   State<InterventionScreen> createState() => _InterventionScreenState();
@@ -14,8 +12,6 @@ class InterventionScreen extends StatefulWidget {
 
 class _InterventionScreenState extends State<InterventionScreen> {
   InterventionScreenCubit _cubit = InterventionScreenCubit.instance;
-  late TriggerApp _triggerApp;
-  late HealthyApp _healthyApp;
 
   void _cubitListener(InterventionScreenState state) {
     if (state is PopInterventionScreen) {
@@ -24,19 +20,12 @@ class _InterventionScreenState extends State<InterventionScreen> {
         Navigator.of(context).pop();
       }
     }
-    if (state is InterventionScreenOpened) {
-      _triggerApp = state.triggerApp;
-      _healthyApp = state.healthyApp;
-    }
   }
 
   @override
   void initState() {
     super.initState();
-
-    _triggerApp = widget.initialTriggerApp;
-    _healthyApp = MainRepository.instance.healthyApp;
-    _cubit.markAsOpened(widget.initialTriggerApp);
+    _cubit.markAsOpened();
     _cubit.stream.listen(_cubitListener);
   }
 
@@ -58,30 +47,31 @@ class _InterventionScreenState extends State<InterventionScreen> {
           builder: (context, state) {
             if (state is BeginIntervention) {
               return BeginInterventionScreen(
-                triggerApp: _triggerApp,
-                healthyApp: _healthyApp,
-                startHealthyAppIntervention: () => _cubit
-                    .launchHealthyAppAsIntervention(_healthyApp, _triggerApp),
+                triggerApp: state.triggerApp,
+                healthyApp: state.healthyApp,
+                startHealthyAppIntervention: () =>
+                    _cubit.launchHealthyAppAsIntervention(
+                        state.healthyApp, state.triggerApp),
               );
             } else if (state is InterventionInProgress) {
-              return InterventionInProgressScreen(healthyApp: _healthyApp);
+              return InterventionInProgressScreen(healthyApp: state.healthyApp);
             } else if (state is WaitingForInterventionResult) {
               return WaitingForInterventionResultScreen();
             } else if (state is InterventionSuccessful) {
               return InterventionSuccessfulScreen(
-                triggerApp: _triggerApp,
-                healthyApp: _healthyApp,
+                triggerApp: state.triggerApp,
+                healthyApp: state.healthyApp,
                 ignoreRewardAndLaunchHealthyApp: () {
-                  _cubit.launchApp(_healthyApp);
+                  _cubit.launchApp(state.healthyApp);
                 },
                 launchTriggerApp: () {
-                  _cubit.launchTriggerApp(_triggerApp);
+                  _cubit.launchTriggerApp(state.triggerApp);
                 },
               );
             } else if (state is InterventionInterrupted) {
               return InterventionInterruptedScreen(
-                  triggerApp: _triggerApp,
-                  healthyApp: _healthyApp,
+                  triggerApp: state.triggerApp,
+                  healthyApp: state.healthyApp,
                   cubit: _cubit);
             } else if (state is InterventionResultTimeout) {
               return InterventionTimeoutScreen();

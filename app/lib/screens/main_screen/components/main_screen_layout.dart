@@ -91,6 +91,7 @@ class MainScreenLayout extends StatelessWidget {
                       child: BlocBuilder<MainScreenCubit, MainScreenState>(
                         bloc: mainScreenCubit,
                         builder: (BuildContext context, MainScreenState state) {
+                          // Trigger App
                           String triggerAppSubtitle = state.triggerApps.isEmpty
                               ? 'Not chosen yet'
                               : state.triggerApps.length == 1
@@ -98,6 +99,15 @@ class MainScreenLayout extends StatelessWidget {
                                   : '${state.triggerApps[0].name} and ${state.triggerApps.length - 1} more';
                           Color triggerAppSubtitleColor =
                               state.triggerApps.isEmpty
+                                  ? ColorsHelpers.red
+                                  : ColorsHelpers.grey2;
+
+                          // Healthy App
+                          String healthyAppSubtitle = state.healthyApp == null
+                              ? 'Not chosen yet'
+                              : state.healthyApp!.name;
+                          Color healthyAppSubtitleColor =
+                              state.healthyApp == null
                                   ? ColorsHelpers.red
                                   : ColorsHelpers.grey2;
 
@@ -145,7 +155,7 @@ class MainScreenLayout extends StatelessWidget {
                                         color: ColorsHelpers.green,
                                       ),
                                       'Healthy app',
-                                      'Not chosen yet', () {
+                                      healthyAppSubtitle, () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -155,7 +165,7 @@ class MainScreenLayout extends StatelessWidget {
                                                       mainScreenCubit,
                                                 )));
                                   }, Colors.white, Colors.black,
-                                      ColorsHelpers.red),
+                                      healthyAppSubtitleColor),
                                 ),
                                 listItem(
                                     Icon(

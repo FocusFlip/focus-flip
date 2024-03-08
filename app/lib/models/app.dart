@@ -56,15 +56,14 @@ class HealthyApp extends App {
       {required String name,
       required String url,
       String? packageName,
-      required this.requiredUsageDuration})
+      this.requiredUsageDuration = const Duration(seconds: 20)})
       : super(name: name, url: url, packageName: packageName);
 
-  @HiveField(3)
   final Duration requiredUsageDuration;
 
+  // TODO: remove requiredUsageDuration from this class
   HealthyApp.fromJson(Map<String, dynamic> json)
-      : requiredUsageDuration =
-            Duration(milliseconds: json["requiredUsageDuration"]),
+      : requiredUsageDuration = Duration(seconds: 20),
         super(
           name: json["name"],
           url: json["url"],

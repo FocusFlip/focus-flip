@@ -98,9 +98,10 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
   }
 
   Future<void> _appUsageEventListener(UsageEvent event) async {
-    if (mainRepository.healthyApp.packageName == event.packageName) {
+    HealthyApp? healthyApp = mainRepository.healthyApp;
+    if (healthyApp?.packageName == event.packageName) {
       print(
-          "[MainScreenCubit] Detected usage event for healthy app: ${mainRepository.healthyApp.name}");
+          "[MainScreenCubit] Detected usage event for healthy app: ${healthyApp!.name}");
       InterventionScreenState state = this.state;
       if (state is InterventionInProgress &&
           (event.eventType == EventType.ACTIVITY_PAUSED ||
@@ -134,7 +135,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         }
 
         if (interventionEnabled) {
-          openScreen(triggerApp);
+          openScreen(triggerApp, healthyApp);
           await OverlayPopUp.showOverlay();
 
           assert(this.state is PushInterventionScreen ||
@@ -172,9 +173,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
   void _sendBeginInterventionState(InterventionScreenState state) {
     assert(state is BeginIntervention || state is PushInterventionScreen);
 
-    if (state is PushInterventionScreen) {
-      markAsOpened(state.triggerApp);
-    }
+    markAsOpened();
 
     assert(this.state is BeginIntervention);
 
@@ -199,17 +198,24 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     OverlayCommunicator.instance.send(data);
   }
 
-  void openScreen(TriggerApp triggerApp) {
+  void openScreen(TriggerApp triggerApp, HealthyApp? healthyApp) {
     print("[InterventionScreenCubit] Opening InterventionScreen");
     if (state is IntenventionScreenClosed) {
       print("[InterventionScreenCubit] Pushing InterventionScreen");
-      emit(PushInterventionScreen(triggerApp: triggerApp));
+      emit(PushInterventionScreen(
+          triggerApp: triggerApp, healthyApp: healthyApp));
     } else if (state is InterventionScreenOpened) {
       print("[InterventionScreenCubit] Refreshing InterventionScreen");
-      emit(BeginIntervention(
-          triggerApp: triggerApp,
-          healthyApp: mainRepository.healthyApp,
-          timestamp: DateTime.now().millisecondsSinceEpoch));
+      if (healthyApp != null) {
+        emit(BeginIntervention(
+            triggerApp: triggerApp,
+            healthyApp: healthyApp,
+            timestamp: DateTime.now().millisecondsSinceEpoch));
+      } else {
+        emit(InterventionHealthyAppMissing(
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            triggerApp: triggerApp));
+      }
     }
   }
 
@@ -221,13 +227,20 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     }
   }
 
-  void markAsOpened(TriggerApp triggerApp) {
+  void markAsOpened() {
     print("[InterventionScreenCubit] InterventionScreen has been opened");
-    if (!(state is InterventionScreenOpened)) {
-      emit(BeginIntervention(
-          triggerApp: triggerApp,
-          healthyApp: mainRepository.healthyApp,
-          timestamp: DateTime.now().millisecondsSinceEpoch));
+    InterventionScreenState state = this.state;
+    if (state is PushInterventionScreen) {
+      if (state.healthyApp != null) {
+        emit(BeginIntervention(
+            triggerApp: state.triggerApp,
+            healthyApp: state.healthyApp!,
+            timestamp: DateTime.now().millisecondsSinceEpoch));
+      } else {
+        emit(InterventionHealthyAppMissing(
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            triggerApp: state.triggerApp));
+      }
     }
   }
 

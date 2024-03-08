@@ -5,8 +5,9 @@ sealed class InterventionScreenState {}
 
 final class PushInterventionScreen extends InterventionScreenState {
   final TriggerApp triggerApp;
+  final HealthyApp? healthyApp;
 
-  PushInterventionScreen({required this.triggerApp});
+  PushInterventionScreen({required this.triggerApp, required this.healthyApp});
 }
 
 final class PopInterventionScreen extends InterventionScreenState {}
@@ -24,15 +25,28 @@ abstract class InterventionScreenOpened extends InterventionScreenState {
   /// Milliseconds since epoch
   final int timestamp;
   final TriggerApp triggerApp;
-  final HealthyApp healthyApp;
 
-  InterventionScreenOpened(
-      {required this.timestamp,
-      required this.triggerApp,
-      required this.healthyApp});
+  InterventionScreenOpened({required this.timestamp, required this.triggerApp});
 }
 
-final class BeginIntervention extends InterventionScreenOpened {
+final class InterventionHealthyAppMissing extends InterventionScreenOpened {
+  InterventionHealthyAppMissing(
+      {required int timestamp, required TriggerApp triggerApp})
+      : super(timestamp: timestamp, triggerApp: triggerApp);
+}
+
+abstract class InterventionScreenReadyAndOpened
+    extends InterventionScreenOpened {
+  final HealthyApp healthyApp;
+
+  InterventionScreenReadyAndOpened(
+      {required int timestamp,
+      required TriggerApp triggerApp,
+      required this.healthyApp})
+      : super(timestamp: timestamp, triggerApp: triggerApp);
+}
+
+final class BeginIntervention extends InterventionScreenReadyAndOpened {
   BeginIntervention(
       {required int timestamp,
       required TriggerApp triggerApp,
@@ -43,7 +57,7 @@ final class BeginIntervention extends InterventionScreenOpened {
             healthyApp: healthyApp);
 }
 
-final class InterventionInProgress extends InterventionScreenOpened {
+final class InterventionInProgress extends InterventionScreenReadyAndOpened {
   InterventionInProgress(
       {required int timestamp,
       required TriggerApp triggerApp,
@@ -54,7 +68,8 @@ final class InterventionInProgress extends InterventionScreenOpened {
             healthyApp: healthyApp);
 }
 
-final class WaitingForInterventionResult extends InterventionScreenOpened {
+final class WaitingForInterventionResult
+    extends InterventionScreenReadyAndOpened {
   WaitingForInterventionResult(
       {required int timestamp,
       required TriggerApp triggerApp,
@@ -65,7 +80,7 @@ final class WaitingForInterventionResult extends InterventionScreenOpened {
             healthyApp: healthyApp);
 }
 
-abstract final class EndIntervention extends InterventionScreenOpened {
+abstract final class EndIntervention extends InterventionScreenReadyAndOpened {
   EndIntervention({
     required int timestamp,
     required TriggerApp triggerApp,
