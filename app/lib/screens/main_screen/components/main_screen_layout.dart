@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
 import 'package:focus_flip/screens/healthy_app_screen/healty_app_screen.dart';
+import 'package:focus_flip/screens/intervention_time_setting_screen/intervention_time_setting_screen.dart';
 import 'package:focus_flip/screens/trigger_app_screen/trigger_app_screen.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/widget_assets.dart';
@@ -15,7 +16,8 @@ class MainScreenLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: SingleChildScrollView(
+          child: Column(
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
@@ -111,6 +113,11 @@ class MainScreenLayout extends StatelessWidget {
                                   ? ColorsHelpers.red
                                   : ColorsHelpers.grey2;
 
+                          // Intervention Time
+                          String interventionTimeSubtitle =
+                              state.requiredHealthyTime.inSeconds.toString() +
+                                  ' seconds';
+
                           return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -174,8 +181,15 @@ class MainScreenLayout extends StatelessWidget {
                                       color: ColorsHelpers.dullLavender,
                                     ),
                                     'Intervention time',
-                                    '5 seconds', () {
-                                  throw UnimplementedError();
+                                    interventionTimeSubtitle, () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              InterventionTimeSettingScreen(
+                                                mainScreenCubit:
+                                                    mainScreenCubit,
+                                              )));
                                 }, Colors.white, Colors.black,
                                     ColorsHelpers.grey2),
                               ]);
@@ -188,7 +202,7 @@ class MainScreenLayout extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      )),
     );
   }
 }

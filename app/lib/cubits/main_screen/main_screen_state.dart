@@ -5,13 +5,13 @@ sealed class MainScreenState {
   final List<TriggerApp> triggerApps;
   final HealthyApp? healthyApp;
 
-  final Duration? requiredHealthyTime;
+  final Duration requiredHealthyTime;
   MainScreenState({required this.triggerApps, required this.healthyApp})
       : requiredHealthyTime = Duration(seconds: 20);
 
   MainScreenState.withRequiredHealthyTime(
       {required this.triggerApps,
-      this.requiredHealthyTime,
+      required this.requiredHealthyTime,
       required this.healthyApp});
 
   // MainScreenState.withHealthyApps({required this.triggerApps});
