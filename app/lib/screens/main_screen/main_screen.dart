@@ -287,6 +287,8 @@ class _MainScreenState extends State<MainScreen> {
                                 fontSize: ScreenUtil().setSp(16),
                                 color: ColorsHelpers.grey2),
                           ),
+                          initialValue:
+                              state.requiredHealthyTime?.inSeconds.toString(),
                           onChanged: (value) {
                             _cubit.updateRequiredHealthyTime(value);
                           },

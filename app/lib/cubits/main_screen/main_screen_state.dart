@@ -3,21 +3,31 @@ part of 'main_screen_cubit.dart';
 @immutable
 sealed class MainScreenState {
   final List<TriggerApp> triggerApps;
+  // final List<HealthyApp> healthyApps = [];
+
   final Duration? requiredHealthyTime;
   MainScreenState({required this.triggerApps})
       : requiredHealthyTime = Duration(seconds: 20);
 
   MainScreenState.withRequiredHealthyTime(
       {required this.triggerApps, this.requiredHealthyTime});
+
+  // MainScreenState.withHealthyApps({required this.triggerApps});
 }
 
 final class MainScreenInitial extends MainScreenState {
-  MainScreenInitial({required super.triggerApps});
+  MainScreenInitial(triggerApps, requiredHealthyTime)
+      : super.withRequiredHealthyTime(
+            triggerApps: triggerApps, requiredHealthyTime: requiredHealthyTime);
 }
 
 final class TriggerAppAdded extends MainScreenState {
   TriggerAppAdded({required super.triggerApps});
 }
+
+// final class HealthyAppAdded extends MainScreenState {
+//   HealthyAppAdded({required super.healthyApps});
+// }
 
 final class TriggerAppsCleared extends MainScreenState {
   TriggerAppsCleared({required super.triggerApps});
