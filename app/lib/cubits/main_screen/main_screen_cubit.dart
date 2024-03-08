@@ -52,8 +52,7 @@ class MainScreenCubit extends Cubit<MainScreenState> {
   void updateRequiredHealthyTime(String value) {
     int? time = int.tryParse(value);
 
-    //TODO - Display error message to user when wrong value is given
-    if (time == null || time < 15) {
+    if (time == null) {
       emit(RequiredHealthyTimeError(
           state.triggerApps.toList(), Duration(seconds: 0), state.healthyApp));
       return;
