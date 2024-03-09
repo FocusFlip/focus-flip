@@ -15,10 +15,10 @@ class MainRepository extends HiveBoxRepository {
   List<TriggerApp> get triggerApps {
     try {
       print("[Hiverepository] Reading triggerApps from the box");
-      box.get('triggerApps').cast<TriggerApp>().forEach((element) {
-        print(element.name);
-      });
-      return box.get('triggerApps').cast<TriggerApp>().toList();
+      List<TriggerApp>? triggerApps =
+          box.get('triggerApps')?.cast<TriggerApp>().toList();
+
+      return triggerApps ?? [];
     } catch (e) {
       print(e);
     }
@@ -65,7 +65,7 @@ class MainRepository extends HiveBoxRepository {
     try {
       print("[MainRepository] Reading RequiredHealthyTime in the box");
       print(instance.box.get("requiredHealthyTime"));
-      return instance.box.get("requiredHealthyTime");
+      return instance.box.get("requiredHealthyTime", defaultValue: 20);
     } catch (e) {
       print(e);
     }
