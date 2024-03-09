@@ -8,6 +8,7 @@ import 'package:focus_flip/repositories/predefined_app_list_repository.dart';
 import 'package:focus_flip/screens/main_screen/components/choose_app_dialog.dart';
 import 'package:focus_flip/screens/main_screen/components/inline_label_list.dart';
 import 'package:focus_flip/screens/trigger_app_screen/components/confirmation_dialog.dart';
+import 'package:focus_flip/screens/trigger_app_screen/components/tutorial_item.dart';
 import 'package:focus_flip/screens/trigger_app_screen/components/youtube_video_placeholder.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/images.dart';
@@ -170,31 +171,55 @@ class TriggerAppScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
-                  child: widgetText(
-                    '2.1 Open the Shortcuts app',
-                    color: Colors.black,
-                    fontSize: ScreenUtil().setSp(17),
-                    fontWeight: FontWeight.w500,
-                  ),
+                TutorialItem(
+                  title: '2.1 Open the Shortcuts app',
+                  imagePath: Images.triggerAppShortcutTutorial1,
                 ),
-                // TODO: add screenshot
-                YoutubeVideoPlaceholder(),
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
-                  child: widgetText(
-                    '2.2 Open the section "Automations"',
-                    color: Colors.black,
-                    fontSize: ScreenUtil().setSp(17),
-                    fontWeight: FontWeight.w500,
-                  ),
+                TutorialItem(
+                  title: '2.2 Open the category "Automation" (1) and '
+                      ' create a new automation (2)',
+                  imagePath: Images.triggerAppShortcutTutorial2,
                 ),
-                // TODO: add screenshot
-                YoutubeVideoPlaceholder(),
-                // TODO: continue
+                TutorialItem(
+                  title: '2.3 Choose an "App" automation',
+                  imagePath: Images.triggerAppShortcutTutorial3,
+                ),
+                TutorialItem(
+                  title: '2.4 Set the automation run immediately when your '
+                      'trigger app is opened',
+                  imagePath: Images.triggerAppShortcutTutorial4,
+                ),
+                TutorialItem(
+                  title: '2.5 Next, create a "New Blank Automation"',
+                  imagePath: Images.triggerAppShortcutTutorial5,
+                ),
+                TutorialItem(
+                  title: '2.6 Add an action',
+                  imagePath: Images.triggerAppShortcutTutorial6,
+                ),
+                TutorialItem(
+                  title: '2.7 To add an action, search for "FocusFlip" and '
+                      'select "FocusFlip" from the list of apps',
+                  imagePath: Images.triggerAppShortcutTutorial7,
+                ),
+                TutorialItem(
+                  title:
+                      '2.8 The app will provide a list of actions to choose from. '
+                      'Select "Trigger App Opened".',
+                  imagePath: Images.triggerAppShortcutTutorial8,
+                ),
+                TutorialItem(
+                  title: '2.9 Then, select your trigger app in the parameters '
+                      'of this action (1) and finish creating the automation (2)',
+                  imagePath: Images.triggerAppShortcutTutorial9,
+                ),
+                TutorialItem(
+                  title: '2.10 Now, the automation is ready to use and can be '
+                      'found in the "Automation" tab of the Shortcuts app. You '
+                      'have to create a similar automation for every trigger app'
+                      ' selected above',
+                  imagePath: Images.triggerAppShortcutTutorial10,
+                ),
               ],
             ),
           ),

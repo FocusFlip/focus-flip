@@ -8,7 +8,7 @@ import 'package:focus_flip/repositories/predefined_app_list_repository.dart';
 import 'package:focus_flip/screens/main_screen/components/choose_app_dialog.dart';
 import 'package:focus_flip/screens/main_screen/components/inline_label_list.dart';
 import 'package:focus_flip/screens/trigger_app_screen/components/confirmation_dialog.dart';
-import 'package:focus_flip/screens/trigger_app_screen/components/youtube_video_placeholder.dart';
+import 'package:focus_flip/screens/trigger_app_screen/components/tutorial_item.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/images.dart';
 import 'package:focus_flip/utils/toasts.dart';
@@ -177,31 +177,53 @@ class HealthyAppScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
-                  child: widgetText(
-                    '2.1 Open the Shortcuts app',
-                    color: Colors.black,
-                    fontSize: ScreenUtil().setSp(17),
-                    fontWeight: FontWeight.w500,
-                  ),
+                TutorialItem(
+                  title: '2.1 Open the Shortcuts app',
+                  imagePath: Images.healthyAppShortcutTutorial1,
                 ),
-                // TODO: add screenshot
-                YoutubeVideoPlaceholder(),
-                Container(
-                  alignment: Alignment.topLeft,
-                  margin: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
-                  child: widgetText(
-                    '2.2 Open the section "Automations"',
-                    color: Colors.black,
-                    fontSize: ScreenUtil().setSp(17),
-                    fontWeight: FontWeight.w500,
-                  ),
+                TutorialItem(
+                  title: '2.2 Open the category "Automation" (1) and '
+                      ' create a new automation (2)',
+                  imagePath: Images.healthyAppShortcutTutorial2,
                 ),
-                // TODO: add screenshot
-                YoutubeVideoPlaceholder(),
-                // TODO: continue
+                TutorialItem(
+                  title: '2.3 Choose an "App" automation',
+                  imagePath: Images.healthyAppShortcutTutorial3,
+                ),
+                TutorialItem(
+                  title: '2.4 Set the automation run immediately when your '
+                      'healthy app is closed. Remember to disable running on '
+                      ' opening the app if it was enabled before',
+                  imagePath: Images.healthyAppShortcutTutorial4,
+                ),
+                TutorialItem(
+                  title: '2.5 Next, create a "New Blank Automation"',
+                  imagePath: Images.healthyAppShortcutTutorial5,
+                ),
+                TutorialItem(
+                  title: '2.6 Add an action',
+                  imagePath: Images.healthyAppShortcutTutorial6,
+                ),
+                TutorialItem(
+                  title: '2.7 To add an action, search for "FocusFlip" and '
+                      'select "FocusFlip" from the list of apps',
+                  imagePath: Images.healthyAppShortcutTutorial7,
+                ),
+                TutorialItem(
+                  title:
+                      '2.8 The app will provide a list of actions to choose from. '
+                      'Select "Healthy App Closed".',
+                  imagePath: Images.healthyAppShortcutTutorial8,
+                ),
+                TutorialItem(
+                  title: '2.9 Then, you can finish the automation creation',
+                  imagePath: Images.healthyAppShortcutTutorial9,
+                ),
+                TutorialItem(
+                  title: '2.10 Now, the automation is ready to use and can be '
+                      'found in the "Automation" tab of the Shortcuts app',
+                  imagePath: Images.healthyAppShortcutTutorial10,
+                ),
               ],
             ),
           ),

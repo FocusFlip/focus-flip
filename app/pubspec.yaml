@@ -116,6 +116,8 @@ flutter:
     - assets/flags/
     - assets/backgrounds/
     - assets/badges/
+    - assets/tutorials/trigger_app_shortcut/
+    - assets/tutorials/healthy_app_shortcut/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

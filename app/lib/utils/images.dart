@@ -140,4 +140,49 @@ class Images {
   static const String badge4 = 'assets/badges/badge_4.png';
   static const String badge5 = 'assets/badges/badge_5.png';
   static const String badge6 = 'assets/badges/badge_6.png';
+
+  // Tutorials
+  // 1. Trigger app shortcut
+  static const String triggerAppShortcutTutorial1 =
+      'assets/tutorials/trigger_app_shortcut/1.PNG';
+  static const String triggerAppShortcutTutorial2 =
+      'assets/tutorials/trigger_app_shortcut/2.PNG';
+  static const String triggerAppShortcutTutorial3 =
+      'assets/tutorials/trigger_app_shortcut/3.PNG';
+  static const String triggerAppShortcutTutorial4 =
+      'assets/tutorials/trigger_app_shortcut/4.PNG';
+  static const String triggerAppShortcutTutorial5 =
+      'assets/tutorials/trigger_app_shortcut/5.PNG';
+  static const String triggerAppShortcutTutorial6 =
+      'assets/tutorials/trigger_app_shortcut/6.PNG';
+  static const String triggerAppShortcutTutorial7 =
+      'assets/tutorials/trigger_app_shortcut/7.PNG';
+  static const String triggerAppShortcutTutorial8 =
+      'assets/tutorials/trigger_app_shortcut/8.PNG';
+  static const String triggerAppShortcutTutorial9 =
+      'assets/tutorials/trigger_app_shortcut/9.PNG';
+  static const String triggerAppShortcutTutorial10 =
+      'assets/tutorials/trigger_app_shortcut/10.PNG';
+
+  // 2. Healthy app shortcut
+  static const String healthyAppShortcutTutorial1 =
+      'assets/tutorials/healthy_app_shortcut/1.PNG';
+  static const String healthyAppShortcutTutorial2 =
+      'assets/tutorials/healthy_app_shortcut/2.PNG';
+  static const String healthyAppShortcutTutorial3 =
+      'assets/tutorials/healthy_app_shortcut/3.PNG';
+  static const String healthyAppShortcutTutorial4 =
+      'assets/tutorials/healthy_app_shortcut/4.PNG';
+  static const String healthyAppShortcutTutorial5 =
+      'assets/tutorials/healthy_app_shortcut/5.PNG';
+  static const String healthyAppShortcutTutorial6 =
+      'assets/tutorials/healthy_app_shortcut/6.PNG';
+  static const String healthyAppShortcutTutorial7 =
+      'assets/tutorials/healthy_app_shortcut/7.jpeg';
+  static const String healthyAppShortcutTutorial8 =
+      'assets/tutorials/healthy_app_shortcut/8.PNG';
+  static const String healthyAppShortcutTutorial9 =
+      'assets/tutorials/healthy_app_shortcut/9.PNG';
+  static const String healthyAppShortcutTutorial10 =
+      'assets/tutorials/healthy_app_shortcut/10.PNG';
 }
