@@ -24,7 +24,8 @@ class MainScreenCubit extends Cubit<MainScreenState> {
       print("[MainScreenCubit] Duplicate trigger app");
       emit(DuplicateTriggerAppError(
           triggerApps: state.triggerApps.toList(),
-          healthyApp: state.healthyApp));
+          healthyApp: state.healthyApp,
+          requiredHealthyTime: state.requiredHealthyTime));
       return;
     } catch (e) {
       // TODO: error handling
@@ -33,7 +34,8 @@ class MainScreenCubit extends Cubit<MainScreenState> {
 
     emit(TriggerAppAdded(
         triggerApps: state.triggerApps.toList()..add(app),
-        healthyApp: state.healthyApp));
+        healthyApp: state.healthyApp,
+        requiredHealthyTime: state.requiredHealthyTime));
   }
 
   void removeTriggerApp(TriggerApp app) {
@@ -41,12 +43,16 @@ class MainScreenCubit extends Cubit<MainScreenState> {
     emit(TriggerAppRemoved(
         removedApp: app,
         triggerApps: state.triggerApps.toList()..remove(app),
-        healthyApp: state.healthyApp));
+        healthyApp: state.healthyApp,
+        requiredHealthyTime: state.requiredHealthyTime));
   }
 
   void setHealthyApp(HealthyApp? app) {
     mainRepository.healthyApp = app;
-    emit(HealthyAppAdded(triggerApps: state.triggerApps, healthyApp: app));
+    emit(HealthyAppAdded(
+        triggerApps: state.triggerApps,
+        healthyApp: app,
+        requiredHealthyTime: state.requiredHealthyTime));
   }
 
   void updateRequiredHealthyTime(String value) {
