@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_flip/cubits/intervention_screen/intervention_screen_cubit.dart';
+import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
+import 'package:focus_flip/screens/healthy_app_screen/healty_app_screen.dart';
+import 'package:focus_flip/screens/intervention_screen/states/healthy_app_missing_intervention_screen.dart';
 
 import 'states/begin_intervention_screen.dart';
 import 'states/intervention_in_progress_screen.dart';
@@ -10,7 +13,9 @@ import 'states/intervention_timeout_screen.dart';
 import 'states/waiting_for_intervention_result_screen.dart';
 
 class InterventionScreen extends StatefulWidget {
-  const InterventionScreen({super.key});
+  const InterventionScreen({super.key, required this.mainScreenCubit});
+
+  final MainScreenCubit mainScreenCubit;
 
   @override
   State<InterventionScreen> createState() => _InterventionScreenState();
@@ -89,9 +94,19 @@ class _InterventionScreenState extends State<InterventionScreen> {
               throw Exception("Not implemented");
             },
           );
+        } else if (state is InterventionHealthyAppMissing) {
+          return HealthyAppMissingIntervention(
+            openHealthyAppSettings: () {
+              Navigator.of(context)
+                  .pushReplacement(MaterialPageRoute(builder: (context) {
+                return HealthyAppScreen(
+                    mainScreenCubit: widget.mainScreenCubit);
+              }));
+            },
+            triggerApp: state.triggerApp,
+          );
         } else {
-          _cubit.closeScreen();
-          return const SizedBox();
+          throw Exception("Unknown state: $state");
         }
       },
     );

@@ -59,15 +59,23 @@ class _MainScreenState extends State<MainScreen> {
       print("[MainScreen] InterventionScreenCubit state updated: $state");
 
       if (state is PushInterventionScreen) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => InterventionScreen()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => InterventionScreen(
+                      mainScreenCubit: _cubit,
+                    )));
       }
     });
     InterventionScreenState interventionScreenState =
         _interventionScreenCubit.state;
     if (interventionScreenState is PushInterventionScreen) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => InterventionScreen()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => InterventionScreen(
+                    mainScreenCubit: _cubit,
+                  )));
     }
   }
 

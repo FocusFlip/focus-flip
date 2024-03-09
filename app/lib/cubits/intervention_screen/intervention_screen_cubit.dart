@@ -178,19 +178,23 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
 
     markAsOpened();
 
-    assert(this.state is BeginIntervention);
-
-    TriggerApp triggerApp = (this.state as BeginIntervention).triggerApp;
-    HealthyApp healthyApp = (this.state as BeginIntervention).healthyApp;
-    Duration requiredHealthyTime =
-        (this.state as BeginIntervention).requiredHealthyTime;
-    Map<String, dynamic> data = {
-      "state": InterventionOverlayWindow.BEGIN_INTERVENTION_STATE,
-      "triggerApp": triggerApp.toJson(),
-      "healthyApp": healthyApp.toJson(),
-      "requiredHealthyTime": requiredHealthyTime.inSeconds,
-    };
-    OverlayCommunicator.instance.send(data);
+    if (this.state is BeginIntervention) {
+      TriggerApp triggerApp = (this.state as BeginIntervention).triggerApp;
+      HealthyApp healthyApp = (this.state as BeginIntervention).healthyApp;
+      Duration requiredHealthyTime =
+          (this.state as BeginIntervention).requiredHealthyTime;
+      Map<String, dynamic> data = {
+        "state": InterventionOverlayWindow.BEGIN_INTERVENTION_STATE,
+        "triggerApp": triggerApp.toJson(),
+        "healthyApp": healthyApp.toJson(),
+        "requiredHealthyTime": requiredHealthyTime.inSeconds,
+      };
+      OverlayCommunicator.instance.send(data);
+    } else if (this.state is InterventionHealthyAppMissing) {
+      throw UnimplementedError();
+    } else {
+      throw Exception("Unexpected state: $state");
+    }
   }
 
   void _sendInterventionSuccessfulState(InterventionSuccessful state) {
