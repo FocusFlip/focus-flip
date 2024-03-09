@@ -84,7 +84,7 @@ class MainScreenLayout extends StatelessWidget {
                       margin: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
                       padding: const EdgeInsets.all(24),
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 2,
+                      //height: MediaQuery.of(context).size.height / 2,
                       decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -129,6 +129,46 @@ class MainScreenLayout extends StatelessWidget {
                                     align: TextAlign.left),
                                 const SizedBox(
                                   height: 16,
+                                ),
+                                widgetRichText(
+                                  context,
+                                  TextSpan(
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(16),
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                              "Whenever you open an addictive "),
+                                      TextSpan(
+                                          text: "trigger app",
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic)),
+                                      TextSpan(
+                                          text:
+                                              ", FocusFlip asks you to spend some time in a "),
+                                      TextSpan(
+                                          text: "healthy app",
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic)),
+                                      TextSpan(
+                                          text: " before to unlock it."
+                                              "\n\nThis intervation aims to "),
+                                      TextSpan(
+                                          text: "fix your dopamine system",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                          text: " by delaying"
+                                              " the dopamine reward caused by the trigger app. "
+                                              "This way, FocusFlip also motivates you "
+                                              "to use healthy apps more often."),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(
