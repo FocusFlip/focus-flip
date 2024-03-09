@@ -11,12 +11,13 @@ class PredefinedAppListRepository {
         name: "Youtube",
         url: "youtube://",
         packageName: "com.google.android.youtube"),
-    // TODO: extend the list on iOS platform
-    // TODO: check the urls/package names and extend the list
+    TriggerApp(name: "Facebook", url: "fb://"),
+    TriggerApp(name: "X", url: "twitter://"),
+    TriggerApp(name: "Snapchat", url: "snapchat://"),
   ];
 
   static const List<HealthyApp> healthyApps = [
     HealthyApp(name: "Anki", url: "anki://"),
-    // TODO: extend the list
+    HealthyApp(name: "Duolingo", url: "duolingo://"),
   ];
 }

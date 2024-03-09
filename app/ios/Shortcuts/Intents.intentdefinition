@@ -55,6 +55,26 @@
 					<key>INEnumValueName</key>
 					<string>facebook</string>
 				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Snapchat</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>SLrTSv</string>
+					<key>INEnumValueIndex</key>
+					<integer>4</integer>
+					<key>INEnumValueName</key>
+					<string>snapchat</string>
+				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>LinkedIn</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>3Z2lMn</string>
+					<key>INEnumValueIndex</key>
+					<integer>5</integer>
+					<key>INEnumValueName</key>
+					<string>linkedin</string>
+				</dict>
 			</array>
 		</dict>
 	</array>
