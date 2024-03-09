@@ -75,6 +75,16 @@
 					<key>INEnumValueName</key>
 					<string>linkedin</string>
 				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Youtube</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>kRHbbf</string>
+					<key>INEnumValueIndex</key>
+					<integer>6</integer>
+					<key>INEnumValueName</key>
+					<string>youtube</string>
+				</dict>
 			</array>
 		</dict>
 	</array>

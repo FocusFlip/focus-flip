@@ -14,6 +14,7 @@ class PredefinedAppListRepository {
     TriggerApp(name: "Facebook", url: "fb://"),
     TriggerApp(name: "X", url: "twitter://"),
     TriggerApp(name: "Snapchat", url: "snapchat://"),
+    TriggerApp(name: "LinkedIn", url: "linkedin://"),
   ];
 
   static const List<HealthyApp> healthyApps = [
