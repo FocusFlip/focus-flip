@@ -182,10 +182,13 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
 
     TriggerApp triggerApp = (this.state as BeginIntervention).triggerApp;
     HealthyApp healthyApp = (this.state as BeginIntervention).healthyApp;
+    Duration requiredHealthyTime =
+        (this.state as BeginIntervention).requiredHealthyTime;
     Map<String, dynamic> data = {
       "state": InterventionOverlayWindow.BEGIN_INTERVENTION_STATE,
       "triggerApp": triggerApp.toJson(),
       "healthyApp": healthyApp.toJson(),
+      "requiredHealthyTime": requiredHealthyTime.inSeconds,
     };
     OverlayCommunicator.instance.send(data);
   }
@@ -197,6 +200,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
       "state": InterventionOverlayWindow.INTERVENTION_SUCCESSFUL_STATE,
       "triggerApp": triggerApp.toJson(),
       "healthyApp": healthyApp.toJson(),
+      "requiredHealthyTime": state.requiredHealthyTime.inSeconds,
     };
     OverlayCommunicator.instance.send(data);
   }

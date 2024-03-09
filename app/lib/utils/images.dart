@@ -76,6 +76,9 @@ class Images {
   static const String micIcon = 'assets/icons/icon_mic.svg';
 
   // Illustrations
+  static const String illustrationOne = 'assets/illustrations/1.svg';
+  static const String illustrationTwo = 'assets/illustrations/2.svg';
+  static const String illustrationThree = 'assets/illustrations/3.svg';
   static const String illustrationOnboardingOne =
       'assets/illustrations/illustration_onboarding_1.svg';
   static const String illustrationOnboardingTwo =
