@@ -29,16 +29,19 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _onTriggerAppOpened(TriggerAppOpenedShortcut state) {
-    var triggerApps = PredefinedAppListRepository.triggerApps;
+    var triggerApps = MainRepository.instance.triggerApps;
+
+    TriggerApp? triggerApp;
     if (triggerApps.any((element) => element.name == state.appName)) {
-      TriggerApp triggerApp =
+      triggerApp =
           triggerApps.firstWhere((element) => element.name == state.appName);
-      HealthyApp? healthyApp = MainRepository.instance.healthyApp;
-      Duration requiredHealthyTime =
-          Duration(seconds: MainRepository.instance.readRequiredHealthyTime());
-      _interventionScreenCubit.openScreen(
-          triggerApp, healthyApp, requiredHealthyTime);
     }
+
+    HealthyApp? healthyApp = MainRepository.instance.healthyApp;
+    Duration requiredHealthyTime =
+        Duration(seconds: MainRepository.instance.readRequiredHealthyTime());
+    _interventionScreenCubit.openScreen(
+        triggerApp, healthyApp, requiredHealthyTime);
   }
 
   void _setShortcutsListener() {

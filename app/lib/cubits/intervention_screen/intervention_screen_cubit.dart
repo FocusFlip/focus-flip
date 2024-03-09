@@ -209,7 +209,7 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     OverlayCommunicator.instance.send(data);
   }
 
-  void openScreen(TriggerApp triggerApp, HealthyApp? healthyApp,
+  void openScreen(TriggerApp? triggerApp, HealthyApp? healthyApp,
       Duration requiredHealthyTime) {
     print("[InterventionScreenCubit] Opening InterventionScreen");
     if (state is IntenventionScreenClosed) {
@@ -220,17 +220,21 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
           requiredHealthyTime: requiredHealthyTime));
     } else if (state is InterventionScreenOpened) {
       print("[InterventionScreenCubit] Refreshing InterventionScreen");
-      if (healthyApp != null) {
-        emit(BeginIntervention(
-            triggerApp: triggerApp,
-            healthyApp: healthyApp,
-            requiredHealthyTime: requiredHealthyTime,
-            timestamp: DateTime.now().millisecondsSinceEpoch));
+      if (triggerApp != null) {
+        if (healthyApp != null) {
+          emit(BeginIntervention(
+              triggerApp: triggerApp,
+              healthyApp: healthyApp,
+              requiredHealthyTime: requiredHealthyTime,
+              timestamp: DateTime.now().millisecondsSinceEpoch));
+        } else {
+          emit(InterventionHealthyAppMissing(
+              timestamp: DateTime.now().millisecondsSinceEpoch,
+              triggerApp: triggerApp));
+        }
       } else {
-        emit(InterventionHealthyAppMissing(
-            timestamp: DateTime.now().millisecondsSinceEpoch,
-            requiredHealthyTime: requiredHealthyTime,
-            triggerApp: triggerApp));
+        emit(InterventionTriggerAppNotSelected(
+            timestamp: DateTime.now().millisecondsSinceEpoch));
       }
     }
   }
@@ -247,17 +251,21 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
     print("[InterventionScreenCubit] InterventionScreen has been opened");
     InterventionScreenState state = this.state;
     if (state is PushInterventionScreen) {
-      if (state.healthyApp != null) {
-        emit(BeginIntervention(
-            triggerApp: state.triggerApp,
-            healthyApp: state.healthyApp!,
-            timestamp: DateTime.now().millisecondsSinceEpoch,
-            requiredHealthyTime: state.requiredHealthyTime));
+      if (state.triggerApp != null) {
+        if (state.healthyApp != null) {
+          emit(BeginIntervention(
+              triggerApp: state.triggerApp!,
+              healthyApp: state.healthyApp!,
+              timestamp: DateTime.now().millisecondsSinceEpoch,
+              requiredHealthyTime: state.requiredHealthyTime));
+        } else {
+          emit(InterventionHealthyAppMissing(
+              timestamp: DateTime.now().millisecondsSinceEpoch,
+              triggerApp: state.triggerApp!));
+        }
       } else {
-        emit(InterventionHealthyAppMissing(
-            timestamp: DateTime.now().millisecondsSinceEpoch,
-            triggerApp: state.triggerApp,
-            requiredHealthyTime: state.requiredHealthyTime));
+        emit(InterventionTriggerAppNotSelected(
+            timestamp: DateTime.now().millisecondsSinceEpoch));
       }
     }
   }

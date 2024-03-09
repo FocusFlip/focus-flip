@@ -4,7 +4,7 @@ part of 'intervention_screen_cubit.dart';
 sealed class InterventionScreenState {}
 
 final class PushInterventionScreen extends InterventionScreenState {
-  final TriggerApp triggerApp;
+  final TriggerApp? triggerApp;
   final HealthyApp? healthyApp;
   final Duration requiredHealthyTime;
 
@@ -28,39 +28,41 @@ final class TriggerAppOpenedAsReward extends IntenventionScreenClosed {
 abstract class InterventionScreenOpened extends InterventionScreenState {
   /// Milliseconds since epoch
   final int timestamp;
-  final TriggerApp triggerApp;
-  final Duration requiredHealthyTime;
 
-  InterventionScreenOpened(
-      {required this.timestamp,
-      required this.triggerApp,
-      required this.requiredHealthyTime});
+  InterventionScreenOpened({
+    required this.timestamp,
+  });
 }
 
 final class InterventionHealthyAppMissing extends InterventionScreenOpened {
+  final TriggerApp triggerApp;
+
   InterventionHealthyAppMissing(
-      {required int timestamp,
-      required TriggerApp triggerApp,
-      required Duration requiredHealthyTime})
+      {required int timestamp, required this.triggerApp})
+      : super(timestamp: timestamp);
+}
+
+final class InterventionTriggerAppNotSelected extends InterventionScreenOpened {
+  InterventionTriggerAppNotSelected({required int timestamp})
       : super(
-            timestamp: timestamp,
-            triggerApp: triggerApp,
-            requiredHealthyTime: requiredHealthyTime);
+          timestamp: timestamp,
+        );
 }
 
 abstract class InterventionScreenReadyAndOpened
     extends InterventionScreenOpened {
   final HealthyApp healthyApp;
+  final TriggerApp triggerApp;
+  final Duration requiredHealthyTime;
 
   InterventionScreenReadyAndOpened(
       {required int timestamp,
-      required TriggerApp triggerApp,
+      required this.triggerApp,
       required this.healthyApp,
-      required Duration requiredHealthyTime})
+      required this.requiredHealthyTime})
       : super(
-            timestamp: timestamp,
-            triggerApp: triggerApp,
-            requiredHealthyTime: requiredHealthyTime);
+          timestamp: timestamp,
+        );
 }
 
 final class BeginIntervention extends InterventionScreenReadyAndOpened {
