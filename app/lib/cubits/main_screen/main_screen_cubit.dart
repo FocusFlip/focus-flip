@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:focus_flip/utils/music_visualizer_main.dart';
+import 'package:focus_flip/utils/toasts.dart';
 import 'package:meta/meta.dart';
 import 'package:focus_flip/models/app.dart';
 import 'package:focus_flip/repositories/main_repository.dart';
@@ -18,6 +20,12 @@ class MainScreenCubit extends Cubit<MainScreenState> {
   final MainRepository mainRepository;
 
   Future<void> addTriggerApp(TriggerApp app) async {
+    if (mainRepository.triggerApps.isNotEmpty) {
+      showToast(
+          "This version does not support adding multiple trigger apps yet");
+      return;
+    }
+
     try {
       mainRepository.addTriggerApp(app);
     } on DuplicateException {
@@ -48,6 +56,13 @@ class MainScreenCubit extends Cubit<MainScreenState> {
   }
 
   void setHealthyApp(HealthyApp? app) {
+    if (app != null && mainRepository.healthyApp != null) {
+      // TODO: log this event
+      showToast(
+          "This version does not support adding multiple healthy apps yet");
+      return;
+    }
+
     mainRepository.healthyApp = app;
     emit(HealthyAppAdded(
         triggerApps: state.triggerApps,
