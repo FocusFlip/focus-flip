@@ -20,5 +20,7 @@ class PredefinedAppListRepository {
   static const List<HealthyApp> healthyApps = [
     HealthyApp(name: "Anki", url: "anki://"),
     HealthyApp(name: "Duolingo", url: "duolingo://"),
+    HealthyApp(name: "Quizlet", url: "quizlet://"),
+    // HealthyApp(name: "Repetico", url: ???),
   ];
 }
