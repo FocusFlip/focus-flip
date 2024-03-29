@@ -8,7 +8,7 @@ class PredefinedAppListRepository {
         url: "instagram://",
         packageName: "com.instagram.android"),
     TriggerApp(
-        name: "Youtube",
+        name: "YouTube",
         url: "youtube://",
         packageName: "com.google.android.youtube"),
     TriggerApp(name: "Facebook", url: "fb://"),
