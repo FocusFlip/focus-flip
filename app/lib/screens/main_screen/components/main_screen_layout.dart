@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:focus_flip/cubits/main_screen/main_screen_cubit.dart';
 import 'package:focus_flip/screens/healthy_app_screen/healty_app_screen.dart';
 import 'package:focus_flip/screens/intervention_time_setting_screen/intervention_time_setting_screen.dart';
+import 'package:focus_flip/screens/test_deep_links_screen.dart/test_deep_links_screen.dart';
 import 'package:focus_flip/screens/trigger_app_screen/trigger_app_screen.dart';
 import 'package:focus_flip/utils/constant.dart';
 import 'package:focus_flip/utils/widget_assets.dart';
@@ -232,6 +234,27 @@ class MainScreenLayout extends StatelessWidget {
                                               )));
                                 }, Colors.white, Colors.black,
                                     ColorsHelpers.grey2),
+                                kDebugMode
+                                    ? Container(
+                                        margin: EdgeInsets.only(
+                                            top: ScreenUtil().setHeight(16)),
+                                        child: listItem(
+                                            Icon(
+                                              Icons.settings,
+                                              size: ScreenUtil().setHeight(30),
+                                              color: Colors.black,
+                                            ),
+                                            'Test deep links',
+                                            '[Only in debug mode]', () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TestDeepLinksScreen()));
+                                        }, Colors.white, Colors.black,
+                                            healthyAppSubtitleColor),
+                                      )
+                                    : SizedBox.shrink(),
                               ]);
                         },
                       ),
