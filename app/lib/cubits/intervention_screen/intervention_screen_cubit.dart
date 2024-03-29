@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus_flip/utils/launch_app.dart';
 import 'package:meta/meta.dart';
 import 'package:overlay_pop_up/overlay_communicator.dart';
 import 'package:overlay_pop_up/overlay_pop_up.dart';
@@ -330,20 +331,6 @@ class InterventionScreenCubit extends Cubit<InterventionScreenState> {
         requiredHealthyTime: requiredHealthyTime));
 
     await launchApp(healthyApp);
-  }
-
-  Future<void> launchApp(App app) async {
-    if (Platform.isAndroid) {
-      await LaunchApp.openApp(
-          androidPackageName: app.packageName!, iosUrlScheme: app.url);
-    } else if (Platform.isIOS) {
-      Uri uri = Uri.parse(app.url);
-      if (!await launchUrl(uri)) {
-        throw Exception('Could not launch $uri');
-      }
-    } else {
-      throw Exception("Unknown platform");
-    }
   }
 
   void _scheduleRewardNotification(TriggerApp triggerApp, Duration duration) {

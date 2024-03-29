@@ -6,7 +6,7 @@ import 'package:focus_flip/screens/healthy_app_screen/healty_app_screen.dart';
 import 'package:focus_flip/screens/intervention_screen/states/healthy_app_missing_intervention_screen.dart';
 import 'package:focus_flip/screens/intervention_screen/states/trigger_app_not_selected_intervention_screen.dart';
 import 'package:focus_flip/screens/trigger_app_screen/trigger_app_screen.dart';
-import 'package:focus_flip/utils/toasts.dart';
+import 'package:focus_flip/utils/launch_app.dart';
 
 import 'states/begin_intervention_screen.dart';
 import 'states/intervention_in_progress_screen.dart';
@@ -74,7 +74,7 @@ class _InterventionScreenState extends State<InterventionScreen> {
             healthyApp: state.healthyApp,
             requiredHealthyTime: state.requiredHealthyTime,
             ignoreRewardAndLaunchHealthyApp: () {
-              _cubit.launchApp(state.healthyApp);
+              launchApp(state.healthyApp);
             },
             launchTriggerApp: () {
               _cubit.launchTriggerApp(state.triggerApp);
