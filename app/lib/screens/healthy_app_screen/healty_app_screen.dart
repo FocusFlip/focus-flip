@@ -41,7 +41,7 @@ class HealthyAppScreen extends StatelessWidget {
         onCancel: () {});
   }
 
-  void _openTriggerAppSelection(BuildContext context) async {
+  void _openHealthyAppSelection(BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -54,7 +54,7 @@ class HealthyAppScreen extends StatelessWidget {
     );
   }
 
-  Widget _triggerAppListBuilder(BuildContext context, MainScreenState state) {
+  Widget _healthyAppListBuilder(BuildContext context, MainScreenState state) {
     List<Label> labels = [];
     HealthyApp? healthyApp = state.healthyApp;
     if (healthyApp != null) {
@@ -70,7 +70,7 @@ class HealthyAppScreen extends StatelessWidget {
     }
 
     labels.add(
-        Label(text: "+ Add", onTap: () => _openTriggerAppSelection(context)));
+        Label(text: "+ Add", onTap: () => _openHealthyAppSelection(context)));
 
     return InlineLabelList(
       labels: labels,
@@ -165,7 +165,7 @@ class HealthyAppScreen extends StatelessWidget {
                     margin: EdgeInsets.only(top: ScreenUtil().setHeight(16)),
                     child: BlocBuilder<MainScreenCubit, MainScreenState>(
                       bloc: mainScreenCubit,
-                      builder: _triggerAppListBuilder,
+                      builder: _healthyAppListBuilder,
                     )),
                 Container(
                   alignment: Alignment.topLeft,
