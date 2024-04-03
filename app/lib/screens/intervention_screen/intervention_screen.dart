@@ -4,12 +4,12 @@ import 'package:focus_flip/cubits/intervention_screen/intervention_screen_cubit.
 import 'package:focus_flip/models/app.dart';
 import 'package:focus_flip/repositories/main_repository.dart';
 
-import 'states/begin_intervention_screen.dart';
-import 'states/intervention_in_progress_screen.dart';
-import 'states/intervention_interrupted_screen.dart';
-import 'states/intervention_successful_screen.dart';
-import 'states/intervention_timeout_screen.dart';
-import 'states/waiting_for_intervention_result_screen.dart';
+import 'state_views/begin_intervention_screen.dart';
+import 'state_views/intervention_in_progress_screen.dart';
+import 'state_views/intervention_interrupted_screen.dart';
+import 'state_views/intervention_successful_screen.dart';
+import 'state_views/intervention_timeout_screen.dart';
+import 'state_views/waiting_for_intervention_result_screen.dart';
 
 class InterventionScreen extends StatefulWidget {
   const InterventionScreen({super.key, required this.initialTriggerApp});
