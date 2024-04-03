@@ -25,12 +25,13 @@ class App {
     };
   }
 
-  App({required this.name, required this.url, this.packageName});
+  const App({required this.name, required this.url, this.packageName});
 }
 
 @HiveType(typeId: 1)
 class TriggerApp extends App {
-  TriggerApp({required String name, required String url, String? packageName})
+  const TriggerApp(
+      {required String name, required String url, String? packageName})
       : super(name: name, url: url, packageName: packageName);
 
   TriggerApp.fromJson(Map<String, dynamic> json)
@@ -38,45 +39,21 @@ class TriggerApp extends App {
             name: json["name"],
             url: json["url"],
             packageName: json["packageName"]);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "packageName": packageName,
-      "url": url,
-    };
-  }
 }
 
 @HiveType(typeId: 2)
 class HealthyApp extends App {
-  HealthyApp(
-      {required String name,
-      required String url,
-      String? packageName,
-      required this.requiredUsageDuration})
-      : super(name: name, url: url, packageName: packageName);
+  const HealthyApp({
+    required String name,
+    required String url,
+    String? packageName,
+  }) : super(name: name, url: url, packageName: packageName);
 
-  @HiveField(3)
-  final Duration requiredUsageDuration;
-
+  // TODO: remove requiredUsageDuration from this class
   HealthyApp.fromJson(Map<String, dynamic> json)
-      : requiredUsageDuration =
-            Duration(milliseconds: json["requiredUsageDuration"]),
-        super(
+      : super(
           name: json["name"],
           url: json["url"],
           packageName: json["packageName"],
         );
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "packageName": packageName,
-      "url": url,
-      "requiredUsageDuration": requiredUsageDuration.inSeconds,
-    };
-  }
 }

@@ -23,6 +23,17 @@ widgetText(String title,
   );
 }
 
+widgetRichText(BuildContext context, TextSpan textSpan) {
+  return RichText(
+    text: TextSpan(
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            fontFamily: "Rubik",
+          ),
+      children: [textSpan],
+    ),
+  );
+}
+
 widgetButton(Text title, Function() onPressed,
     {color,
     height,

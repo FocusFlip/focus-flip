@@ -12,58 +12,45 @@ class MainRepository extends HiveBoxRepository {
 
   MainRepository(hiveBoxName) : super(hiveBoxName);
 
-  // TODO: Remove when you use the API to define url and package name
-  final List<TriggerApp> _triggerApps = [
-    TriggerApp(
-        name: "YouTube",
-        url: "youtube://",
-        packageName: "com.google.android.youtube"),
-  ];
-
   List<TriggerApp> get triggerApps {
     try {
       print("[Hiverepository] Reading triggerApps from the box");
-      box.get('triggerApps').cast<TriggerApp>().forEach((element) {
-        print(element.name);
-      });
-      return box.get('triggerApps').cast<TriggerApp>();
+      List<TriggerApp>? triggerApps =
+          box.get('triggerApps')?.cast<TriggerApp>().toList();
+
+      return triggerApps ?? [];
     } catch (e) {
       print(e);
     }
     return [];
   }
 
-  void addHealthyAppInRepo() {
-    print("[MainRepository] writeHealthyAppInMain");
-    instance.addHealthyApp(healthyApp);
-  }
-
-  void addTriggerAppInRepo() {
-    print("[MainRepository] writeTriggerAppInMain");
-
-    instance.addTriggerApps(triggerApps);
-  }
-
   void addTriggerApp(TriggerApp app) {
-    if (_triggerApps.any((element) => element.name == app.name)) {
+    // TODO: check if we need verify by url or package name
+    // It is not needed on iOS because a predefined list of apps is used,
+    // but the available apps for android are not known in advance.
+    if (triggerApps.any((element) => element.name == app.name)) {
       throw DuplicateException(duplicateField: "name");
     }
-    _triggerApps.add(app);
-    instance.addTriggerApps(_triggerApps);
+    putTriggerAppList(triggerApps..add(app));
+    print("Add TriggerApp.");
   }
 
-  void clearTriggerApps() {
-    _triggerApps.clear();
+  void removeTriggerApp(TriggerApp app) {
+    var triggerAppsNumber = triggerApps.length;
+    putTriggerAppList(
+        triggerApps..removeWhere((element) => element.name == app.name));
+    var newTriggerAppsNumber = triggerApps.length;
+    print(
+        "Remove TriggerApp. Number of TriggerApps before: $triggerAppsNumber, after: $newTriggerAppsNumber");
   }
 
-  // TODO: store in HiveDB
-  HealthyApp get healthyApp {
-    return HealthyApp(
-        name: "Anki",
-        url: "anki://",
-        packageName: "com.ichi2.anki",
-        requiredUsageDuration:
-            Duration(seconds: instance.readRequiredHealthyTime()));
+  HealthyApp? get healthyApp {
+    return box.get('healthyApp');
+  }
+
+  set healthyApp(HealthyApp? app) {
+    box.put('healthyApp', app);
   }
 
 //TODO - Fix Error Handling and displaying the message in higher level
@@ -78,7 +65,7 @@ class MainRepository extends HiveBoxRepository {
     try {
       print("[MainRepository] Reading RequiredHealthyTime in the box");
       print(instance.box.get("requiredHealthyTime"));
-      return instance.box.get("requiredHealthyTime");
+      return instance.box.get("requiredHealthyTime", defaultValue: 20);
     } catch (e) {
       print(e);
     }
@@ -87,25 +74,10 @@ class MainRepository extends HiveBoxRepository {
   }
 
   //TODO - Add the model for hive to recognize the object
-  void addTriggerApps(List<TriggerApp> _triggerApps) {
+  void putTriggerAppList(List<TriggerApp> _triggerApps) {
     print("[Hiverepository] Writing triggerApps to the box");
     box.put('triggerApps', _triggerApps);
     triggerApps;
-  }
-
-  //TODO - Add the model for hive to recognize the object
-  void addHealthyApps(List<HealthyApp> _healthyApps) {
-    print("[Hiverepository] Writing healthyApps to the box");
-    box.put('healthyApps', _healthyApps);
-
-    print("[Hiverepository] Reading healthyApps from the box");
-    box.get('healthyApps');
-  }
-
-  //TODO - Add the model for hive to recognize the object
-  void addHealthyApp(HealthyApp _healthyApp) {
-    print("[HiveBox] Writing healthyApp to the box");
-    box.put('healthyApp', _healthyApp);
   }
 }
 

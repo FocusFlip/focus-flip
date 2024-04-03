@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_pop_up/overlay_communicator.dart';
 import 'package:focus_flip/models/app.dart';
-import 'package:focus_flip/screens/intervention_screen/intervention_screen.dart';
+
+import 'states/begin_intervention_screen.dart';
+import 'states/intervention_successful_screen.dart';
 
 class InterventionOverlayWindow extends StatefulWidget {
   const InterventionOverlayWindow({super.key});
@@ -25,10 +27,14 @@ class InterventionOverlayWindow extends StatefulWidget {
 class _InterventionOverlayWindowState extends State<InterventionOverlayWindow> {
   HealthyApp? _healthyApp;
   TriggerApp? _triggerApp;
+  Duration? _requiredHealthyTime;
   String? _stateName;
 
   bool get _isInterventionDataAvailable =>
-      _healthyApp != null && _triggerApp != null && _stateName != null;
+      _healthyApp != null &&
+      _triggerApp != null &&
+      _stateName != null &&
+      _requiredHealthyTime != null;
 
   @override
   void initState() {
@@ -44,7 +50,10 @@ class _InterventionOverlayWindowState extends State<InterventionOverlayWindow> {
     assert(event["state"] is String);
     assert(event["triggerApp"] is Map);
     assert(event["healthyApp"] is Map);
+    assert(event["requiredHealthyTime"] is int);
+
     _stateName = event["state"];
+    _requiredHealthyTime = Duration(seconds: event["requiredHealthyTime"]);
     _triggerApp = TriggerApp.fromJson(event["triggerApp"]);
     _healthyApp = HealthyApp.fromJson(event["healthyApp"]);
     setState(() {});
@@ -67,6 +76,7 @@ class _InterventionOverlayWindowState extends State<InterventionOverlayWindow> {
               InterventionOverlayWindow.INTERVENTION_SUCCESSFUL_STATE);
       if (_stateName == InterventionOverlayWindow.BEGIN_INTERVENTION_STATE) {
         body = BeginInterventionScreen(
+          reqiredHealthyTime: _requiredHealthyTime!,
           triggerApp: _triggerApp!,
           healthyApp: _healthyApp!,
           startHealthyAppIntervention: () {
@@ -80,6 +90,7 @@ class _InterventionOverlayWindowState extends State<InterventionOverlayWindow> {
         body = InterventionSuccessfulScreen(
           triggerApp: _triggerApp!,
           healthyApp: _healthyApp!,
+          requiredHealthyTime: _requiredHealthyTime!,
           ignoreRewardAndLaunchHealthyApp: () {
             _clearInterventionData();
             OverlayCommunicator.instance.send(
@@ -94,7 +105,6 @@ class _InterventionOverlayWindowState extends State<InterventionOverlayWindow> {
       }
     }
 
-    return Scaffold(
-        appBar: AppBar(title: Text("Intervention")), body: Center(child: body));
+    return Scaffold(body: body);
   }
 }

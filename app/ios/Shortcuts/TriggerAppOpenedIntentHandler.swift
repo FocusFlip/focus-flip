@@ -22,6 +22,18 @@ class TriggerAppOpenedIntentHandler: NSObject, TriggerAppOpenedIntentHandling {
       case .facebook:
           appName = "Facebook"
           break
+      case .youtube:
+          appName = "YouTube"
+          break
+      case .linkedin:
+          appName = "LinkedIn"
+          break
+      case .x:
+          appName = "X"
+          break
+      case .snapchat:
+          appName = "Snapchat"
+          break
       default:
           fatalError("[TriggerAppOpenedIntentHandler] The chosen trigger app is not supported")
       }

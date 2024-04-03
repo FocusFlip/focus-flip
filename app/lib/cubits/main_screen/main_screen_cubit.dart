@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:focus_flip/utils/music_visualizer_main.dart';
+import 'package:focus_flip/utils/toasts.dart';
 import 'package:meta/meta.dart';
 import 'package:focus_flip/models/app.dart';
 import 'package:focus_flip/repositories/main_repository.dart';
@@ -7,74 +10,82 @@ part 'main_screen_state.dart';
 
 class MainScreenCubit extends Cubit<MainScreenState> {
   MainScreenCubit(this.mainRepository)
-      : super(MainScreenInitial(mainRepository.triggerApps,
-            Duration(seconds: mainRepository.readRequiredHealthyTime())));
+      : super(MainScreenInitial(
+          mainRepository.triggerApps,
+          Duration(
+            seconds: mainRepository.readRequiredHealthyTime(),
+          ),
+          mainRepository.healthyApp,
+        ));
   final MainRepository mainRepository;
 
-  Future<void> addTriggerApp(String name) async {
-    if (name.isEmpty) {
-      emit(EmptyNameError(triggerApps: state.triggerApps.toList()));
+  Future<void> addTriggerApp(TriggerApp app) async {
+    if (mainRepository.triggerApps.isNotEmpty) {
+      showToast(
+          "This version does not support adding multiple trigger apps yet");
       return;
     }
-
-    // TODO : Retrieve the package name and/or url from API
-    TriggerApp app = TriggerApp(
-        name: name,
-        url: name.toLowerCase() + "://",
-        packageName: "com." + name.toLowerCase() + ".android");
 
     try {
       mainRepository.addTriggerApp(app);
     } on DuplicateException {
-      emit(DuplicateNameError(triggerApps: state.triggerApps.toList()));
+      print("[MainScreenCubit] Duplicate trigger app");
+      emit(DuplicateTriggerAppError(
+          triggerApps: state.triggerApps.toList(),
+          healthyApp: state.healthyApp,
+          requiredHealthyTime: state.requiredHealthyTime));
       return;
     } catch (e) {
       // TODO: error handling
       return;
     }
 
-    emit(TriggerAppAdded(triggerApps: state.triggerApps.toList()..add(app)));
+    emit(TriggerAppAdded(
+        triggerApps: state.triggerApps.toList()..add(app),
+        healthyApp: state.healthyApp,
+        requiredHealthyTime: state.requiredHealthyTime));
   }
 
-  void clearTriggerApps() {
-    mainRepository.clearTriggerApps();
-    emit(TriggerAppsCleared(triggerApps: []));
+  void removeTriggerApp(TriggerApp app) {
+    mainRepository.removeTriggerApp(app);
+    emit(TriggerAppRemoved(
+        removedApp: app,
+        triggerApps: state.triggerApps.toList()..remove(app),
+        healthyApp: state.healthyApp,
+        requiredHealthyTime: state.requiredHealthyTime));
   }
 
-//TODO - Fix this method when the HealthyApp is selected from the list
-  void addHealthyApp() {
-    try {
-      mainRepository.addHealthyApp(mainRepository.healthyApp);
-    } on DuplicateException {
-      emit(DuplicateNameError(triggerApps: state.triggerApps.toList()));
-      return;
-    } catch (e) {
+  void setHealthyApp(HealthyApp? app) {
+    if (app != null && mainRepository.healthyApp != null) {
+      // TODO: log this event
+      showToast(
+          "This version does not support adding multiple healthy apps yet");
       return;
     }
-    // emit(HealthyAppAdded(mainRepository.healthyApp));
-  }
 
-  void clearHealthyApps() {
-    throw UnimplementedError();
+    mainRepository.healthyApp = app;
+    emit(HealthyAppAdded(
+        triggerApps: state.triggerApps,
+        healthyApp: app,
+        requiredHealthyTime: state.requiredHealthyTime));
   }
 
   void updateRequiredHealthyTime(String value) {
     int? time = int.tryParse(value);
 
-    //TODO - Display error message to user when wrong value is given
-    if (time == null || time < 15) {
+    if (time == null) {
       emit(RequiredHealthyTimeError(
-          state.triggerApps.toList(), Duration(seconds: 0)));
+          state.triggerApps.toList(), Duration(seconds: 0), state.healthyApp));
       return;
     }
     try {
       mainRepository.updateRequiredHealthyTime(time);
     } catch (e) {
-      emit(RequiredHealthyTimeError(
-          state.triggerApps.toList(), Duration(seconds: time)));
+      emit(RequiredHealthyTimeError(state.triggerApps.toList(),
+          Duration(seconds: time), state.healthyApp));
       return;
     }
     emit(UpdatedRequiredHealthyTime(
-        state.triggerApps.toList(), Duration(seconds: time)));
+        state.triggerApps.toList(), Duration(seconds: time), state.healthyApp));
   }
 }
