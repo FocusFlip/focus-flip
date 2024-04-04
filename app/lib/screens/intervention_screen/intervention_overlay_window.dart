@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_pop_up/overlay_communicator.dart';
 import 'package:focus_flip/models/app.dart';
-import 'package:focus_flip/screens/intervention_screen/intervention_screen.dart';
+
+import 'state_views/begin_intervention_screen.dart';
+import 'state_views/intervention_successful_screen.dart';
 
 class InterventionOverlayWindow extends StatefulWidget {
   const InterventionOverlayWindow({super.key});
@@ -94,7 +96,6 @@ class _InterventionOverlayWindowState extends State<InterventionOverlayWindow> {
       }
     }
 
-    return Scaffold(
-        appBar: AppBar(title: Text("Intervention")), body: Center(child: body));
+    return Scaffold(body: body);
   }
 }
